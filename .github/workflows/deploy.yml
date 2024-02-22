@@ -18,7 +18,9 @@ jobs:
           node-version: 20
           cache: 'pnpm'
       - run: pnpm install
-      - run: pnpm run build
+      - env:
+          BASE_PATH: '/${{ github.event.repository.name }}'
+        run: pnpm run build
       - uses: JamesIves/github-pages-deploy-action@v4
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         name: Deploy to gh-pages
