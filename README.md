@@ -29,3 +29,9 @@ curl -fsSL https://get.pnpm.io/install.sh | sh -
 pnpm create svelte@latest
 pnpm i -D @sveltejs/adapter-static
 ```
+
+Adding some ui styling:
+```bash
+npx svelte-add@latest tailwindcss
+pnpm i -D flowbite-svelte flowbite
+```
