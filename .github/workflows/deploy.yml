@@ -1,0 +1,23 @@
+name: Build and deploy to gh-pages
+
+on: push
+
+jobs:
+  build-and-deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm install
+      - run: npm run build
+      - uses: JamesIves/github-pages-deploy-action@v4
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        name: Deploy to gh-pages
+        with:
+          branch: gh-pages
+          folder: dist
+          single-commit: true
