@@ -22,5 +22,5 @@ jobs:
         name: Deploy to gh-pages
         with:
           branch: gh-pages
-          folder: dist
+          folder: build
           single-commit: true
