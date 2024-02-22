@@ -22,7 +22,7 @@ You can preview the production build with `npm run preview`.
 
 ## Initial setup
 
-Brief notes on how this project was initially set up:
+Brief note on how the files in the first commit were generated:
 
 ```bash
 curl -fsSL https://get.pnpm.io/install.sh | sh -
