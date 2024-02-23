@@ -1,5 +1,7 @@
 # test-form
 
+A simple static web page providing a form that can be filled in and then downloaded as a json file
+
 ## Developing
 
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
