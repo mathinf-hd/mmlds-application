@@ -1,56 +1,82 @@
 <script lang="ts">
-import { Button, Alert, Card, Navbar, NavBrand, NavLi, NavUl, NavHamburger, Toast } from 'flowbite-svelte';
-  import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Checkbox } from 'flowbite-svelte';
+	import {
+		Button,
+		Checkbox,
+		Heading,
+		Input,
+		NumberInput,
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell
+	} from 'flowbite-svelte';
+	import { downloadAsJsonFile, makeEmptyRow } from '$lib/index';
 
-	function downloadFile() {
-		const link = document.createElement('a');
-		const content = 'abc1234';
-		const file = new Blob([content], { type: 'text/plain' });
-		link.href = URL.createObjectURL(file);
-		link.download = 'sample.txt';
-		link.click();
-		URL.revokeObjectURL(link.href);
+	function saveAsFile() {
+		const filename = 'test.txt';
+		downloadAsJsonFile(filename, data);
 	}
 
-type Row = {
-  name: string;
-  count: number;
-  a: boolean;
-  b: boolean;
-  c: boolean;
-  d: boolean;
-  e: boolean;
-  f: boolean;
-};
-
-const titles = ["Name", "Count", "A", "B", "C", "D", "E", "F"];
-
-const row1: Row = {name: "Alpha", count: 3, a: true, b: false, c: false, d: false, e: true, f: false};
-
-const rows = [row1, row1, row1];
-
+	const titles = Object.keys(makeEmptyRow());
+	const rows = [makeEmptyRow(), makeEmptyRow(), makeEmptyRow()];
+	const data = { Name: '', Rows: rows };
 </script>
 
-<h1>Test Form</h1>
+<div class="flex flex-col p-4 md:container md:mx-auto">
+	<Heading>Test Form</Heading>
+	<Table>
+		<TableHead>
+			{#each titles as title}
+				<TableHeadCell>{title}</TableHeadCell>
+			{/each}
+		</TableHead>
+		<TableBody>
+			{#each rows as row}
+				<TableBodyRow>
+					{#each titles as title}
+						<TableBodyCell>
+							{#if typeof row[title] === 'string'}
+								<Input bind:value={row[title]} />
+							{:else if typeof row[title] === 'number'}
+								<NumberInput
+									value={row[title]}
+									on:input={(e) =>
+										(row[title] = Number.isNaN(Number(e.target.value))
+											? row[title]
+											: Number(e.target.value))}
+								/>
+							{:else if typeof row[title] === 'boolean'}
+								<Checkbox bind:checked={row[title]} />
+							{:else}
+								{row[title]}
+							{/if}
+						</TableBodyCell>
+					{/each}
+				</TableBodyRow>
+			{/each}
+		</TableBody>
+	</Table>
 
-<Table>
-  <TableHead>
-{#each titles as title}
-<TableHeadCell>{title}</TableHeadCell>
-{/each}
-    </TableHead>
-<TableBody class="divide-y">
-{#each rows as row}
-<TableBodyRow>
-{#each Object.entries(row) as [title, value]}
-<TableBodyCell>
-{value}
-<Checkbox />
-</TableBodyCell>
-{/each}
-</TableBodyRow>
-{/each}
-</TableBody>
-</Table>
+	<Button color="primary" on:click={saveAsFile}>Download</Button>
 
-<Button color="primary" on:click={downloadFile}>Download</Button>
+	<Table>
+		<TableHead>
+			{#each titles as title}
+				<TableHeadCell>{title}</TableHeadCell>
+			{/each}
+		</TableHead>
+		<TableBody>
+			{#each rows as row}
+				<TableBodyRow>
+					{#each titles as title}
+						<TableBodyCell>
+							{row[title]}
+						</TableBodyCell>
+					{/each}
+				</TableBodyRow>
+			{/each}
+		</TableBody>
+	</Table>
+</div>

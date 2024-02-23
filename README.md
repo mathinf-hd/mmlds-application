@@ -4,27 +4,23 @@ A simple static web page providing a form that can be filled in and then downloa
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Initial setup:
 
-```bash
-pnpm run dev -- --open
-```
+- [install pnpm](https://pnpm.io/installation)
+- clone the repo
+- `pnpm install`
+
+Start a dev server and open website in browser:
+
+- `pnpm run dev -- --open`
 
 ## Building
 
-To create a production version of your app:
+Website is built and deployed on every push using Github Actions.
 
-```bash
-pnpm run build
-```
+## Notes
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
-
-## Initial setup
-
-Brief note on how the files in the first commit were generated:
+Commands used to generate most of the first commit:
 
 ```bash
 curl -fsSL https://get.pnpm.io/install.sh | sh -
@@ -32,7 +28,8 @@ pnpm create svelte@latest
 pnpm i -D @sveltejs/adapter-static
 ```
 
-Adding some ui styling:
+Commands used to add flowbite-svelte UI library:
+
 ```bash
 npx svelte-add@latest tailwindcss
 pnpm i -D flowbite-svelte flowbite
