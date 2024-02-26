@@ -1,12 +1,16 @@
 # test-form
 
-A simple static web page providing a form that can be filled in and then downloaded as a json file
+A simple static web page providing a form that can be filled in and then downloaded as a json file.
+
+The user can add as many rows of data as they want.
+
+The fields for the form and the rows of data are defined in [src/lib/form.ts](src/lib/form.ts).
 
 ## Developing
 
 Initial setup:
 
-- [install pnpm](https://pnpm.io/installation)
+- intall [pnpm](https://pnpm.io/installation)
 - clone the repo
 - `pnpm install`
 
@@ -16,7 +20,7 @@ Start a dev server and open website in browser:
 
 ## Building
 
-Website is built and deployed on every push using Github Actions.
+Website is built and deployed on every push using this [Github Action](.github/workflows/deploy.yml).
 
 ## Notes
 

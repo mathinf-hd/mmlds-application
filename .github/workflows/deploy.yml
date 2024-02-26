@@ -17,9 +17,9 @@ jobs:
           node-version: 20
           cache: 'pnpm'
       - run: pnpm install
-      - env:
+      - run: pnpm run build
+        env:
           BASE_PATH: '/${{ github.event.repository.name }}'
-        run: pnpm run build
       - uses: actions/upload-pages-artifact@v3
         with:
           path: 'build/'
@@ -33,6 +33,5 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to GitHub Pages
+      - uses: actions/deploy-pages@v4
         id: deployment
-        uses: actions/deploy-pages@v4
