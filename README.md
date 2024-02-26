@@ -10,9 +10,9 @@ The fields for the form and the rows of data are defined in [src/lib/form.ts](sr
 
 Initial setup:
 
-- intall [pnpm](https://pnpm.io/installation)
-- clone the repo
-- `pnpm install`
+- intall [pnpm](https://pnpm.io/installation), e.g. `curl -fsSL https://get.pnpm.io/install.sh | sh -`
+- clone the repo, e.g. `gh repo clone ssciwr/test-form`
+- install node dependencies, e.g. `pnpm install`
 
 Start a dev server and open website in browser:
 
