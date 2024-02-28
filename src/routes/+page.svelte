@@ -38,13 +38,13 @@
 
 <div class="flex flex-col md:container md:mx-auto">
 	<Heading class="my-2 p-4 text-center">Test Form</Heading>
-	<Card size="xl" class="my-2">
+	<Card size="2xl" class="my-2">
 		<P>
 			Some introduction text, please fill in the form and click "Download form data" to download a
 			form-data.txt file that you can then upload somewhere else, etc etc:
 		</P>
 	</Card>
-	<Card size="xl" class="my-2">
+	<Card size="2xl" class="my-2">
 		{#each data_titles as title}
 			<div>
 				<Label for={title} class="mb-2">{title}</Label>
