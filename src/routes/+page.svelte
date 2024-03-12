@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { newForm, newRow } from '$lib/form';
-	import { downloadAsJsonFile } from '$lib/util';
+	import { fields, topics } from '$lib/form';
+	import { downloadAsJsonFile, makeJsonFormData } from '$lib/util';
 	import {
 		Button,
 		Card,
 		Checkbox,
 		Heading,
 		Input,
-		Label,
 		NumberInput,
 		P,
 		Table,
@@ -17,22 +16,16 @@
 		TableHead,
 		TableHeadCell
 	} from 'flowbite-svelte';
-	import { DownloadOutline, PlusOutline } from 'flowbite-svelte-icons';
+	import { DownloadOutline } from 'flowbite-svelte-icons';
 
-	const data_titles = Object.keys(newForm());
-	const row_titles = Object.keys(newRow());
-
-	const data = newForm();
-	data.rows = [newRow(), newRow(), newRow()];
+	const topic_titles = Object.keys(topics);
+	const field_titles = Object.keys(fields);
+	const data = makeJsonFormData(topics, fields);
 
 	function downloadFormData() {
 		const filename = 'form-data.txt';
 		console.log('Download:', data);
 		downloadAsJsonFile(filename, data);
-	}
-
-	function addRow() {
-		data.rows = [...data.rows, newRow()];
 	}
 </script>
 
@@ -45,53 +38,49 @@
 		</P>
 	</Card>
 	<Card size="2xl" class="my-2">
-		{#each data_titles as title}
-			<div>
-				<Label for={title} class="mb-2">{title}</Label>
-				<Input type="text" id={title} bind:value={data[title]} />
-			</div>
-		{/each}
 		<Table class="my-4">
-			<TableHead>
-				{#each row_titles as title}
-					<TableHeadCell>{title}</TableHeadCell>
-				{/each}
-			</TableHead>
-			<TableBody>
-				{#each data.rows as row}
-					<TableBodyRow>
-						{#each row_titles as title}
+			{#each topic_titles as topic_title}
+				<TableHead>
+					<TableHeadCell>{topic_title}</TableHeadCell>
+					{#each field_titles as field_title}
+						<TableHeadCell>{field_title}</TableHeadCell>
+					{/each}
+				</TableHead>
+				<TableBody>
+					{#each topics[topic_title] as subtopic_title}
+						<TableBodyRow>
 							<TableBodyCell>
-								{#if typeof row[title] === 'string'}
-									<Input bind:value={row[title]} />
-								{:else if typeof row[title] === 'number'}
-									<NumberInput
-										class="w-16"
-										value={row[title]}
-										min="0"
-										on:input={(e) =>
-											(row[title] = Number.isNaN(Number(e.target.value))
-												? row[title]
-												: Number(e.target.value))}
-									/>
-								{:else if typeof row[title] === 'boolean'}
-									<Checkbox bind:checked={row[title]} />
-								{:else}
-									{row[title]}
-								{/if}
+								<Checkbox bind:checked={data[topic_title][subtopic_title].selected}>
+									{subtopic_title}
+								</Checkbox>
 							</TableBodyCell>
-						{/each}
-					</TableBodyRow>
-				{/each}
-				<TableBodyRow>
-					<TableBodyCell>
-						<Button on:click={addRow}>
-							<PlusOutline />
-							Add another row
-						</Button>
-					</TableBodyCell>
-				</TableBodyRow>
-			</TableBody>
+							{#each field_titles as field_title}
+								<TableBodyCell>
+									{#if typeof data[topic_title][subtopic_title][field_title] === 'string'}
+										<Input bind:value={data[topic_title][subtopic_title][field_title]} />
+									{:else if typeof data[topic_title][subtopic_title][field_title] === 'number'}
+										<NumberInput
+											class="w-16"
+											value={data[topic_title][subtopic_title][field_title]}
+											min="0"
+											on:input={(e) =>
+												(data[topic_title][subtopic_title][field_title] = Number.isNaN(
+													Number(e.target.value)
+												)
+													? data[topic_title][subtopic_title][field_title]
+													: Number(e.target.value))}
+										/>
+									{:else if typeof data[topic_title][subtopic_title][field_title] === 'boolean'}
+										<Checkbox bind:checked={data[topic_title][subtopic_title][field_title]} />
+									{:else}
+										Unknown field: {data[topic_title][subtopic_title][field_title]}
+									{/if}
+								</TableBodyCell>
+							{/each}
+						</TableBodyRow>
+					{/each}
+				</TableBody>
+			{/each}
 		</Table>
 		<Button color="primary" class="m-4" on:click={downloadFormData}>
 			<DownloadOutline />
