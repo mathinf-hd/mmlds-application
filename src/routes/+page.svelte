@@ -1,25 +1,23 @@
 <script lang="ts">
 	import { fields, topics } from '$lib/form';
 	import { downloadAsJsonFile, makeJsonFormData } from '$lib/util';
-	import {
-		Button,
-		Card,
-		Checkbox,
-		Heading,
-		Input,
-		NumberInput,
-		P,
-		Table,
-		TableBody,
-		TableBodyCell,
-		TableBodyRow,
-		TableHead,
-		TableHeadCell
-	} from 'flowbite-svelte';
+	import Button from 'flowbite-svelte/Button.svelte';
+	import Card from 'flowbite-svelte/Card.svelte';
+	import Checkbox from 'flowbite-svelte/Checkbox.svelte';
+	import Heading from 'flowbite-svelte/Heading.svelte';
+	import Input from 'flowbite-svelte/Input.svelte';
+	import NumberInput from 'flowbite-svelte/NumberInput.svelte';
+	import P from 'flowbite-svelte/P.svelte';
+	import Table from 'flowbite-svelte/Table.svelte';
+	import TableBody from 'flowbite-svelte/TableBody.svelte';
+	import TableBodyCell from 'flowbite-svelte/TableBodyCell.svelte';
+	import TableBodyRow from 'flowbite-svelte/TableBodyRow.svelte';
+	import TableHead from 'flowbite-svelte/TableHead.svelte';
+	import TableHeadCell from 'flowbite-svelte/TableHeadCell.svelte';
 	import DownloadOutline from 'flowbite-svelte-icons/DownloadOutline.svelte';
 
-	const topic_titles = Object.keys(topics);
-	const field_titles = Object.keys(fields);
+	const topicNames = Object.keys(topics);
+	const fieldNames = Object.keys(fields);
 	const data = makeJsonFormData(topics, fields);
 
 	function downloadFormData() {
@@ -39,41 +37,41 @@
 	</Card>
 	<Card size="2xl" class="my-2">
 		<Table class="my-4">
-			{#each topic_titles as topic_title}
+			{#each topicNames as topicName}
 				<TableHead>
-					<TableHeadCell>{topic_title}</TableHeadCell>
-					{#each field_titles as field_title}
-						<TableHeadCell>{field_title}</TableHeadCell>
+					<TableHeadCell>{topicName}</TableHeadCell>
+					{#each fieldNames as fieldName}
+						<TableHeadCell>{fieldName}</TableHeadCell>
 					{/each}
 				</TableHead>
 				<TableBody>
-					{#each topics[topic_title] as subtopic_title}
+					{#each topics[topicName] as subtopicName}
 						<TableBodyRow>
 							<TableBodyCell>
-								<Checkbox bind:checked={data[topic_title][subtopic_title].selected}>
-									{subtopic_title}
+								<Checkbox bind:checked={data[topicName][subtopicName].selected}>
+									{subtopicName}
 								</Checkbox>
 							</TableBodyCell>
-							{#each field_titles as field_title}
+							{#each fieldNames as fieldName}
 								<TableBodyCell>
-									{#if typeof data[topic_title][subtopic_title][field_title] === 'string'}
-										<Input bind:value={data[topic_title][subtopic_title][field_title]} />
-									{:else if typeof data[topic_title][subtopic_title][field_title] === 'number'}
+									{#if typeof data[topicName][subtopicName][fieldName] === 'string'}
+										<Input bind:value={data[topicName][subtopicName][fieldName]} />
+									{:else if typeof data[topicName][subtopicName][fieldName] === 'number'}
 										<NumberInput
 											class="w-16"
-											value={data[topic_title][subtopic_title][field_title]}
+											value={data[topicName][subtopicName][fieldName]}
 											min="0"
 											on:input={(e) =>
-												(data[topic_title][subtopic_title][field_title] = Number.isNaN(
+												(data[topicName][subtopicName][fieldName] = Number.isNaN(
 													Number(e.target.value)
 												)
-													? data[topic_title][subtopic_title][field_title]
+													? data[topicName][subtopicName][fieldName]
 													: Number(e.target.value))}
 										/>
-									{:else if typeof data[topic_title][subtopic_title][field_title] === 'boolean'}
-										<Checkbox bind:checked={data[topic_title][subtopic_title][field_title]} />
+									{:else if typeof data[topicName][subtopicName][fieldName] === 'boolean'}
+										<Checkbox bind:checked={data[topicName][subtopicName][fieldName]} />
 									{:else}
-										Unknown field: {data[topic_title][subtopic_title][field_title]}
+										Unknown field: {data[topicName][subtopicName][fieldName]}
 									{/if}
 								</TableBodyCell>
 							{/each}
