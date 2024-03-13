@@ -1,6 +1,6 @@
-import { type Topics, type Fields } from './form_types';
+import type FormTopics from '$lib/formTypes';
 
-export const topics: Topics = {
+export const formTopics: FormTopics = {
 	'Practical computer science': [
 		'Technical and formal basics of programming',
 		'Syntax and semantics of programming languages',
@@ -73,9 +73,4 @@ export const topics: Topics = {
 		'Fundamental theorem of calculus',
 		'Integrals and basics of multidimensional analysis'
 	]
-};
-
-export const fields: Fields = {
-	'Lecture name in transcript': '',
-	'CPs of lecture': 0
 };

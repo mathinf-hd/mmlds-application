@@ -2,9 +2,9 @@
 
 A simple static web page providing a form that can be filled in and then downloaded as a json file.
 
-The user can add as many rows of data as they want.
+The fields for each row are defined in [src/lib/formFields.ts](src/lib/formFields.ts).
 
-The fields for the form and the rows of data are defined in [src/lib/form.ts](src/lib/form.ts).
+The topics and subtopics are defined in [src/lib/formTopics.ts](src/lib/formTopics.ts).
 
 ## Developing
 

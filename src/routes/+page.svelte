@@ -1,31 +1,22 @@
 <script lang="ts">
 	import Button from 'flowbite-svelte/Button.svelte';
 	import Card from 'flowbite-svelte/Card.svelte';
-	import Checkbox from 'flowbite-svelte/Checkbox.svelte';
 	import Heading from 'flowbite-svelte/Heading.svelte';
-	import Input from 'flowbite-svelte/Input.svelte';
 	import P from 'flowbite-svelte/P.svelte';
-	import Table from 'flowbite-svelte/Table.svelte';
-	import TableBody from 'flowbite-svelte/TableBody.svelte';
-	import TableBodyCell from 'flowbite-svelte/TableBodyCell.svelte';
-	import TableBodyRow from 'flowbite-svelte/TableBodyRow.svelte';
-	import TableHead from 'flowbite-svelte/TableHead.svelte';
-	import TableHeadCell from 'flowbite-svelte/TableHeadCell.svelte';
-
 	import DownloadOutline from 'flowbite-svelte-icons/DownloadOutline.svelte';
 
-	import { fields, topics } from '$lib/form';
-	import { downloadAsJsonFile, makeJsonFormData } from '$lib/util';
-	import PositiveNumberInput from '$lib/PositiveNumberInput.svelte';
+	import FormTable from '$lib/components/FormTable.svelte';
 
-	const topicNames = Object.keys(topics);
-	const fieldNames = Object.keys(fields);
-	const data = makeJsonFormData(topics, fields);
+	import { formFields } from '$lib/formFields';
+	import { formTopics } from '$lib/formTopics';
+	import { downloadFormAsJsonFile, makeFormData } from '$lib/formUtils';
+
+	let data = makeFormData(formTopics, formFields);
 
 	function downloadFormData() {
 		const filename = 'form-data.txt';
 		console.log('Download:', data);
-		downloadAsJsonFile(filename, data);
+		downloadFormAsJsonFile(filename, data);
 	}
 </script>
 
@@ -38,40 +29,7 @@
 		</P>
 	</Card>
 	<Card size="2xl" class="my-2">
-		<Table class="my-4">
-			{#each topicNames as topicName}
-				<TableHead>
-					<TableHeadCell>{topicName}</TableHeadCell>
-					{#each fieldNames as fieldName}
-						<TableHeadCell>{fieldName}</TableHeadCell>
-					{/each}
-				</TableHead>
-				<TableBody>
-					{#each topics[topicName] as subtopicName}
-						<TableBodyRow>
-							<TableBodyCell>
-								<Checkbox bind:checked={data[topicName][subtopicName].selected}>
-									{subtopicName}
-								</Checkbox>
-							</TableBodyCell>
-							{#each fieldNames as fieldName}
-								<TableBodyCell>
-									{#if typeof data[topicName][subtopicName][fieldName] === 'string'}
-										<Input bind:value={data[topicName][subtopicName][fieldName]} />
-									{:else if typeof data[topicName][subtopicName][fieldName] === 'number'}
-										<PositiveNumberInput class="w-16" data={data[topicName][subtopicName]} key={fieldName}/>
-									{:else if typeof data[topicName][subtopicName][fieldName] === 'boolean'}
-										<Checkbox bind:checked={data[topicName][subtopicName][fieldName]} />
-									{:else}
-										Unknown field type: {typeof data[topicName][subtopicName][fieldName]}
-									{/if}
-								</TableBodyCell>
-							{/each}
-						</TableBodyRow>
-					{/each}
-				</TableBody>
-			{/each}
-		</Table>
+		<FormTable fields={formFields} topics={formTopics} bind:data />
 		<Button color="primary" class="m-4" on:click={downloadFormData}>
 			<DownloadOutline />
 			Download form data
