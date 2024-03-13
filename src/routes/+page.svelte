@@ -1,12 +1,9 @@
 <script lang="ts">
-	import { fields, topics } from '$lib/form';
-	import { downloadAsJsonFile, makeJsonFormData } from '$lib/util';
 	import Button from 'flowbite-svelte/Button.svelte';
 	import Card from 'flowbite-svelte/Card.svelte';
 	import Checkbox from 'flowbite-svelte/Checkbox.svelte';
 	import Heading from 'flowbite-svelte/Heading.svelte';
 	import Input from 'flowbite-svelte/Input.svelte';
-	import NumberInput from 'flowbite-svelte/NumberInput.svelte';
 	import P from 'flowbite-svelte/P.svelte';
 	import Table from 'flowbite-svelte/Table.svelte';
 	import TableBody from 'flowbite-svelte/TableBody.svelte';
@@ -14,7 +11,12 @@
 	import TableBodyRow from 'flowbite-svelte/TableBodyRow.svelte';
 	import TableHead from 'flowbite-svelte/TableHead.svelte';
 	import TableHeadCell from 'flowbite-svelte/TableHeadCell.svelte';
+
 	import DownloadOutline from 'flowbite-svelte-icons/DownloadOutline.svelte';
+
+	import { fields, topics } from '$lib/form';
+	import { downloadAsJsonFile, makeJsonFormData } from '$lib/util';
+	import PositiveNumberInput from '$lib/PositiveNumberInput.svelte';
 
 	const topicNames = Object.keys(topics);
 	const fieldNames = Object.keys(fields);
@@ -57,17 +59,7 @@
 									{#if typeof data[topicName][subtopicName][fieldName] === 'string'}
 										<Input bind:value={data[topicName][subtopicName][fieldName]} />
 									{:else if typeof data[topicName][subtopicName][fieldName] === 'number'}
-										<NumberInput
-											class="w-16"
-											value={data[topicName][subtopicName][fieldName]}
-											min="0"
-											on:input={(e) =>
-												(data[topicName][subtopicName][fieldName] = Number.isNaN(
-													Number(e.target.value)
-												)
-													? data[topicName][subtopicName][fieldName]
-													: Number(e.target.value))}
-										/>
+										<PositiveNumberInput class="w-16" data={data[topicName][subtopicName]} key={fieldName}/>
 									{:else if typeof data[topicName][subtopicName][fieldName] === 'boolean'}
 										<Checkbox bind:checked={data[topicName][subtopicName][fieldName]} />
 									{:else}
