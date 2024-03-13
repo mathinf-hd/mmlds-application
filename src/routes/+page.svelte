@@ -71,7 +71,7 @@
 									{:else if typeof data[topicName][subtopicName][fieldName] === 'boolean'}
 										<Checkbox bind:checked={data[topicName][subtopicName][fieldName]} />
 									{:else}
-										Unknown field: {data[topicName][subtopicName][fieldName]}
+										Unknown field type: {typeof data[topicName][subtopicName][fieldName]}
 									{/if}
 								</TableBodyCell>
 							{/each}

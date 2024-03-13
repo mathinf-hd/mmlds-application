@@ -1,3 +1,5 @@
+import { type Topics, type Fields } from './form_types';
+
 export function downloadAsJsonFile(filename: string, data: object) {
 	const link = document.createElement('a');
 	const file = new Blob([JSON.stringify(data)], { type: 'text/plain' });
@@ -7,18 +9,20 @@ export function downloadAsJsonFile(filename: string, data: object) {
 	URL.revokeObjectURL(link.href);
 }
 
-export function makeJsonFormData(topics: object, fields: object) {
-	const jsonFormData = {};
+type JsonFormData = Record<string, Record<string, Fields>>;
+
+export function makeJsonFormData(topics: Topics, fields: Fields) {
+	const jsonFormData: JsonFormData = {};
 	for (const topic in topics) {
 		jsonFormData[topic] = {};
 		for (const subtopic of topics[topic]) {
-			const subtopic_data = {
+			const subtopicFields: Fields = {
 				selected: false
 			};
 			for (const field in fields) {
-				subtopic_data[field] = fields[field];
+				subtopicFields[field] = fields[field];
 			}
-			jsonFormData[topic][subtopic] = subtopic_data;
+			jsonFormData[topic][subtopic] = subtopicFields;
 		}
 	}
 	return jsonFormData;

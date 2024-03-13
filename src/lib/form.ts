@@ -1,4 +1,6 @@
-export const topics = {
+import { type Topics, type Fields } from './form_types';
+
+export const topics: Topics = {
 	'Practical computer science': [
 		'Technical and formal basics of programming',
 		'Syntax and semantics of programming languages',
@@ -73,7 +75,7 @@ export const topics = {
 	]
 };
 
-export const fields = {
+export const fields: Fields = {
 	'Lecture name in transcript': '',
 	'CPs of lecture': 0
 };
