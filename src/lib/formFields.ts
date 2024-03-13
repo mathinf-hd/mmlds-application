@@ -1,4 +1,4 @@
-import type FormFields from '$lib/formTypes';
+import type { FormFields } from '$lib/formTypes';
 
 export const formFields: FormFields = {
 	'Lecture name in transcript': '',

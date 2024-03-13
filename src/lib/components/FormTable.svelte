@@ -30,7 +30,7 @@
 			{#each topics[topicName] as subtopicName}
 				<TableBodyRow>
 					<TableBodyCell>
-						<Checkbox bind:checked={data[topicName][subtopicName].selected}>
+						<Checkbox bind:checked={data[topicName][subtopicName]['selected']}>
 							{subtopicName}
 						</Checkbox>
 					</TableBodyCell>

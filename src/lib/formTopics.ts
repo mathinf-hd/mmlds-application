@@ -1,4 +1,4 @@
-import type FormTopics from '$lib/formTypes';
+import type { FormTopics } from '$lib/formTypes';
 
 export const formTopics: FormTopics = {
 	'Practical computer science': [

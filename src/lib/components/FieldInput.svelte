@@ -3,9 +3,9 @@
 	import Input from 'flowbite-svelte/Input.svelte';
 
 	import PositiveNumberInput from '$lib/components/PositiveNumberInput.svelte';
-	import type Field from '$lib/formTypes';
+	import type { FormField } from '$lib/formTypes';
 
-	export let value: Field;
+	export let value: FormField;
 </script>
 
 {#if typeof value === 'string'}
