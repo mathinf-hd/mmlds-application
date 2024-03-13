@@ -28,7 +28,7 @@
 		</TableHead>
 		<TableBody>
 			{#each topics[topicName] as subtopicName}
-				<TableBodyRow>
+				<TableBodyRow class={data[topicName][subtopicName]['selected'] ? 'bg-primary-200' : ''}>
 					<TableBodyCell>
 						<Checkbox bind:checked={data[topicName][subtopicName]['selected']}>
 							{subtopicName}
