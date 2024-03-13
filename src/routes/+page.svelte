@@ -16,7 +16,7 @@
 		TableHead,
 		TableHeadCell
 	} from 'flowbite-svelte';
-	import { DownloadOutline } from 'flowbite-svelte-icons';
+	import DownloadOutline from 'flowbite-svelte-icons/DownloadOutline.svelte';
 
 	const topic_titles = Object.keys(topics);
 	const field_titles = Object.keys(fields);
