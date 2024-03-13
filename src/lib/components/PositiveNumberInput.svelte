@@ -1,14 +1,23 @@
 <script lang="ts">
-	export let value: number;
-	import NumberInput from 'flowbite-svelte/NumberInput.svelte';
+	export let value: number = 0;
+	let valueAsString = '0';
+	let prevValueAsString = '0';
+	import Input from 'flowbite-svelte/Input.svelte';
 
 	function handleInput(event: Event) {
-		console.log(event);
 		const target = event.target as HTMLInputElement;
 		if (target) {
-			value = Number.isNaN(Number(target.value)) ? value : Number(target.value);
+			const proposedValueAsString = target.value;
+			const proposedValue = Number(proposedValueAsString);
+			if (Number.isNaN(proposedValue) || proposedValue < 0) {
+				valueAsString = prevValueAsString;
+			} else {
+				prevValueAsString = valueAsString;
+				valueAsString = proposedValueAsString;
+				value = proposedValue;
+			}
 		}
 	}
 </script>
 
-<NumberInput {value} min="0" on:input={(e) => handleInput(e)} {...$$restProps} />
+<Input type="text" bind:value={valueAsString} on:input={handleInput} {...$$restProps} />
