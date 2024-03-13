@@ -28,11 +28,11 @@
 </script>
 
 <div class="flex flex-col md:container md:mx-auto">
-	<Heading class="my-2 p-4 text-center">Test Form</Heading>
+	<Heading class="my-2 p-4 text-center">Skills from Lectures</Heading>
 	<Card size="2xl" class="my-2">
 		<P>
-			Some introduction text, please fill in the form and click "Download form data" to download a
-			form-data.txt file that you can then upload somewhere else, etc etc:
+			Please fill in the form and click "Download form data" to download a form-data.txt file that
+			you can then upload to your application.
 		</P>
 	</Card>
 	<Card size="2xl" class="my-2">
