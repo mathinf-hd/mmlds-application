@@ -21,22 +21,24 @@
 <Table class="my-4">
 	{#each topicNames as topicName}
 		<TableHead>
-			<TableHeadCell>{topicName}</TableHeadCell>
+			<TableHeadCell>{topicName} (weight: {topics[topicName].weight})</TableHeadCell>
 			{#each fieldNames as fieldName}
 				<TableHeadCell>{fieldName}</TableHeadCell>
 			{/each}
 		</TableHead>
 		<TableBody>
-			{#each topics[topicName] as subtopicName}
-				<TableBodyRow class={data[topicName][subtopicName]['selected'] ? 'bg-primary-200' : ''}>
+			{#each topics[topicName].subtopics as subtopicName}
+				<TableBodyRow
+					class={data[topicName].subtopics[subtopicName]['selected'] ? 'bg-primary-200' : ''}
+				>
 					<TableBodyCell>
-						<Checkbox bind:checked={data[topicName][subtopicName]['selected']}>
+						<Checkbox bind:checked={data[topicName].subtopics[subtopicName]['selected']}>
 							{subtopicName}
 						</Checkbox>
 					</TableBodyCell>
 					{#each fieldNames as fieldName}
 						<TableBodyCell>
-							<FieldInput bind:value={data[topicName][subtopicName][fieldName]} />
+							<FieldInput bind:value={data[topicName].subtopics[subtopicName][fieldName]} />
 						</TableBodyCell>
 					{/each}
 				</TableBodyRow>

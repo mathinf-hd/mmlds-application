@@ -12,15 +12,15 @@ export function downloadFormAsJsonFile(filename: string, data: FormData) {
 export function makeFormData(topics: FormTopics, fields: FormFields) {
 	const formData: FormData = {};
 	for (const topic in topics) {
-		formData[topic] = {};
-		for (const subtopic of topics[topic]) {
+		formData[topic] = { weight: topics[topic].weight, subtopics: {} };
+		for (const subtopic of topics[topic].subtopics) {
 			const subtopicFields: FormFields = {
 				selected: false
 			};
 			for (const field in fields) {
 				subtopicFields[field] = fields[field];
 			}
-			formData[topic][subtopic] = subtopicFields;
+			formData[topic].subtopics[subtopic] = subtopicFields;
 		}
 	}
 	return formData;
