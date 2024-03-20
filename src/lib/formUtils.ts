@@ -1,4 +1,11 @@
-import { type FormTopics, type FormFields, type FormData } from '$lib/formTypes';
+import {
+	type FormTopics,
+	type FormFields,
+	type FormQuestions,
+	type FormDataTopics,
+	type FormDataQuestions,
+	type FormData
+} from '$lib/formTypes';
 
 export function downloadFormAsJsonFile(filename: string, data: FormData) {
 	const link = document.createElement('a');
@@ -9,10 +16,13 @@ export function downloadFormAsJsonFile(filename: string, data: FormData) {
 	URL.revokeObjectURL(link.href);
 }
 
-export function makeFormData(topics: FormTopics, fields: FormFields) {
-	const formData: FormData = {};
+export function makeFormData(topics: FormTopics, fields: FormFields, questions: FormQuestions) {
+	const formData: FormData = { topics: {} as FormDataTopics, questions: {} as FormDataQuestions };
+	for (const question of questions) {
+		formData['questions'][question] = { answer: '' };
+	}
 	for (const topic in topics) {
-		formData[topic] = { weight: topics[topic].weight, subtopics: {} };
+		formData['topics'][topic] = { weight: topics[topic].weight, subtopics: {} };
 		for (const subtopic of topics[topic].subtopics) {
 			const subtopicFields: FormFields = {
 				selected: false
@@ -20,7 +30,7 @@ export function makeFormData(topics: FormTopics, fields: FormFields) {
 			for (const field in fields) {
 				subtopicFields[field] = fields[field];
 			}
-			formData[topic].subtopics[subtopic] = subtopicFields;
+			formData['topics'][topic].subtopics[subtopic] = subtopicFields;
 		}
 	}
 	return formData;

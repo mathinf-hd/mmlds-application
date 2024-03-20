@@ -8,17 +8,17 @@
 	import TableHeadCell from 'flowbite-svelte/TableHeadCell.svelte';
 
 	import FieldInput from '$lib/components/FieldInput.svelte';
-	import { type FormTopics, type FormFields, type FormData } from '$lib/formTypes';
+	import { type FormTopics, type FormFields, type FormDataTopics } from '$lib/formTypes';
 
 	export let fields: FormFields;
 	export let topics: FormTopics;
-	export let data: FormData;
+	export let data: FormDataTopics;
 
 	const fieldNames = Object.keys(fields);
 	const topicNames = Object.keys(topics);
 </script>
 
-<Table class="my-4">
+<Table>
 	{#each topicNames as topicName}
 		<TableHead>
 			<TableHeadCell>{topicName} (weight: {topics[topicName].weight})</TableHeadCell>
