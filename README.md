@@ -1,26 +1,27 @@
-# [test-form](https://ssciwr.github.io/test-form)
+# [dacs-application-2024-25](https://computer-science-hd.github.io/dacs-application-2024-25/)
 
 A simple static web page providing a form that can be filled in and then downloaded as a json file.
 
-The fields for each row are defined in [src/lib/formFields.ts](src/lib/formFields.ts).
+To edit the contents:
 
-The topics and subtopics are defined in [src/lib/formTopics.ts](src/lib/formTopics.ts).
+- the headings and introductory text are defined in [src/routes/+page.svelte](src/routes/+page.svelte)
+- the fields for each row are defined in [src/lib/formFields.ts](src/lib/formFields.ts)
+- the topics and subtopics are defined in [src/lib/formTopics.ts](src/lib/formTopics.ts)
+- the additional questions are defined in [src/lib/formQuestions.ts](src/lib/formQuestions.ts)
 
-## Developing
+The website is automatically built and deployed to [computer-science-hd.github.io/dacs-application-2024-25](https://computer-science-hd.github.io/dacs-application-2024-25) on every push to the main branch using this [Github Action](.github/workflows/deploy.yml).
 
-Initial setup:
+## Local development
 
-- intall [pnpm](https://pnpm.io/installation), e.g. `curl -fsSL https://get.pnpm.io/install.sh | sh -`
-- clone the repo, e.g. `gh repo clone ssciwr/test-form`
+Initial setup to edit the website locally:
+
+- install [pnpm](https://pnpm.io/installation), e.g. `curl -fsSL https://get.pnpm.io/install.sh | sh -`
+- clone the repo, e.g. `gh repo computer-science-hd.github.io/dacs-application-2024-25`
 - install node dependencies, e.g. `pnpm install`
 
-Start a dev server and open website in browser:
+To start a dev server and open the website in browser:
 
 - `pnpm run dev -- --open`
-
-## Building
-
-Website is built and deployed on every push using this [Github Action](.github/workflows/deploy.yml).
 
 ## Notes
 
