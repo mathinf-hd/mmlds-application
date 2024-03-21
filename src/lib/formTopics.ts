@@ -2,7 +2,7 @@ import type { FormTopics } from '$lib/formTypes';
 
 export const formTopics: FormTopics = {
 	'Practical computer science': {
-		weight: 10,
+		weight: 6,
 		subtopics: [
 			'Technical and formal basics of programming',
 			'Syntax and semantics of programming languages',
@@ -13,7 +13,7 @@ export const formTopics: FormTopics = {
 		]
 	},
 	'Technical computer science': {
-		weight: 5,
+		weight: 6,
 		subtopics: [
 			'Boolean algebra',
 			'Digital circuits',
@@ -24,7 +24,7 @@ export const formTopics: FormTopics = {
 		]
 	},
 	'Algorithms and data structures': {
-		weight: 2,
+		weight: 6,
 		subtopics: [
 			'Fundamentals of algorithms',
 			'Run time analysis',
@@ -35,7 +35,7 @@ export const formTopics: FormTopics = {
 		]
 	},
 	'Operating systems and networks': {
-		weight: 3,
+		weight: 6,
 		subtopics: [
 			'Processes and scheduling',
 			'Memory management',
@@ -46,7 +46,7 @@ export const formTopics: FormTopics = {
 		]
 	},
 	'Software engineering': {
-		weight: 1,
+		weight: 6,
 		subtopics: [
 			'Modeling with UML',
 			'Software development process',
@@ -57,7 +57,7 @@ export const formTopics: FormTopics = {
 		]
 	},
 	'Theoretical computer science': {
-		weight: 1,
+		weight: 6,
 		subtopics: [
 			'Computability',
 			'Turing machines',
@@ -68,7 +68,7 @@ export const formTopics: FormTopics = {
 		]
 	},
 	'Data bases': {
-		weight: 1,
+		weight: 6,
 		subtopics: [
 			'Architecture and functionality of database systems',
 			'Relational database model',
@@ -79,7 +79,7 @@ export const formTopics: FormTopics = {
 		]
 	},
 	'Linear algebra': {
-		weight: 1,
+		weight: 6,
 		subtopics: [
 			'Basics of linear algebra',
 			'Vector spaces',
@@ -90,7 +90,7 @@ export const formTopics: FormTopics = {
 		]
 	},
 	'Mathematical analysis': {
-		weight: 1,
+		weight: 6,
 		subtopics: [
 			'Complex numbers',
 			'Sequences and series',
