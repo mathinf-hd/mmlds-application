@@ -26,8 +26,8 @@
 	<Heading class="my-2 p-4 text-center">Skills and Motivation</Heading>
 	<Card size="2xl" class="my-2">
 		<P>
-			Please fill in the form and then click "Download form data" to download a form-data.txt file
-			that you can then upload to your application.
+			Please fill in this form and then click "Save form data" to save its contents to a form-data.txt file, 
+			that you can then upload to your application in heiCONF. Please notice that the form is filled locally on your computer, i.e., your contents are not sent to any server.
 		</P>
 	</Card>
 	<Card size="2xl" class="my-2">
@@ -40,6 +40,6 @@
 	</Card>
 	<Button color="primary" class="m-4" on:click={downloadFormData}>
 		<DownloadOutline />
-		Download form data
+		Save form data
 	</Button>
 </div>
