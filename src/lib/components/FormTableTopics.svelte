@@ -21,7 +21,7 @@
 <Table>
 	{#each topicNames as topicName}
 		<TableHead>
-			<TableHeadCell>{topicName} (weight: {topics[topicName].weight})</TableHeadCell>
+			<TableHeadCell>{topicName} (max. skill points: {topics[topicName].weight})</TableHeadCell>
 			{#each fieldNames as fieldName}
 				<TableHeadCell>{fieldName}</TableHeadCell>
 			{/each}
