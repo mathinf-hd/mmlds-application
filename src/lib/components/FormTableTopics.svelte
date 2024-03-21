@@ -18,7 +18,7 @@
 	const topicNames = Object.keys(topics);
 </script>
 
-<Table>
+<Table class="overflow-x-auto">
 	{#each topicNames as topicName}
 		<TableHead>
 			<TableHeadCell>{topicName} (max. skill points: {topics[topicName].weight})</TableHeadCell>

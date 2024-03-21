@@ -11,7 +11,7 @@
 	export let data: FormDataQuestions;
 </script>
 
-<Table>
+<Table class="overflow-x-auto">
 	<TableBody>
 		{#each questions as question}
 			<TableBodyRow>
