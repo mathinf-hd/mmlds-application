@@ -1,9 +1,9 @@
 import type { FormQuestions } from '$lib/formTypes';
 
 export const formQuestions: FormQuestions = [
-	'Long form question number 1',
-	'Long form question number 2',
-	'Long form question number 3',
-	'Long form question number 4',
-	'Long form question number 5, this one has a lot of text and is quite long to check that it wraps in a sensible way even if it takes up many lines on the screen...'
+	'Why would you prefer Heidelberg over other highly ranked Universities in Germany? (Max. two sentences)',
+	'What topics in the MSc in Heidelberg attract you most? Explain Why. (Max. four sentences)',
+	'Describe in three to four sentences the topic and main outcome of your BSc thesis.',
+	'Discuss how your previous academic and extracurricular experiences have prepared you for the rigorous curriculum of the MSc in Data and Computer Science at Heidelberg University. (Max. four sentences)',
+	'Describe a past experience where you successfully worked as part of a team on a technical project. What role did you play, and what was the outcome? (Max. four sentences)'
 ];
