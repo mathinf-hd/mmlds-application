@@ -27,7 +27,10 @@
 	<Card size="2xl" class="my-2">
 		<P>
 			Please fill in this form and then click "Save form data" to save its contents to a form-data.txt file, 
-			that you can then upload to your application in heiCONF. Please notice that the form is filled locally on your computer, i.e., your contents are not sent to any server. For each skill, check the checkbox, add the name of the respective lecture as listed in the transcript (same lecture may apply to several skills), provide the credit points of the lecture as listed in the transcript, and copy&paste the official module description of the lecture describing its content to the "Module Description" field, as, e.g., provided in the module handbook of your field of study.
+			that you can then upload to your application in heiCONF. Please notice that the form is filled locally on your computer, i.e., your contents are not sent to any server.
+		</P>
+		<P>
+			Each of your skills has to be declared by checking the checkbox, adding the name of the respective lecture as listed in the transcript (same lecture may apply to several skills), providing the credit points of the lecture as listed in the transcript, and copying and pasting the official module description of the lecture describing its content to the "Module Description" field, as, e.g., provided in the module handbook of your field of study.
 		</P>
 	</Card>
 	<Card size="2xl" class="my-2">
