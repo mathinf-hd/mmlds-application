@@ -30,7 +30,7 @@ export const formTopics: FormTopics = {
 			'Run time analysis',
 			'Basic data structures',
 			'Sorting and hashing',
-			'Manipulation of sets',
+			'Graph algorithms',
 			'Search'
 		]
 	},
@@ -40,19 +40,19 @@ export const formTopics: FormTopics = {
 			'Processes and scheduling',
 			'Memory management',
 			'Concurrency and deadlocks',
-			'Input/output and files',
-			'OSI model',
-			'Communication and protocols'
+			'APIs, file systems, and I/O',
+			'Communication and routing',
+			'TCP/IP and other protocols'
 		]
 	},
 	'Software engineering': {
 		weight: 6,
 		subtopics: [
-			'Modeling with UML',
-			'Software development process',
 			'Requirements engineering',
+			'Software design and modeling',
 			'Quality management',
 			'Evolution',
+			'Software development process',
 			'Project management'
 		]
 	},
@@ -67,15 +67,15 @@ export const formTopics: FormTopics = {
 			'Complexity theory'
 		]
 	},
-	'Data bases': {
+	'Databases': {
 		weight: 6,
 		subtopics: [
 			'Architecture and functionality of database systems',
 			'Relational database model',
+			'Query processing and optimization',
 			'SQL',
-			'Data integrity',
-			'Physical data organization',
-			'Multi-user synchronization'
+			'Entity-relationship model',
+			'Physical data organization'
 		]
 	},
 	'Linear algebra': {
@@ -89,7 +89,7 @@ export const formTopics: FormTopics = {
 			'Applications of inner product spaces'
 		]
 	},
-	'Mathematical analysis': {
+	'Calculus': {
 		weight: 6,
 		subtopics: [
 			'Complex numbers',
