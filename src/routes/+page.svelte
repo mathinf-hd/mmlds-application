@@ -26,7 +26,7 @@
 	<Heading class="my-2 p-4 text-center">Skills and Motivation</Heading>
 	<Card size="2xl" class="my-2">
 		<P>
-			Please declare your skills and motivation by filling in this form and then clicking "Save form data" at the bottom to save its contents to a form-data.txt file. You can then upload this file to your application in heiCONF. Please notice that the form is filled locally on your computer, i.e., your contents are not sent to any server.
+			Please declare your skills and motivation by filling in this form and then clicking "Save form data" at the bottom to save its contents to a form-data.txt file. You can then upload this file to your application in heiCO. Please notice that the form is filled locally on your computer, i.e., your contents are not sent to any server.
 		</P>
 		<br>
 		<P>
