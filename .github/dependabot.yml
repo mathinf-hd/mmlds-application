@@ -10,3 +10,8 @@ updates:
     schedule:
       interval: 'monthly'
     versioning-strategy: increase
+    groups:
+      all:
+        applies-to: version-updates
+        patterns:
+          - "*"
