@@ -5,7 +5,6 @@ A simple static web page providing a form that can be filled in and then downloa
 To edit the contents:
 
 - the headings and introductory text are defined in [src/routes/+page.svelte](src/routes/+page.svelte)
-- the fields for each row are defined in [src/lib/formFields.ts](src/lib/formFields.ts)
 - the topics and subtopics are defined in [src/lib/formTopics.ts](src/lib/formTopics.ts)
 - the additional questions are defined in [src/lib/formQuestions.ts](src/lib/formQuestions.ts)
 
