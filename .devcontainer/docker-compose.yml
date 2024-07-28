@@ -1,0 +1,15 @@
+services:
+  dacs-devcontainer:
+    container_name: dacs-devcontainer
+    build:
+      context: .
+    image: dacs-devcontainer
+    command: /bin/sh -c "while sleep 1000; do :; done" developer
+    volumes:
+      # enable git
+      - ~/.ssh:/root/.ssh
+      - ~/.gitconfig:/root/.gitconfig  # .gitconfig HAS TO BE ALREADY PRESENT ON HOST or this will break git in the container
+      # mount program code
+      - ../:/workspace/
+    ports:
+      - "5173:5173"
