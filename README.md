@@ -8,7 +8,7 @@ To edit the contents:
 - the topics and subtopics are defined in [src/lib/formTopics.ts](src/lib/formTopics.ts)
 - the additional questions are defined in [src/lib/formQuestions.ts](src/lib/formQuestions.ts)
 
-The website is automatically built and deployed to [computer-science-hd.github.io/dacs-application-2024-25](https://computer-science-hd.github.io/dacs-application-2024-25) on every push to the main branch using this [Github Action](.github/workflows/deploy.yml).
+The website is automatically built and deployed to [computer-science-hd.github.io/dacs-application](https://computer-science-hd.github.io/dacs-application) on every push to the main branch using this [Github Action](.github/workflows/deploy.yml).
 
 ## Local development
 
