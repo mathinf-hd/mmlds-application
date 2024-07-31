@@ -3,7 +3,7 @@
 	
 	export let value: number | null
 	
-	function handleInput(event: Event) {
+	function handleInput() {
 		
 		/* check if initialized */
 		if (!value) return

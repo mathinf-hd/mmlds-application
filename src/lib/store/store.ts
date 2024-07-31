@@ -94,6 +94,35 @@ export function deleteLecture(idx: number){
     })
 }
 
+export function addSkill(lectureIdx: number, skill: Skill){
+    
+    /* get other lectures */
+    const otherLectures: Array<Lecture> = JSON.parse(JSON.stringify(get(data).lectures));
+    otherLectures.splice(lectureIdx,1); 
+    
+    /* get existing skills */
+    let otherLectureSkills: Array<Skill> = []; 
+    
+    otherLectures.forEach((lecture) => {
+        for (let [key, value] of Object.entries(lecture.skills)) {
+            if (value) {
+                otherLectureSkills.push(key);
+            }
+        }
+    });
+
+    /* alert if skill already exists */
+    if (otherLectureSkills.includes(skill)) {
+        alert("You can only declare a skill once.\n\nPlease select the lecture that contributed the most to your skill acquisition. ")
+
+        data.update((data: Data) => { 
+            data.lectures[lectureIdx].skills[skill] = false
+            return data
+        })
+    } 
+
+}
+
 export function countSubjectECTS(subject: Subject) {
 
     const _data = get(data);

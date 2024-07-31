@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { Button, Checkbox, Heading, Input, P, Table, 
+import { Button, Checkbox, Heading, Input, P, Table, 
 			TableBody, TableBodyCell, TableBodyRow, 
 			TableHead, TableHeadCell } from 'flowbite-svelte';
-	import { TrashBinOutline }  from 'flowbite-svelte-icons';
+import { TrashBinOutline }  from 'flowbite-svelte-icons';
 
-	import PositiveNumberInput from './PositiveNumberInput.svelte';
-	import { formTopics } from '$lib/topics';
+import PositiveNumberInput from './PositiveNumberInput.svelte';
+import { formTopics } from '$lib/topics';
 
-	import { data, addLecture, deleteLecture } from '$lib/store/store';
+import { data, addLecture, deleteLecture, addSkill } from '$lib/store/store';
+
 </script>
 
 <P>
@@ -32,7 +33,7 @@
 					<TableBodyCell class="p-2"><Input type="text" bind:value={lecture.name} class="text-2xs"/></TableBodyCell>
 					<TableBodyCell class="p-2 text-2xs"><PositiveNumberInput bind:value={lecture.points} class="text-2xs text-center"/></TableBodyCell>
 					{#each topic.subtopics as subTopic}
-					<TableBodyCell class="p-2"><Checkbox bind:checked={lecture.skills[subTopic]} disabled={false} class="m-auto"/></TableBodyCell>
+					<TableBodyCell class="p-2"><Checkbox bind:checked={lecture.skills[subTopic]} on:change={() => addSkill(lectureIdx, subTopic)} class="m-auto"/></TableBodyCell>
 					{/each}
 					<TableBodyCell class="p-2 text-2xs"><Input type="text" bind:value={lecture.description} class="text-2xs"/></TableBodyCell>
 					<TableBodyCell class="p-2"><Button color="red" size="xs" class="text-2xs" on:click={() => deleteLecture(lectureIdx)}><TrashBinOutline /></Button></TableBodyCell>
