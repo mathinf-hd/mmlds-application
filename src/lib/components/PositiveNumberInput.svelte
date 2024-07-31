@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Input from 'flowbite-svelte/Input.svelte';
 	
-	export let value: number | undefined
+	export let value: number | null
 	
 	function handleInput(event: Event) {
 		

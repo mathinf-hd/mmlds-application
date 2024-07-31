@@ -1,4 +1,4 @@
-export const extendDetails: ExtentDetails = [
+export const formExtendDetails: ExtentDetails = [
     "duration",
     "points"
 ]

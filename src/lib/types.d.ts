@@ -5,7 +5,7 @@ type Skills = Array<Skill>
 
 type ExtentDetail = string;
 type ExtentDetails = Array<ExtentDetail> ;
-type FormDataExtentDetails = Record<ExtentDetail, number | undefined>;
+type FormDataExtentDetails = Record<ExtentDetail, number | null>;
 
 type Question = string;
 type Questions = Array<Question>;
@@ -15,7 +15,7 @@ type Lecture = {
 	name: string;
 	points: number;
 	description: string;
-	subject: Subject | undefined;
+	subject: Subject | null;
 	skills: Record<Skill, boolean>
 };
 
@@ -24,4 +24,4 @@ type SubjectArea = { subject: Subject, cp: number }
 type SubjectAreas = Array<SubjectArea>
 type FormDataLectures = Array<Lecture>;
 
-type Data = { extentDetails: FormDataExtentDetails, lectures: FormDataLectures, questions: FormDataQuestions};
+type Data = { extentDetails: FormDataExtentDetails, topics: Topixs, lectures: FormDataLectures, questions: FormDataQuestions};
