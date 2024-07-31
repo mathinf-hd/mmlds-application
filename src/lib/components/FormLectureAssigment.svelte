@@ -29,7 +29,7 @@
 </script>
 
 <P>
-    Here you can declare which of your lectures belong to computer science and which to mathematics. You can also declare addional lectures that should be recognized.
+    Declare which of your lectures belong to computer science and which belong to mathematics. Also declare additional lectures (beyond the skill-related lectures above) that should be recognized for computer science and mathematics. Provide name and points as listed in your transcript, and copy and paste the official description of the lecture.
 </P> 
 
 
