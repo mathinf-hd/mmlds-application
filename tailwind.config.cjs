@@ -22,6 +22,10 @@ const config = {
 					800: '#1e293b',
 					900: '#0f172a'
 				}
+			},
+			fontSize: {
+				'2xs': ['0.7rem', '0.75rem']
+	
 			}
 		}
 	}

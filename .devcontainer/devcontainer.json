@@ -1,0 +1,40 @@
+{
+    "name": "dacs-devcontainer",
+    "dockerComposeFile": [
+      "./docker-compose.yml"
+    ],
+    "service": "dacs-devcontainer",
+    "shutdownAction": "stopCompose",
+    "customizations": {
+      "vscode": {
+        "settings": {
+          "workbench.iconTheme": "material-icon-theme",
+          "terminal.integrated.defaultProfile.linux": "zsh",
+          "terminal.integrated.profiles.linux": {
+            "zsh": {
+              "path": "usr/bin/zsh"
+            }
+          }
+        },
+        "extensions": [
+            
+          // Svelte
+          "svelte.svelte-vscode",
+
+          // IntelliCode
+          "visualstudioexptteam.vscodeintellicode",
+  
+          // Formatter
+          "esbenp.prettier-vscode",
+  
+          // Theme
+          "pkief.material-icon-theme",
+          
+          // Git
+          "eamodio.gitlens"
+        ]
+      }
+    },
+    // Open the sub-folder with the source code
+    "workspaceFolder": "/workspace/"
+  }

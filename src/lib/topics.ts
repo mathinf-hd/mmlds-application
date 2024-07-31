@@ -1,8 +1,6 @@
-import type { FormTopics } from '$lib/formTypes';
-
-export const formTopics: FormTopics = {
-	'Practical computer science': {
-		weight: 6,
+export const formTopics: Topics = [
+	{
+		name: 'Practical computer science',
 		subtopics: [
 			'Technical and formal basics of programming',
 			'Syntax and semantics of programming languages',
@@ -12,8 +10,8 @@ export const formTopics: FormTopics = {
 			'Complexity analysis'
 		]
 	},
-	'Technical computer science': {
-		weight: 6,
+	{
+		name: 'Technical computer science',
 		subtopics: [
 			'Boolean algebra',
 			'Digital circuits',
@@ -23,8 +21,8 @@ export const formTopics: FormTopics = {
 			'Branch predictor'
 		]
 	},
-	'Algorithms and data structures': {
-		weight: 6,
+	{
+		name: 'Algorithms and data structures',
 		subtopics: [
 			'Fundamentals of algorithms',
 			'Run time analysis',
@@ -34,8 +32,8 @@ export const formTopics: FormTopics = {
 			'Search'
 		]
 	},
-	'Operating systems and networks': {
-		weight: 6,
+	{
+		name: 'Operating systems and networks',
 		subtopics: [
 			'Processes and scheduling',
 			'Memory management',
@@ -45,8 +43,8 @@ export const formTopics: FormTopics = {
 			'TCP/IP and other protocols'
 		]
 	},
-	'Software engineering': {
-		weight: 6,
+	{
+		name:'Software engineering',
 		subtopics: [
 			'Requirements engineering',
 			'Software design and modeling',
@@ -56,8 +54,8 @@ export const formTopics: FormTopics = {
 			'Project management'
 		]
 	},
-	'Theoretical computer science': {
-		weight: 6,
+	{
+		name: 'Theoretical computer science',
 		subtopics: [
 			'Computability',
 			'Turing machines',
@@ -67,8 +65,8 @@ export const formTopics: FormTopics = {
 			'Complexity theory'
 		]
 	},
-	'Databases': {
-		weight: 6,
+	{
+		name: 'Databases',
 		subtopics: [
 			'Architecture and functionality of database systems',
 			'Relational database model',
@@ -78,8 +76,8 @@ export const formTopics: FormTopics = {
 			'Physical data organization'
 		]
 	},
-	'Linear algebra': {
-		weight: 6,
+	{
+		name: 'Linear algebra',
 		subtopics: [
 			'Basics of linear algebra',
 			'Vector spaces',
@@ -89,8 +87,8 @@ export const formTopics: FormTopics = {
 			'Applications of inner product spaces'
 		]
 	},
-	'Calculus': {
-		weight: 6,
+	{
+		name: 'Calculus',
 		subtopics: [
 			'Complex numbers',
 			'Sequences and series',
@@ -100,4 +98,4 @@ export const formTopics: FormTopics = {
 			'Integrals and basics of multidimensional analysis'
 		]
 	}
-};
+]

@@ -1,6 +1,4 @@
-import type { FormQuestions } from '$lib/formTypes';
-
-export const formQuestions: FormQuestions = [
+export const formQuestions: Questions = [
 	'Why would you prefer Heidelberg over other highly ranked Universities in Germany? (Max. two sentences)',
 	'What topics in the MSc in Heidelberg attract you most? Explain Why. (Max. four sentences)',
 	'Describe in three to four sentences the topic and main outcome of your BSc thesis.',
