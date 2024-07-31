@@ -29,15 +29,14 @@
 </script>
 
 <P>
-    Hier wird erklärt warum weitere Vorlesungen aufgeführt werden sollten, auch wenn sie nicht direkt obengenannte Skills nachweisen
-    -- Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+    Here you can declare which of your lectures belong to computer science and which to mathematics. You can also declare addional lectures that should be recognized.
 </P> 
 
 
 <div class="my-5">
     <Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
-				<TableHeadCell class="min-w-60 text-2xs p-2">Lecture name in transcript</TableHeadCell>
+				<TableHeadCell class="min-w-60 text-2xs p-2">Lecture Name in Transcript</TableHeadCell>
 				<TableHeadCell class="w-12 text-2xs p-2">Points</TableHeadCell>
 				<TableHeadCell class="text-2xs p-2">Module Description</TableHeadCell>
                 <TableHeadCell class="text-2xs p-2">Subject Area</TableHeadCell>
@@ -55,12 +54,12 @@
 				{/each}
 			</TableBody>
 	</Table>
-	<Button class="text-2xs m-2" on:click={() => addLecture()}>Add Lecture</Button>
+	<Button class="text-2xs m-2" on:click={() => addLecture()}>Add Another Lecture</Button>
     <div class="mt-8">
         {#key $data}
         {#each formSubjectAreas as subjectArea}
             <div class="text-gray-900 text-center">
-                equivalent of specified CP {subjectArea.subject}: <span class="font-bold">{countSubjectCP(subjectArea.subject)}</span> / {subjectArea.cp}
+                ECTS-equivalent of specified points in {subjectArea.subject}: <span class="font-bold">{countSubjectCP(subjectArea.subject)}</span> (of {subjectArea.cp} required ECTS)
             </div>
         {/each}
         {/key}

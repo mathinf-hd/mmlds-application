@@ -15,16 +15,12 @@
 	
 	<Card size="xl" class="my-2">
 		<P>
-			Please declare your skills and motivation by filling in this form and then clicking "Save form data" at the bottom to save its contents to a form-data.txt file. You can then upload this file to your application in heiCO. Please notice that the form is filled locally on your computer, i.e., your contents are not sent to any server.
-		</P>
-		<br>
-		<P>
-			Each of your skills has to be declared by checking the respective checkbox, adding the name of the respective lecture as listed in the transcript (same lecture may apply to several skills), providing the credit points of the lecture (or equivalent) as listed in the transcript, and copying and pasting the official module description of the lecture describing its content to the "Module Description" field, as, e.g., provided in the module handbook of your field of study.
+			Please declare the details on your bachelor's field of study, your lectures and skills to be recognized, as well as your answers to the motivation questions by filling in this form and then clicking "Save form data" at the bottom to save its contents to a file. Subsequently, upload this file to your application in heiCO. Please notice that the form is filled locally on your computer, i.e., your contents are not sent to any server.
 		</P>
 	</Card>
 	
 	<Card size="xl" class="my-2">
-		<Heading tag="h3" class="mb-4 text-center">Extent of previous studies</Heading>
+		<Heading tag="h3" class="mb-4 text-center">Details on Field of Study</Heading>
 		<FormExtentDetails />
 	</Card>
 
