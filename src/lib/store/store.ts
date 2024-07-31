@@ -51,7 +51,7 @@ export function countSubjectCP(subject: Subject) {
 
     if (!extentDuration || !extentPoints ) return 0;
 
-    const pointEquivalent = (180 / extentPoints)  * (extentDuration / 3)
+    const pointEquivalent = (180 / extentPoints)  * (extentDuration / 36)
 
     const points = _data.lectures.reduce((sum, lecture) => 
         lecture.subject === subject ? sum + lecture.points : sum, 0);
