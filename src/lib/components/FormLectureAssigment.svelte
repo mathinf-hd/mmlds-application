@@ -18,7 +18,7 @@
 
     import PositiveNumberInput from './PositiveNumberInput.svelte';
 
-    import { data, addLecture, deleteLecture, countSubjectCP } from '$lib/store/store'
+    import { data, addLecture, deleteLecture, countSubjectECTS } from '$lib/store/store'
     import { formSubjectAreas } from '$lib/subjectAreas';
 
     const selectionItems: Array<SelectOptionType<Subject>> = []
@@ -59,7 +59,7 @@
         {#key $data}
         {#each formSubjectAreas as subjectArea}
             <div class="text-gray-900 text-center">
-                ECTS-equivalent of specified points in {subjectArea.subject}: <span class="font-bold">{countSubjectCP(subjectArea.subject)}</span> (of {subjectArea.cp} required ECTS)
+                ECTS-equivalent of specified points in {subjectArea.subject}: <span class="font-bold">{countSubjectECTS(subjectArea.subject)}</span> (of {subjectArea.cp} required ECTS)
             </div>
         {/each}
         {/key}

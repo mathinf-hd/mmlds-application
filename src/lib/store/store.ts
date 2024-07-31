@@ -44,7 +44,7 @@ function isValidDataFormat(data: Data){
     
     for (const lecture of lectures){
         const lectureSkills = Object.keys(lecture.skills).sort()
-        
+
         if(!isEqual(lectureSkills,skills)) return false
     }
 
@@ -94,7 +94,7 @@ export function deleteLecture(idx: number){
     })
 }
 
-export function countSubjectCP(subject: Subject) {
+export function countSubjectECTS(subject: Subject) {
 
     const _data = get(data);
 
