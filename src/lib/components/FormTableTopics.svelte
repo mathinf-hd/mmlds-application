@@ -11,15 +11,14 @@
 </script>
 
 <P>
-	Hier wird erklärt warum welche Vorlesungen eingetragen werden und warum der Nachweis von Skills wichtig ist --
-	Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. 
+	The admission regulations recognize skills that you earned in your lectures. The skills are organized into nine basic topics ("Practical computer science", ...). To declare these skills, add for each respective lecture its name as listed in the transcrpt and its number of points as listed in the transcript. To declare your earned skills, check the respective checkboxes and copy and paste the official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field.
 </P>
 {#each formTopics as topic}
 <div class="my-4">
 	<Heading tag="h4" class="mb-4">{topic.name}</Heading>
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
-				<TableHeadCell class="min-w-60 text-2xs p-2">Lecture name in transcript</TableHeadCell>
+				<TableHeadCell class="min-w-60 text-2xs p-2">Lecture Name in Transcript</TableHeadCell>
 				<TableHeadCell class="w-12 text-2xs p-2">Points</TableHeadCell>
 				{#each topic.subtopics as subTopic}
 					<TableHeadCell class="text-2xs p-2 m-auto">{subTopic}</TableHeadCell>
@@ -41,6 +40,6 @@
 				{/each}
 			</TableBody>
 	</Table>
-	<Button class="text-2xs m-2" on:click={() => addLecture()}>Add Lecture</Button>
+	<Button class="text-2xs m-2" on:click={() => addLecture()}>Add Another Lecture</Button>
 </div>
 {/each}
