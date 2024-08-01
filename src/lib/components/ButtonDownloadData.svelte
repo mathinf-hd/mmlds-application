@@ -24,6 +24,16 @@ function stripFalseSkills(data: Data) {
     return strippedData
 }
 
+function getVersion(){
+    const mode = import.meta.env.MODE
+
+    if (mode == "production"){
+        return `prod-${import.meta.env.VITE_BUILD_COMMIT}-${import.meta.env.VITE_BUILD_DATETIME}`
+    }
+    
+    return `dev-${import.meta.env.VITE_BUILD_COMMIT}-${import.meta.env.VITE_BUILD_DATETIME}`
+}
+
 function getECTSEquivalents(){
     let ECTSEquivalents: {[key: string]: number}= {}
 
@@ -61,7 +71,7 @@ async function downloadFormData() {
     const data = stripFalseSkills($data);
     data["ECTSEquivalents"] = getECTSEquivalents();
     data["time"] = await getTimeStamp();
-    
+    data["version"] = getVersion();
     /* check if data is valid - otherwise return */
     if (!isValidFormData(data)) return;
     

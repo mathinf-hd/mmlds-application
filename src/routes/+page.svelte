@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Card, Heading, P } from 'flowbite-svelte';
+	import { Card, Heading, P } from 'flowbite-svelte';
 
 	import FormExtentDetails from '$lib/components/FormExtentDetails.svelte';
 	import FormTableTopics from '$lib/components/FormTableTopics.svelte';
