@@ -14,10 +14,10 @@
 
 <Table class="overflow-x-auto">
 	<TableBody>
-		{#each Object.keys($data.questions) as question}
+		{#each Object.keys($data.questions) as question, questionIdx}
 			<TableBodyRow>
 				<TableBodyCell>
-					<P>{question}:</P>
+					<P>{questionIdx + 1 + ".) "+ question}:</P>
 					<Textarea rows="10" bind:value={$data.questions[question]} />
 				</TableBodyCell>
 			</TableBodyRow>

@@ -2,6 +2,7 @@ import { get, writable } from "svelte/store";
 
 import { formExtendDetails } from "$lib/extentDetails";
 import { formTopics } from "$lib/topics";
+import { formSubjectAreas } from "$lib/subjectAreas";
 import { formQuestions } from "$lib/questions";
 
 const initData: Data = loadData()
@@ -22,33 +23,6 @@ function loadData(){
     } catch {
         return generateEmptyDataObject(formExtendDetails, formQuestions);
     }
-}
-
-function isValidDataFormat(data: Data){
-    const extendDetails = data.extentDetails
-    const topics = data.topics
-    const lectures = data.lectures
-    const questions = data.questions
-
-    /* check extendDetails */
-    if (!isEqual(Object.keys(extendDetails), formExtendDetails)) return false;
-
-    /* check topics */
-    if (!isEqual(topics, formTopics)) return false;
-
-    /* check questions */
-    if (!isEqual(Object.keys(questions), formQuestions)) return false;
-
-    /* check skill of lectures */
-    const skills = formTopics.flatMap((topic: Topic) => topic.subtopics).sort()
-    
-    for (const lecture of lectures){
-        const lectureSkills = Object.keys(lecture.skills).sort()
-
-        if(!isEqual(lectureSkills,skills)) return false
-    }
-
-    return true
 }
 
 function isEqual(obj1: any, obj2: any){
@@ -120,7 +94,6 @@ export function addSkill(lectureIdx: number, skill: Skill){
             return data
         })
     } 
-
 }
 
 export function countSubjectECTS(subject: Subject) {
@@ -141,3 +114,150 @@ export function countSubjectECTS(subject: Subject) {
 
     return Math.round(cp * 100) /100
 } 
+
+export function isValidDataFormat(data: Data){
+    const extendDetails = data.extentDetails
+    const topics = data.topics
+    const lectures = data.lectures
+    const questions = data.questions
+
+    /* check extendDetails */
+    if (!isEqual(Object.keys(extendDetails), formExtendDetails)) return false;
+
+    /* check topics */
+    if (!isEqual(topics, formTopics)) return false;
+
+    /* check questions */
+    if (!isEqual(Object.keys(questions), formQuestions)) return false;
+
+    /* check skill of lectures */
+    const skills = formTopics.flatMap((topic: Topic) => topic.subtopics).sort()
+    
+    for (const lecture of lectures){
+        const lectureSkills = Object.keys(lecture.skills).sort()
+
+        if(!isEqual(lectureSkills,skills)) return false
+    }
+
+    return true
+}
+
+/**
+ * quick and dirty formValidation 
+ */
+
+export function isValidFormData(data: Data){
+   
+    let exceptions: Record<string, Record<string, string>> = {
+        "extentDetails": {},
+        "lectures": {},
+        "subjectAreas": {},
+        "questions": {},
+
+    }
+
+    /* check extentDetails */
+    for (const extentDetail of formExtendDetails){
+        if (data.extentDetails[extentDetail] == 0 || 
+            data.extentDetails[extentDetail] == null ||
+            data.extentDetails[extentDetail] == undefined) {
+            exceptions["extentDetails"][extentDetail] = `- ${extentDetail} missing`
+        }
+    }
+    
+    for (const [lectureIdx, lecture] of data.lectures.entries()){
+        let exp = "";
+
+        if (lecture.name == '' || 
+            lecture.name == null ||
+            lecture.name == undefined) {
+            exp = exp + "\n- Name is missing";
+        } 
+
+        if (lecture.points == 0 || 
+            lecture.points == null || 
+            lecture.points == undefined) {
+            exp = exp + "\n- Points are missing";
+        }
+        if (lecture.description == '' ||
+            lecture.description == null ||
+            lecture.description == undefined) {
+            exp = exp + "\n- Description is missing";
+        }
+        if (lecture.subject == '' ||
+            lecture.subject == null ||
+            lecture.subject == undefined)  {
+            exp = exp + "\n- Lecture not assigned to subject";
+            }
+
+        // add exception
+        if (exp != "") {
+            exp = `Lecture ${lecture.name || lectureIdx + 1}:` + exp;
+            exceptions["lectures"][lectureIdx] = exp
+        }
+    }
+
+    for (const subjectArea of formSubjectAreas){
+        if (countSubjectECTS(subjectArea.subject) < subjectArea.cp){
+            exceptions["subjectAreas"][subjectArea.subject] = `- ${subjectArea.subject} has not enough declared ECTS points. ${subjectArea.cp - countSubjectECTS(subjectArea.subject)} points missing`;
+        }
+    }
+
+    for (const [questionIdx, question] of formQuestions.entries()){
+        if (data.questions[question] == '' ||
+            data.questions[question] == null ||
+            data.questions[question] == undefined
+        ){
+            exceptions["questions"][questionIdx] = `- Question ${questionIdx + 1}): answer is missing`;
+        }
+    }
+
+    // check if isValid -- return
+    if (Object.keys(exceptions["extentDetails"]).length === 0 &&
+        Object.keys(exceptions["lectures"]).length === 0 &&
+        Object.keys(exceptions["subjectAreas"]).length === 0 &&
+        Object.keys(exceptions["questions"]).length === 0
+    ) return true;
+
+    
+    // generate absolute sophisticated error message 
+    let alertString: string = "File can not be created because some data is missing.\n\n";
+
+    if (Object.keys(exceptions["extentDetails"]).length > 0){
+        alertString += "Details on Field of Study:\n";
+
+        for (const exp of Object.keys(exceptions["extentDetails"])){
+            alertString += exceptions["extentDetails"][exp] + "\n";
+        } 
+
+        alertString += "\n";
+    } 
+
+
+    if (Object.keys(exceptions["lectures"]).length > 0){
+        for (const exp of Object.keys(exceptions["lectures"])){
+            alertString += exceptions["lectures"][exp] + "\n\n";
+        } 
+    } 
+
+
+    if (Object.keys(exceptions["subjectAreas"]).length > 0){
+         alertString += "Lecture Assignment:\n"
+
+        for (const exp of Object.keys(exceptions["subjectAreas"])){
+            alertString += exceptions["subjectAreas"][exp] + "\n";
+        } 
+
+        alertString += "\n";
+    } 
+
+    if (Object.keys(exceptions["questions"]).length > 0){
+        for (const exp of Object.keys(exceptions["questions"])){
+            alertString += exceptions["questions"][exp] + "\n\n";
+        } 
+    } 
+
+    alert(alertString);
+
+    return false
+}

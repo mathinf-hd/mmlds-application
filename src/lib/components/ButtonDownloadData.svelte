@@ -2,7 +2,7 @@
 import { Button } from "flowbite-svelte";
 import { DownloadOutline } from "flowbite-svelte-icons";
 
-import { data, countSubjectECTS } from '$lib/store/store'
+import { data, countSubjectECTS, isValidFormData } from '$lib/store/store'
 import { formSubjectAreas } from "$lib/subjectAreas";
 
 function stripFalseSkills(data: Data) {
@@ -61,6 +61,10 @@ async function downloadFormData() {
     const data = stripFalseSkills($data);
     data["ECTSEquivalents"] = getECTSEquivalents();
     data["time"] = await getTimeStamp();
+    
+    /* check if data is valid - otherwise return */
+    if (!isValidFormData(data)) return;
+    
     downloadFormAsJsonFile(filename, data);
 }
 
