@@ -12,7 +12,7 @@ import { data, addLecture, deleteLecture, addSkill } from '$lib/store/store';
 </script>
 
 <P>
-	The admission regulations recognize skills that you earned in your lectures. The skills are organized into nine basic topics ("Practical computer science", ...). To declare these skills, add for each respective lecture its name as listed in the transcrpt and its number of points as listed in the transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field.
+	The admission regulations recognize skills that you earned in your lectures. The skills are organized into nine basic topics ("Practical computer science", ...). To declare these skills, add for each respective lecture its English name as listed in the (translated) transcrpt and its number of points as listed in the transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
 </P>
 {#each formTopics as topic}
 <div class="my-4">
