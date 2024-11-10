@@ -5,20 +5,43 @@ import { formTopics } from "$lib/topics";
 import { formSubjectAreas } from "$lib/subjectAreas";
 import { formQuestions } from "$lib/questions";
 
-const initData: Data = loadData()
-
+const initData: Data = await loadData()
 export const data = writable<Data>(initData)
-
 data.subscribe((value) => localStorage.data = JSON.stringify(value))
 
-function loadData(){
+async function loadData(){
+    
+    /* load data from file (url) */
+    const params = new URL(window.location.href).searchParams
+	const file = params.get("file")
+    
+    if (file !== null) {
+        try {
+            const response = await fetch(file);
+            if (!response.ok) {
+                throw new Error(`Unable to load file`);
+            }
+            const data = await response.json();
+
+            if (!isValidDataFormat(data)) {
+                throw new Error('Discarding old data because DataFormat is invalid or changed')
+            }
+
+            return data;
+
+        } catch (error) {
+            console.error('Error loading file:', error);
+            throw new Error('Unable to load file');
+        }
+    }
+
+    /* load data from localStorage */  
     try {
         const data: Data = JSON.parse(localStorage.data);
         
         if (!isValidDataFormat(data)) {
             throw new Error('Discarding old data because DataFormat is invalid or changed')
-        }
-        
+        }       
         return data;
     } catch {
         return generateEmptyDataObject(formExtendDetails, formQuestions);
