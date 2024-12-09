@@ -24,4 +24,4 @@ type SubjectArea = { subject: Subject, cp: number }
 type SubjectAreas = Array<SubjectArea>
 type FormDataLectures = Array<Lecture>;
 
-type Data = { extentDetails: FormDataExtentDetails, topics: Topixs, lectures: FormDataLectures, questions: FormDataQuestions};
+type Data = { extentDetails: FormDataExtentDetails, topics: Topics, lectures: FormDataLectures, questions: FormDataQuestions};

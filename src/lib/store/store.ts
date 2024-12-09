@@ -5,36 +5,10 @@ import { formTopics } from "$lib/topics";
 import { formSubjectAreas } from "$lib/subjectAreas";
 import { formQuestions } from "$lib/questions";
 
-const initData: Data = await loadData()
-export const data = writable<Data>(initData)
+export const data = writable<Data>(loadData())
 data.subscribe((value) => localStorage.data = JSON.stringify(value))
 
-async function loadData(){
-    
-    /* load data from file (url) */
-    const params = new URL(window.location.href).searchParams
-	const file = params.get("file")
-    
-    if (file !== null) {
-        try {
-            const response = await fetch(file);
-            if (!response.ok) {
-                throw new Error(`Unable to load file`);
-            }
-            const data = await response.json();
-
-            if (!isValidDataFormat(data)) {
-                throw new Error('Discarding old data because DataFormat is invalid or changed')
-            }
-
-            return data;
-
-        } catch (error) {
-            console.error('Error loading file:', error);
-            throw new Error('Unable to load file');
-        }
-    }
-
+function loadData(){ 
     /* load data from localStorage */  
     try {
         const data: Data = JSON.parse(localStorage.data);
@@ -46,6 +20,55 @@ async function loadData(){
     } catch {
         return generateEmptyDataObject(formExtendDetails, formQuestions);
     }
+}
+
+export async function loadEvalData(filename: string){
+    
+    let url = import.meta.env.VITE_BUILD_URL ? import.meta.env.VITE_BUILD_URL : "https://dacs-informatik.iwr.uni-heidelberg.de"
+
+    const file = `${url}/data/${filename}`
+
+    if (file !== null) {
+        try {
+            const response = await fetch(file);
+            if (!response.ok) {
+                throw new Error(`Unable to load file`);
+            }
+            let data = await response.json();
+
+            if (!isValidDataFormat(data)) {
+                throw new Error('Discarding old data because DataFormat is invalid or changed')
+            }
+            data = expandSkills(data);
+            return data;
+
+        } catch (error) {
+            console.error('Error loading file:', error);
+            return generateEmptyDataObject(formExtendDetails, formQuestions);
+        }
+    }
+}
+
+function expandSkills(data: any): any{
+    const allSkills = [...data.topics.flatMap((topic: any) => topic.subtopics)]
+
+    const expandedSkillList: Record<Skill, boolean> = allSkills.reduce(
+        (skills, item) => {skills[item] = false; return skills;}, 
+        {} as Record<Skill, boolean>)
+
+    console.log(expandedSkillList)
+
+    data.lectures.forEach((lecture: any) => {
+        let skills = JSON.parse(JSON.stringify(expandedSkillList));
+
+        lecture.skills.forEach((skill: any) => {
+            skills[skill] = true;
+            
+        })
+        lecture.skills = skills;
+    })
+
+    return data;
 }
 
 function isEqual(obj1: any, obj2: any){
@@ -100,6 +123,8 @@ export function addSkill(lectureIdx: number, skill: Skill){
     /* get existing skills */
     let otherLectureSkills: Array<Skill> = []; 
     
+    console.log(get(data))
+
     otherLectures.forEach((lecture) => {
         for (let [key, value] of Object.entries(lecture.skills)) {
             if (value) {
@@ -118,6 +143,23 @@ export function addSkill(lectureIdx: number, skill: Skill){
         })
     } 
 }
+
+export function pointEquivalentECTS(points: number) {
+
+    const _data = get(data);
+
+    const extentDuration = _data.extentDetails["duration"]
+    const extentPoints = _data.extentDetails["points"]
+
+    if (!extentDuration || !extentPoints ) return 0;
+
+    const pointEquivalent = (180 / extentPoints)  * (extentDuration / 36)
+
+    const cp = points * pointEquivalent
+
+    return Math.round(cp * 100) /100
+} 
+
 
 export function countSubjectECTS(subject: Subject) {
 
@@ -141,7 +183,6 @@ export function countSubjectECTS(subject: Subject) {
 export function isValidDataFormat(data: Data){
     const extendDetails = data.extentDetails
     const topics = data.topics
-    const lectures = data.lectures
     const questions = data.questions
 
     /* check extendDetails */
@@ -153,20 +194,12 @@ export function isValidDataFormat(data: Data){
     /* check questions */
     if (!isEqual(Object.keys(questions), formQuestions)) return false;
 
-    /* check skill of lectures */
-    const skills = formTopics.flatMap((topic: Topic) => topic.subtopics).sort()
-    
-    for (const lecture of lectures){
-        const lectureSkills = Object.keys(lecture.skills).sort()
-
-        if(!isEqual(lectureSkills,skills)) return false
-    }
-
     return true
 }
 
 /**
- * quick and dirty formValidation 
+ * quick and dirty formValidation
+ * perhaps implement zod or yup valdation
  */
 
 export function isValidFormData(data: Data){
@@ -256,13 +289,11 @@ export function isValidFormData(data: Data){
         alertString += "\n";
     } 
 
-
     if (Object.keys(exceptions["lectures"]).length > 0){
         for (const exp of Object.keys(exceptions["lectures"])){
             alertString += exceptions["lectures"][exp] + "\n\n";
         } 
     } 
-
 
     if (Object.keys(exceptions["subjectAreas"]).length > 0){
          alertString += "Lecture Assignment:\n"
