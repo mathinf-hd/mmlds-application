@@ -24,7 +24,7 @@ function loadData(){
 
 export async function loadEvalData(filename: string){
     
-    let url = import.meta.env.VITE_BUILD_URL ? import.meta.env.VITE_BUILD_URL : "https://dacs-informatik.iwr.uni-heidelberg.de"
+    let url = import.meta.env.VITE_BUILD_URL ? import.meta.env.VITE_BUILD_URL : /* "http://localhost:8080/" */ "https://dacs-informatik.iwr.uni-heidelberg.de"
 
     const file = `${url}/data/${filename}`
 
@@ -36,9 +36,10 @@ export async function loadEvalData(filename: string){
             }
             let data = await response.json();
 
-            if (!isValidDataFormat(data)) {
+            /* if (!isValidDataFormat(data)) {
                 throw new Error('Discarding old data because DataFormat is invalid or changed')
-            }
+            } */ 
+           
             data = expandSkills(data);
             return data;
 

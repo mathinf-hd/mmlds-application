@@ -1,14 +1,17 @@
 <script lang="ts">
 
-	import { Card, Alert, Checkbox, Heading, P, Button} from 'flowbite-svelte';
+	import { Card, Alert, Checkbox, Heading, P, Button, Accordion, AccordionItem} from 'flowbite-svelte';
 	import { data, loadEvalData, pointEquivalentECTS } from '$lib/store/store';
 	import { BadgeCheckSolid, ExclamationCircleSolid, PrinterSolid, InfoCircleSolid } from "flowbite-svelte-icons";
 
-	import { onMount } from "svelte";
+	import { onMount, tick } from "svelte";
 	// Declare variables but don't load data yet
 	let applicationId: string | undefined | null = null;
 	let loading = true;
 	let success = false;
+	let numSkills = 0;
+	let cpComputerScience = 0;
+	let cpMathematics = 0;
 
 	onMount(async () => {
 		try {
@@ -26,9 +29,12 @@
 
 				if (loadedData.extentDetails["duration"] != null){
 					success = true
+
 				}
 
 				loading = false;
+				await tick();
+				updateScore();
 			}
 
 			else {
@@ -42,9 +48,7 @@
 		}
 	});
 
-	let numSkills = 0;
-	let cpComputerScience = 0;
-	let cpMathematics = 0;
+	
 
 	function updateScore(){
 		numSkills = Array.from(document.getElementsByClassName('skill'))
@@ -56,10 +60,14 @@
 					.map((el:any) => el.value)
 					.reduce((acc, curr) => Number(acc) + Number(curr), 0);
 		
+		cpComputerScience = Math.round(cpComputerScience)
+		
 		cpMathematics = Array.from(document.getElementsByClassName('mathematics'))
   					.filter((input: any) => input.checked)
 					.map((el:any) => el.value)
 					.reduce((acc, curr) => Number(acc) + Number(curr), 0);
+		
+		cpMathematics = Math.round(cpMathematics)
 	}
 
 	async function getTimeStamp(){
@@ -79,87 +87,7 @@
 	function downloadPrintVersion() {
 		window.print();
 	}
-	/*
-    // Get the content you want to print
-    const contentElement = document.querySelector('#evaluation-container');
-    if (!contentElement) return;
 
-	const timeStamp = await getTimeStamp()
-
-    // Clone the content to avoid modifying the original
-    const contentClone = contentElement.cloneNode(true) as HTMLElement;
-    // Remove scripts and event handlers
-    const scripts = contentClone.getElementsByTagName('script');
-    while (scripts[0]) {
-        scripts[0].parentNode?.removeChild(scripts[0]);
-    }
-
-    // Get styles more safely
-    let styles = '';
-    try {
-        const stylesheets = document.styleSheets;
-        for (let i = 0; i < stylesheets.length; i++) {
-            const stylesheet = stylesheets[i];
-            try {
-                if (stylesheet.href && !stylesheet.href.startsWith(window.location.origin)) {
-                    continue; // Skip external stylesheets
-                }
-                const rules = stylesheet.cssRules || stylesheet.rules;
-                for (let j = 0; j < rules.length; j++) {
-                    // Skip problematic rules
-                    if (rules[j].type === CSSRule.STYLE_RULE) {
-                        styles += rules[j].cssText + '\n';
-                    }
-                }
-            } catch (e) {
-                console.warn('Could not process stylesheet', stylesheet.href, e);
-            }
-        }
-    } catch (e) {
-        console.warn('Error processing stylesheets', e);
-    }
-
-    const printDoc = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>Print Version</title>
-            <style>
-               
-                ${styles}
-                
-                @media print {
-                    body { margin: 2cm; }
-                    .no-print { display: none !important; }
-                    button, .button { display: none !important; }
-                }
-                
-                body {
-                    font-family: Arial, sans-serif;
-                    line-height: 1.6;
-                    margin: 2cm;
-                }
-            </style>
-        </head>
-        <body>
-			Evaluation Date: ${timeStamp.timestamp} (${timeStamp.type} time)
-            ${contentClone.innerHTML}
-        </body>
-        </html>
-    `;
-
-    const blob = new Blob([printDoc], { type: 'text/html' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download =  `evaluation-${applicationId}-${timeStamp.timestamp}.html`;
-    
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-	} */
 </script>
 
 <div class="flex flex-col md:container md:mx-auto m-2 items-center" id="evaluation-container">
@@ -208,11 +136,17 @@
 								{pointEquivalentECTS(lecture.points)} ECTS ({lecture.points} Points in original data)
 							</div>
 	
-							<P class="font-bold mb-1">Module Description</P>
-							<div class="bg-gray-50 border-gray-300 rounded-lg p-2 text-xs text-gray-900 border mb-8">
-								{lecture.description}
-							</div>
-							
+							<Accordion flush class="mb-8">
+								<AccordionItem>
+								  <span slot="header" class="text-base flex">
+									<P class="font-bold">Module Description</P>
+								  </span>
+								  <div class="bg-gray-50 border-gray-300 rounded-lg p-2 text-xs text-gray-900 border">
+									{lecture.description}
+								</div>
+								</AccordionItem>
+							</Accordion>
+
 							<div class="text-gray-900 grid grid-cols-[400px,auto] mb-8">
 							<P class="font-bold mb-1">Subject Area</P>
 							<P class="font-bold mb-1">Confirm?</P>
@@ -221,14 +155,14 @@
 								<div class="pl-2">
 									{lecture.subject}
 								</div>
-								<Checkbox class="computer-science" bind:value={lecture.points} on:change={updateScore}></Checkbox>
+								<Checkbox class="computer-science" value={pointEquivalentECTS(lecture.points)} on:change={updateScore} checked></Checkbox>
 							{/if}
 	
 							{#if lecture.subject == "mathematics"}
 								<div class="pl-2">
 									{lecture.subject}
 								</div>
-								<Checkbox class="mathematics" bind:value={lecture.points} on:change={updateScore}></Checkbox>
+								<Checkbox class="mathematics" value={pointEquivalentECTS(lecture.points)} on:change={updateScore} checked></Checkbox>
 							{/if}
 							</div>
 	
@@ -238,7 +172,7 @@
 								{#each Object.keys(lecture.skills) as skill}
 										{#if lecture.skills[skill] == true}
 												<div class="pl-2">{skill}</div>
-												<Checkbox class="skill" on:change={updateScore}></Checkbox>	
+												<Checkbox class="skill" on:change={updateScore} checked></Checkbox>	
 										{/if}
 								{/each}
 							</div>
@@ -250,7 +184,7 @@
 				<div class="text-gray-900 mb-8">
 					<div class="flex flex-row mb-2 justify-center h-12 items-center">
 						<div class="w-60 font-bold">CP Computer Science</div>
-						<div class="w-16">{cpComputerScience} / 56</div>
+						<div class="w-24">{cpComputerScience} / 56</div>
 						<div class="w-8">
 							{#if cpComputerScience >= 56}
 								<BadgeCheckSolid size="lg" color="green"/>
@@ -261,7 +195,7 @@
 					</div>
 					<div class="flex flex-row mb-2 justify-center h-12 items-center">
 						<div class="w-60 font-bold">CP Mathematics</div>
-						<div class="w-16 ">{cpMathematics} / 16 </div>
+						<div class="w-24 ">{cpMathematics} / 16 </div>
 						<div class="w-8">
 							{#if cpMathematics >= 16}
 								<BadgeCheckSolid size="lg" color="green"/>
@@ -272,7 +206,7 @@
 					</div>
 					<div class="flex flex-row mb-2 justify-center h-12 items-center">
 						<div class="w-60 font-bold">Number of confirmed Skills</div>
-						<div class="w-24 font-bold text-center">{numSkills}</div>
+						<div class="w-32 font-bold text-center">{numSkills}</div>
 					</div>
 			</div>
 	
