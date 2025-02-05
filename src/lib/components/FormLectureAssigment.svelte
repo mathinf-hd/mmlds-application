@@ -16,9 +16,10 @@
 
 	import { TrashBinOutline }  from 'flowbite-svelte-icons';
 
+    import GenericValidatedInput from './GenericValidatedInput.svelte';
     import PositiveNumberInput from './PositiveNumberInput.svelte';
 
-    import { data, addLecture, deleteLecture, countSubjectECTS } from '$lib/store/store'
+    import { data, addLecture, deleteLecture, checkDuplicateLecture, countSubjectECTS } from '$lib/store/store'
     import { formSubjectAreas } from '$lib/subjectAreas';
 
     const selectionItems: Array<SelectOptionType<Subject>> = []
@@ -45,7 +46,7 @@
 			<TableBody>
 				{#each $data.lectures as lecture, lectureIdx}
 				<TableBodyRow>
-					<TableBodyCell class="p-2"><Input type="text" bind:value={lecture.name} class="text-2xs"/></TableBodyCell>
+                    <TableBodyCell class="p-2"><GenericValidatedInput type="text" bind:value={lecture.name} validateFn={() => checkDuplicateLecture(lectureIdx)} class="text-2xs"/></TableBodyCell>
 					<TableBodyCell class="p-2 text-2xs"><PositiveNumberInput bind:value={lecture.points} class="text-2xs text-center"/></TableBodyCell>
                     <TableBodyCell class="p-2 text-2xs"><Input type="text" class="text-2xs" bind:value={lecture.description} /></TableBodyCell>
 					<TableBodyCell class="p-2 text-2xs"><Select items={selectionItems} bind:value={lecture.subject} class="text-2xs"/></TableBodyCell>

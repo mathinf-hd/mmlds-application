@@ -19,10 +19,12 @@ function stripFalseSkills(data: Data) {
             }
         }
         strippedData.lectures[idx].skills = skills;
+        delete strippedData.lectures[idx].confirmed;
     });
 
     return strippedData
 }
+
 
 function getVersion(){
     const mode = import.meta.env.MODE
