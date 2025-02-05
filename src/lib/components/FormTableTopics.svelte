@@ -5,9 +5,11 @@ import { Button, Checkbox, Heading, Input, P, Table,
 import { TrashBinOutline }  from 'flowbite-svelte-icons';
 
 import PositiveNumberInput from './PositiveNumberInput.svelte';
+import GenericValidatedInput from './GenericValidatedInput.svelte';
 import { formTopics } from '$lib/topics';
 
-import { data, addLecture, deleteLecture, addSkill } from '$lib/store/store';
+import { data, addLecture, deleteLecture, addSkill, checkDuplicateLecture } from '$lib/store/store';
+
 
 </script>
 
@@ -30,7 +32,7 @@ import { data, addLecture, deleteLecture, addSkill } from '$lib/store/store';
 			<TableBody>
 				{#each $data.lectures as lecture, lectureIdx}
 				<TableBodyRow>
-					<TableBodyCell class="p-2"><Input type="text" bind:value={lecture.name} class="text-2xs"/></TableBodyCell>
+					<TableBodyCell class="p-2"><GenericValidatedInput type="text" bind:value={lecture.name} validateFn={() => checkDuplicateLecture(lectureIdx)} class="text-2xs"/></TableBodyCell>
 					<TableBodyCell class="p-2 text-2xs"><PositiveNumberInput bind:value={lecture.points} class="text-2xs text-center"/></TableBodyCell>
 					{#each topic.subtopics as subTopic}
 					<TableBodyCell class="p-2"><Checkbox bind:checked={lecture.skills[subTopic]} on:change={() => addSkill(lectureIdx, subTopic)} class="m-auto"/></TableBodyCell>

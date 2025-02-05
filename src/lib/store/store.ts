@@ -139,10 +139,35 @@ export function addSkill(lectureIdx: number, skill: Skill){
         alert("You can only declare a skill once.\n\nPlease select the lecture that contributed the most to your skill acquisition. ")
 
         data.update((data: Data) => { 
-            data.lectures[lectureIdx].skills[skill] = false
+            data.lectures[lectureIdx].skills[skill] = false;
             return data
         })
     } 
+}
+
+export function checkDuplicateLecture(lectureIdx: number){
+        
+        /* ignore empty fields */
+        if (get(data).lectures[lectureIdx].name === "") return;
+
+        const lectures: Array<Lecture> = JSON.parse(JSON.stringify(get(data).lectures));
+
+        /* splice removes the new lecture from all lectures */
+        const newLecture = lectures.splice(lectureIdx,1)[0]; 
+
+        const existing: boolean = lectures.some(lecture => 
+            lecture.name.toLowerCase() === newLecture.name.toLowerCase()
+        );
+
+        if (existing) {
+            alert("You can only declare a lecture once.")
+
+            data.update((data: Data) => { 
+                data.lectures[lectureIdx].name = "";
+                return data
+            })
+        }
+
 }
 
 export function pointEquivalentECTS(points: number) {
