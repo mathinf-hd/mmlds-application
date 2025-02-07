@@ -15,7 +15,7 @@
 	
 	<Card size="xl" class="my-2">
 		<P>
-			Please declare the details on your bachelor's field of study, your lectures and skills to be recognized, and provide your answers to the motivation questions, by filling in this form and then clicking "Save form data" at the bottom to save its contents to a file. Subsequently, upload this file to your application in heiCO. <b>Please notice that the automatic replication of the lectures across the different fields is intentional (a lecture can provide skills in more than one of the nine topics)</b>, and that the form is filled locally on your computer, i.e., your contents are not sent to any server.
+			Please declare the details on your bachelor's field of study, your lectures and skills to be recognized, and provide your answers to the motivation questions, by filling in this form and then clicking "Save form data" at the bottom to save its contents to a file. Subsequently, upload this file to your application in heiCO. <b>Please notice that the automatic replication of the lectures across the nine topics is intentional (a lecture can provide skills in more than one of the nine topics)</b>, and that the form is filled locally on your computer, i.e., your contents are not sent to any server.
 		</P>
 	</Card>
 	
