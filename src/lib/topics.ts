@@ -12,7 +12,7 @@ export const formTopics: Topics = [
 			'Banach spaces and linear operators',
 			'Duality and weak topology',
 			'Measure theory and Lp spaces',
-			'Hilbert spaces',
+			'Hilbert spaces and self adjoint operators',
 			'Spectral theory of compact operators'			
 		]
 	},
