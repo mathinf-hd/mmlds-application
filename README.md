@@ -1,4 +1,4 @@
-# [dacs-application-2024-25](https://computer-science-hd.github.io/dacs-application-2024-25/)
+# [mmlds-application](https://mathinf-hd.github.io/mmlds-application/)
 
 A simple static web page providing a form that can be filled in and then downloaded as a json file.
 
