@@ -2,7 +2,12 @@ export const formTopics: Topics = [
 	{
 		name: 'Differential Geometry',
 		subtopics: [
-			
+			'Topic D1',
+			'Topic D2',
+			'Topic D3',
+			'Topic D4',
+			'Topic D5',
+			'Topic D6'
 		]
 	},
 	{
@@ -19,13 +24,23 @@ export const formTopics: Topics = [
 	{
 		name: 'Numerical Analysis',
 		subtopics: [
-			
+			'Topic N1',
+			'Topic N2',
+			'Topic N3',
+			'Topic N4',
+			'Topic N5',
+			'Topic N6'
 		]
 	},
 	{
 		name: 'Optimization',
 		subtopics: [
-			
+			'Topic O1',
+			'Topic O2',
+			'Topic O3',
+			'Topic O4',
+			'Topic O5',
+			'Topic O6'
 		]
 	},
 	{
