@@ -24,12 +24,12 @@ export const formTopics: Topics = [
 	{
 		name: 'Numerical Analysis',
 		subtopics: [
-			'Topic N1',
-			'Topic N2',
-			'Topic N3',
-			'Topic N4',
-			'Topic N5',
-			'Topic N6'
+			'Conditioning and stability',
+			'Interpolation and quadrature (1d)',
+			'Matrix factorisation (LU, QR, SVD)',
+			'Iterative methods and solution of nonlinear problems',
+			'Numerical methods for (stiff) ODEs',
+			'Eigenvalue problems'
 		]
 	},
 	{
