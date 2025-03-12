@@ -2,12 +2,12 @@ export const formTopics: Topics = [
 	{
 		name: 'Differential Geometry',
 		subtopics: [
-			'Topic D1',
-			'Topic D2',
-			'Topic D3',
-			'Topic D4',
-			'Topic D5',
-			'Topic D6'
+			'Differentiable manifolds',
+			'Tangent space and vector bundles',
+			'Parallel transport',
+			'Lie groups',
+			'Simplicial complexes',
+			'de Rham cohomology'
 		]
 	},
 	{
@@ -33,17 +33,6 @@ export const formTopics: Topics = [
 		]
 	},
 	{
-		name: 'Optimization',
-		subtopics: [
-			'Topic O1',
-			'Topic O2',
-			'Topic O3',
-			'Topic O4',
-			'Topic O5',
-			'Topic O6'
-		]
-	},
-	{
 		name:'Statistics and Probability Theory',
 		subtopics: [
 			'Radon-Nikodym theorem',
@@ -52,6 +41,17 @@ export const formTopics: Topics = [
 			'Neyman-Pearson theory',
 			'Maximum likelihood estimation',
 			'Asymptotic normality'
+		]
+	},
+	{
+		name: 'Variational Methods and Optimization',
+		subtopics: [
+			'Gateaux and Frechet derivative',
+			'Convex duality in optimization',
+			'Karush-Kuhn-Tucker conditions',
+			'Positive (semi-)definite matrix cone',
+			'Conic programs (LPs, SOCPs, SDPs)',
+			'Proximal point methods'
 		]
 	}
 ]
