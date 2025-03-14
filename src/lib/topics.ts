@@ -2,12 +2,12 @@ export const formTopics: Topics = [
 	{
 		name: 'Differential Geometry',
 		subtopics: [
-			'Differentiable manifolds',
-			'Tangent space and vector bundles',
-			'Parallel transport',
+			'Manifolds',
+			'Vector bundles',
 			'Lie groups',
 			'Simplicial complexes',
-			'de Rham cohomology'
+			'Group actions',
+			'Covering spaces'
 		]
 	},
 	{
