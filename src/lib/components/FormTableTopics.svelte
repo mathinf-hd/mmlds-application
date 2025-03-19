@@ -11,9 +11,9 @@ import { formTopics } from '$lib/topics';
 
 import { data, addLecture, deleteLecture, addSkill, checkDuplicateLecture } from '$lib/store/store';
 
-let areaA = 0;
+let areaA = 'Please select Area A';
 let areaB = 0;
-let areaC = 0;
+let areaC = 'Please select Area C';
 
 </script>
 
@@ -25,9 +25,6 @@ let areaC = 0;
   {areaA} <ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" />
 </Button>
 <Dropdown class="w-60 p-3 space-y-3 text-sm">
-  <li>
-    <Radio name="areaA" bind:group={areaA} value={0}>Please select Area A</Radio>
-  </li>
  {#each formTopics as topic, i} 
   <li>
     <Radio name="areaA" bind:group={areaA} value={i}>{topic.name}</Radio>
