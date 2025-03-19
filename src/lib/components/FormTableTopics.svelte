@@ -1,8 +1,9 @@
 <script lang="ts">
-import { Popover,  Button, Checkbox, Heading, Input, P, Table, 
-			TableBody, TableBodyCell, TableBodyRow, 
-			TableHead, TableHeadCell } from 'flowbite-svelte';
-import { TrashBinOutline }  from 'flowbite-svelte-icons';
+import { Popover,  Dropdown, DropdownItem, Radio,
+       	 	   Button, Checkbox, Heading, Input, P, Table, 
+		   TableBody, TableBodyCell, TableBodyRow, 
+		   TableHead, TableHeadCell } from 'flowbite-svelte';
+import { TrashBinOutline, ChevronDownOutline }  from 'flowbite-svelte-icons';
 
 import PositiveNumberInput from './PositiveNumberInput.svelte';
 import GenericValidatedInput from './GenericValidatedInput.svelte';
@@ -10,10 +11,60 @@ import { formTopics } from '$lib/topics';
 
 import { data, addLecture, deleteLecture, addSkill, checkDuplicateLecture } from '$lib/store/store';
 
+let areaA = 0;
+let areaB = 0;
+let areaC = 0;
+
 </script>
 
 <P>
-	The admission regulations recognize skills in <b>Mathematics</b> which you acquired in the following areas through corresponding foundational lectures (each 8 ECTS): Analysis, Linear Algebra, and three of the five areas: Functional Analysis, Differential Geometry, Optimization, Statistics and Probability Theory, Numerical Analysis. To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript and its number of points as listed in the transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
+	The admission regulations recognize skills in <b>Mathematics</b> which you acquired in the following areas through corresponding foundational lectures (each 8 ECTS): Analysis, Linear Algebra, and three of the five areas: Functional Analysis, Differential Geometry, Optimization, Statistics and Probability Theory, Numerical Analysis. Please indicate the three areas A, B and C  where you have the required Mathematics skills already earned.   
+</P>
+
+<Button>
+  {areaA}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" />
+</Button>
+<Dropdown class="w-44 p-3 space-y-3 text-sm">
+  <li>
+    <Radio name="areaA" bind:group={areaA} value={0}>Please select Area A</Radio>
+  </li>
+ {#each formTopics as topic} 
+  <li>
+    <Radio name="areaA" bind:group={areaA} value={topic.id}>{topic.name}</Radio>
+  </li>
+  {/each}
+</Dropdown>
+
+<Button>
+  {areaB}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" />
+</Button>
+<Dropdown class="w-44 p-3 space-y-3 text-sm">
+  <li>
+    <Radio name="areaB" bind:group={areaB} value={0}>Please select Area B</Radio>
+  </li>
+ {#each formTopics as topic} 
+  <li>
+    <Radio name="areaB" bind:group={areaB} value={topic.id}>{topic.name}</Radio>
+  </li>
+  {/each}
+</Dropdown>
+
+<Button>
+  {areaC}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" />
+</Button>
+<Dropdown class="w-44 p-3 space-y-3 text-sm">
+  <li>
+    <Radio name="areaC" bind:group={areaC} value={0}>Please select Area B</Radio>
+  </li>
+ {#each formTopics as topic} 
+  <li>
+    <Radio name="areaC" bind:group={areaC} value={topic.id}>{topic.name}</Radio>
+  </li>
+  {/each}
+</Dropdown>
+
+<P>
+To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript and its number of points as listed in the transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
 </P>
 {#each formTopics as topic}
 <div class="my-4">
