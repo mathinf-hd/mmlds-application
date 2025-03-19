@@ -2,7 +2,7 @@
 
 A simple static web page providing a form that can be filled in and then downloaded as a json file.
 
-To edit the contents: jj
+To edit the contents:
 
 - the headings and introductory text are defined in [src/routes/+page.svelte](src/routes/+page.svelte)
 - the topics and subtopics are defined in [src/lib/formTopics.ts](src/lib/formTopics.ts)
