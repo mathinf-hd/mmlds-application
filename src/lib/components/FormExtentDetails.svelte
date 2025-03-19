@@ -26,7 +26,7 @@
 	<Heading tag="h4" class="mb-4">Field of study</Heading>
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
-				<TableHeadCell class="min-w-60 text-2xs p-2">Name of Field in Transcript</TableHeadCell>
+				<TableHeadCell class="min-w-60 text-2xs p-2">Field of Bachelor of Science in Transcript</TableHeadCell>
 				<TableHeadCell class="w-12 text-2xs p-2">Grade</TableHeadCell>
 				{#each formFields as field}
 					<TableHeadCell class="text-2xs p-2 m-auto">{field.name}</TableHeadCell>
@@ -35,7 +35,7 @@
 			</TableHead>
 			<TableBody>
 				<TableBodyRow>	
-					<TableBodyCell class="p-2" color="red">Textfeld</TableBodyCell>
+					<TableBodyCell class="p-2"><font color="red">Textfeld</font></TableBodyCell>
 					<TableBodyCell class="p-2 text-2xs" color="red">Number</TableBodyCell>
 					{#each formFields as field}
 					<TableBodyCell class="p-2" color="red">Checkbox</TableBodyCell>
@@ -47,7 +47,7 @@
 	</div>	
 
 
-     <P color="gray">
+     <P style="color: gray">
 56 ECTS credit points in computer science and 16 ECTS credit points in mathematics, your credits (as listed in your transcript and entered in this form) will be converted automatically to ECTS. For this conversion, you have to enter the standard period of study in months (not the time that you needed to finish your individual study) of your bachelor and the standard number of credits points that have to be earned for your bachelor.
 	</P>
 	<div class="flex gap-8 items-center">
