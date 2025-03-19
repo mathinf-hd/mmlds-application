@@ -17,8 +17,8 @@ import { data, addLecture, deleteLecture, addSkill, checkDuplicateLecture } from
 </P>
 {#each formTopics as topic}
 <div class="my-4">
-	<Heading tag="h4" class="mb-4">{topic.name} <Button color="yellow" id="{topic}>{topic.name} Modul</Button>	
-	<Popover class="w-64 text-sm font-light " title="{topic.name}" triggeredBy="#{topic}"{topic.name} Right?</Popover>	
+	<Heading tag="h4" class="mb-4">{topic.name} <Button color="yellow" id="{topic}">{topic.name} Modul</Button>	
+	<Popover class="w-64 text-sm font-light " title="{topic.name}" triggeredBy="#{topic}">{topic.name} Right?</Popover>	
  	</Heading>
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
