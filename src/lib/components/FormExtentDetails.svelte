@@ -38,9 +38,9 @@
 					<TableBodyCell class="p-2"></TableBodyCell>
 					<TableBodyCell class="p-2 text-2xs"></TableBodyCell>
 					{#each formFields as field}
-					<TableBodyCell class="p-2"><Checkbox bind:checked= on:change={() => } class="m-auto"/></TableBodyCell>
+					<TableBodyCell class="p-2"></TableBodyCell>
 					{/each}
-					<TableBodyCell class="p-2 text-2xs"><Input type="text" bind:value= class="text-2xs"/></TableBodyCell>
+					<TableBodyCell class="p-2 text-2xs"></TableBodyCell>
 				</TableBodyRow>
 			</TableBody>
 	</Table>
