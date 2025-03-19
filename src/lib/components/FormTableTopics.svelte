@@ -23,29 +23,31 @@ let areaC = 'Please select Area C';
 
 <div class="my-4">
 <Button>
-  {areaA} <ChevronDownOutline class="text-2xs m-2" />
+  {areaA} <ChevronDownOutline class="text-2xs p-2" />
 </Button>
-<Dropdown class="text-2xs m-2">
+<Dropdown class="text-2xs p-2">
  {#each formTopics as topic} 
   <li>
     <Radio name="areaA" bind:group={areaA} value={topic.name}>{topic.name}</Radio>
   </li>
   {/each}
 </Dropdown>
-
+</div>
+<div class="my-4">
 <Button>
-  {areaB}<ChevronDownOutline class="text-2xs m-2" />
+  {areaB}<ChevronDownOutline class="text-2xs p-2" />
 </Button>
-<Dropdown class="text-2xs m-2">
+<Dropdown class="text-2xs p-2">
  {#each formTopics as topic}
- {#if topc.name != areaA}
+ {#if topic.name != areaA}
   <li>
     <Radio name="areaB" bind:group={areaB} value={topic.name}>{topic.name}</Radio>
   </li>
   {/if}
   {/each}
 </Dropdown>
-
+</div>
+<div class="my-4">
 <Button>
   {areaC}<ChevronDownOutline class="text-2xs p-2" />
 </Button>
