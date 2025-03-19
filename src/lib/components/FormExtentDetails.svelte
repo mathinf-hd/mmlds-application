@@ -35,7 +35,7 @@
 			</TableHead>
 			<TableBody>
 				<TableBodyRow>	
-					<TableBodyCell class="p-2"><font color="red">Textfeld</font></TableBodyCell>
+					<TableBodyCell class="p-2"><p style="color: red">Textfeld</p></TableBodyCell>
 					<TableBodyCell class="p-2 text-2xs" color="red">Number</TableBodyCell>
 					{#each formFields as field}
 					<TableBodyCell class="p-2" color="red">Checkbox</TableBodyCell>
