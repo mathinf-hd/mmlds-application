@@ -47,7 +47,7 @@
 	</div>	
 
 
-     <P>
+     <P color="gray">
 56 ECTS credit points in computer science and 16 ECTS credit points in mathematics, your credits (as listed in your transcript and entered in this form) will be converted automatically to ECTS. For this conversion, you have to enter the standard period of study in months (not the time that you needed to finish your individual study) of your bachelor and the standard number of credits points that have to be earned for your bachelor.
 	</P>
 	<div class="flex gap-8 items-center">
