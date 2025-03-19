@@ -12,7 +12,7 @@ import { formTopics } from '$lib/topics';
 import { data, addLecture, deleteLecture, addSkill, checkDuplicateLecture } from '$lib/store/store';
 
 let areaA = 'Please select Area A';
-let areaB = 0;
+let areaB = 'Please select Area B';
 let areaC = 'Please select Area C';
 
 </script>
@@ -21,28 +21,28 @@ let areaC = 'Please select Area C';
 	The admission regulations recognize skills in <b>Mathematics</b> which you acquired in the following areas through corresponding foundational lectures (each 8 ECTS): Analysis, Linear Algebra, and three of the five areas: Functional Analysis, Differential Geometry, Optimization, Statistics and Probability Theory, Numerical Analysis. Please indicate the three areas A, B and C  where you have the required Mathematics skills already earned.   
 </P>
 
+<div class="my-4">
 <Button>
-  {areaA} <ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" />
+  {areaA} <ChevronDownOutline class="text-2xs m-2" />
 </Button>
-<Dropdown class="w-60 p-3 space-y-3 text-sm">
- {#each formTopics as topic, i} 
+<Dropdown class="text-2xs m-2">
+ {#each formTopics as topic} 
   <li>
-    <Radio name="areaA" bind:group={areaA} value={i}>{topic.name}</Radio>
+    <Radio name="areaA" bind:group={areaA} value={topic.name}>{topic.name}</Radio>
   </li>
   {/each}
 </Dropdown>
 
 <Button>
-  {areaB}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" />
+  {areaB}<ChevronDownOutline class="text-2xs m-2" />
 </Button>
-<Dropdown class="w-44 p-3 space-y-3 text-sm">
+<Dropdown class="text-2xs m-2">
+ {#each formTopics as topic}
+ {#if topc.name != areaA}
   <li>
-    <Radio name="areaB" bind:group={areaB} value={0}>Please select Area B</Radio>
+    <Radio name="areaB" bind:group={areaB} value={topic.name}>{topic.name}</Radio>
   </li>
- {#each formTopics as topic, i}
-  <li>
-    <Radio name="areaB" bind:group={areaB} value={i}>{topic.name}</Radio>
-  </li>
+  {/if}
   {/each}
 </Dropdown>
 
@@ -50,16 +50,13 @@ let areaC = 'Please select Area C';
   {areaC}<ChevronDownOutline class="text-2xs p-2" />
 </Button>
 <Dropdown class="text-2xs p-2">
-  <li>
-    <Radio name="areaC" bind:group={areaC} value={0}>Please select Area C</Radio>
-  </li>
  {#each formTopics as topic} 
   <li>
     <Radio name="areaC" bind:group={areaC} value={topic.name}>{topic.name}</Radio>
   </li>
   {/each}
 </Dropdown>
-
+</div>
 <P>
 To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript and its number of points as listed in the transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
 </P>
