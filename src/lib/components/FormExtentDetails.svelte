@@ -36,11 +36,11 @@
 			<TableBody>
 				<TableBodyRow>	
 					<TableBodyCell class="p-2"><p style="color: red">Textfeld</p></TableBodyCell>
-					<TableBodyCell class="p-2 text-2xs" color="red">Number</TableBodyCell>
+					<TableBodyCell class="p-2 text-2xs"><p style="color: red">Number</p></TableBodyCell>
 					{#each formFields as field}
-					<TableBodyCell class="p-2" color="red">Checkbox</TableBodyCell>
+					<TableBodyCell class="p-2"><p style="color: red">Checkbox</p></TableBodyCell>
 					{/each}
-					<TableBodyCell class="p-2 text-2xs" color="red">Textfeld</TableBodyCell>
+					<TableBodyCell class="p-2 text-2xs" color="red"><p style="color: red">Textfeld</p></TableBodyCell>
 				</TableBodyRow>
 			</TableBody>
 	</Table>
@@ -51,7 +51,7 @@
 56 ECTS credit points in computer science and 16 ECTS credit points in mathematics, your credits (as listed in your transcript and entered in this form) will be converted automatically to ECTS. For this conversion, you have to enter the standard period of study in months (not the time that you needed to finish your individual study) of your bachelor and the standard number of credits points that have to be earned for your bachelor.
 	</P>
 	<div class="flex gap-8 items-center">
-		<div class="w-120"><P class="font-bold">Standard period of your study program in months (not the time it took you to finish your studies)</P></div>
+		<div class="w-120"><P class="font-bold" style="color: gray"> Standard period of your study program in months (not the time it took you to finish your studies)</P></div>
 		<PositiveNumberInput bind:value={$data["extentDetails"]["duration"]} class="w-20 text-2xs text-center" />
 	</div>
 	<div class="flex gap-8 items-center">
