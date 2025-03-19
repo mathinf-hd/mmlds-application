@@ -25,7 +25,7 @@ let transitionParams = {
 </P>
 {#each formTopics as topic}
 <div class="my-4">
-	<Heading tag="h4" class="mb-4">{topic.name} <Button color="orange" on:click={() => (hiddenBackdropTrue = false)}>{topic.name}</Button>	
+	<Heading tag="h4" class="mb-4">{topic.name} <Button color="yellow" on:click={() => (hiddenBackdropTrue = false)}>{topic.name}</Button>	
 	<Drawer backdrop={true} transitionType="fly" {transitionParams} bind:hidden={hiddenBackdropTrue} id="{topic}">
   	<div class="flex items-center"><CloseButton on:click={() => (hiddenBackdropTrue = true)} class="mb-4 dark:text-white" /></div>  
  	 <p class="mb-6 text-sm text-gray-500 dark:text-gray-400">{topic.name}</p>
