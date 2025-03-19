@@ -35,12 +35,12 @@
 			</TableHead>
 			<TableBody>
 				<TableBodyRow>	
-					<TableBodyCell class="p-2"></TableBodyCell>
-					<TableBodyCell class="p-2 text-2xs"></TableBodyCell>
+					<TableBodyCell class="p-2" color="red">Textfeld</TableBodyCell>
+					<TableBodyCell class="p-2 text-2xs" color="red">Number</TableBodyCell>
 					{#each formFields as field}
-					<TableBodyCell class="p-2"></TableBodyCell>
+					<TableBodyCell class="p-2" color="red">Checkbox</TableBodyCell>
 					{/each}
-					<TableBodyCell class="p-2 text-2xs"></TableBodyCell>
+					<TableBodyCell class="p-2 text-2xs" color="red">Textfeld</TableBodyCell>
 				</TableBodyRow>
 			</TableBody>
 	</Table>
