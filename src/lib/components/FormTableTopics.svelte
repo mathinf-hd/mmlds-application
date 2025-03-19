@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Button, Checkbox, Heading, Input, P, Table, 
+import { Drawer, CloseButton,  Button, Checkbox, Heading, Input, P, Table, 
 			TableBody, TableBodyCell, TableBodyRow, 
 			TableHead, TableHeadCell } from 'flowbite-svelte';
 import { TrashBinOutline }  from 'flowbite-svelte-icons';
@@ -10,15 +10,27 @@ import { formTopics } from '$lib/topics';
 
 import { data, addLecture, deleteLecture, addSkill, checkDuplicateLecture } from '$lib/store/store';
 
+import { sineIn } from 'svelte/easing';
 
+let hiddenBackdropTrue = true;
+let transitionParams = {
+    x: -320,
+    duration: 200,
+    easing: sineIn
+  };
 </script>
 
 <P>
-	The admission regulations recognize skills that you earned in your lectures. The skills are organized into nine basic topics ("Practical computer science", ...). To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript and its number of points as listed in the transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English). <b>Please notice that the automatic replication of the lectures across the different fields is intentional (a lecture can provide skills in more than one of the nine topics).</b>
+	The admission regulations recognize skills in <b>Mathematics</b> which you acquired in the following areas through corresponding foundational lectures (each 8 ECTS): Analysis, Linear Algebra, and three of the five areas: Functional Analysis, Differential Geometry, Optimization, Statistics and Probability Theory, Numerical Analysis. To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript and its number of points as listed in the transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
 </P>
 {#each formTopics as topic}
 <div class="my-4">
-	<Heading tag="h4" class="mb-4">{topic.name}</Heading>
+	<Heading tag="h4" class="mb-4">{topic.name} <Button on:click={() => (hiddenBackdropTrue = false)}>Modul description</Button>	
+	<Drawer backdrop={true} transitionType="fly" {transitionParams} bind:hidden={hiddenBackdropTrue} id="sidebar1">
+  	<div class="flex items-center"><CloseButton on:click={() => (hiddenBackdropTrue = true)} class="mb-4 dark:text-white" /></div>  
+ 	 <p class="mb-6 text-sm text-gray-500 dark:text-gray-400">{topic.name}</p>
+	</Drawer>
+	</Heading>
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
 				<TableHeadCell class="min-w-60 text-2xs p-2">Lecture Name in Transcript</TableHeadCell>

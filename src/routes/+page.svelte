@@ -25,12 +25,12 @@
 	</Card>
 
 	<Card size="xl" class="my-2">
-		<Heading tag="h3" class="mb-4 text-center">Skills</Heading>
+		<Heading tag="h3" class="mb-4 text-center">Skills in Mathematics</Heading>
 		<FormTableTopics />
 	</Card>
 
 	<Card size="xl" class="my-2">
-		<Heading tag="h3" class="mb-4 text-center">Lecture Assignment</Heading>
+		<Heading tag="h3" class="mb-4 text-center">Programming skills</Heading>
 		<FormLectureAssigment />
 	</Card>
 

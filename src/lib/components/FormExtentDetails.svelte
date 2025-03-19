@@ -55,7 +55,7 @@
 		<PositiveNumberInput bind:value={$data["extentDetails"]["duration"]} class="w-20 text-2xs text-center" />
 	</div>
 	<div class="flex gap-8 items-center">
-		<div class="w-120"><P class="font-bold">Total number of credit points required in your study program (no grades, no grade point averages etc.)</P></div>
+		<div class="w-120"><P class="font-bold" style="color: gray">Total number of credit points required in your study program (no grades, no grade point averages etc.)</P></div>
 		<PositiveNumberInput bind:value={$data["extentDetails"]["points"]} class="w-20 text-2xs text-center" />
 	</div>
 </div>
