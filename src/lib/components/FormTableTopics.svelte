@@ -22,7 +22,7 @@ let areaC = 0;
 </P>
 
 <Button>
-  {formTopics[{areaA}].name}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" />
+  {areaA} <ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" />
 </Button>
 <Dropdown class="w-60 p-3 space-y-3 text-sm">
   <li>
@@ -46,7 +46,6 @@ let areaC = 0;
   <li>
     <Radio name="areaB" bind:group={areaB} value={i}>{topic.name}</Radio>
   </li>
-  {/if}
   {/each}
 </Dropdown>
 
