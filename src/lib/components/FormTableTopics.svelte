@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Drawer, CloseButton,  Button, Checkbox, Heading, Input, P, Table, 
+import { Popover,  Button, Checkbox, Heading, Input, P, Table, 
 			TableBody, TableBodyCell, TableBodyRow, 
 			TableHead, TableHeadCell } from 'flowbite-svelte';
 import { TrashBinOutline }  from 'flowbite-svelte-icons';
@@ -10,14 +10,6 @@ import { formTopics } from '$lib/topics';
 
 import { data, addLecture, deleteLecture, addSkill, checkDuplicateLecture } from '$lib/store/store';
 
-import { sineIn } from 'svelte/easing';
-
-let hiddenBackdropTrue = true;
-let transitionParams = {
-    x: -320,
-    duration: 200,
-    easing: sineIn
-  };
 </script>
 
 <P>
@@ -25,12 +17,9 @@ let transitionParams = {
 </P>
 {#each formTopics as topic}
 <div class="my-4">
-	<Heading tag="h4" class="mb-4">{topic.name} <Button color="yellow" on:click={() => (hiddenBackdropTrue = false)}>{topic.name}</Button>	
-	<Drawer backdrop={true} transitionType="fly" {transitionParams} bind:hidden={hiddenBackdropTrue} id="{topic}">
-  	<div class="flex items-center"><CloseButton on:click={() => (hiddenBackdropTrue = true)} class="mb-4 dark:text-white" /></div>  
- 	 <p class="mb-6 text-sm text-gray-500 dark:text-gray-400">{topic.name}</p>
-	</Drawer>
-	</Heading>
+	<Heading tag="h4" class="mb-4">{topic.name} <Button color="yellow" id="{topic}>{topic.name} Modul</Button>	
+	<Popover class="w-64 text-sm font-light " title="{topic.name}" triggeredBy="#{topic}"{topic.name} Right?</Popover>	
+ 	</Heading>
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
 				<TableHeadCell class="min-w-60 text-2xs p-2">Lecture Name in Transcript</TableHeadCell>
