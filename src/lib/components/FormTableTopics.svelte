@@ -50,9 +50,9 @@ let areaC = 0;
 </Dropdown>
 
 <Button>
-  {areaC}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" />
+  {areaC}<ChevronDownOutline class="text-2xs p-2" />
 </Button>
-<Dropdown class="w-44 p-3 space-y-3 text-sm">
+<Dropdown class="text-2xs p-2">
   <li>
     <Radio name="areaC" bind:group={areaC} value={0}>Please select Area C</Radio>
   </li>
