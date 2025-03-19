@@ -22,15 +22,15 @@ let areaC = 0;
 </P>
 
 <Button>
-  {areaA}<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" />
+  {formTopics[{areaA}].name}<ChevronDownOutline class="w-60 h-6 ms-2 text-white dark:text-white" />
 </Button>
 <Dropdown class="w-44 p-3 space-y-3 text-sm">
   <li>
     <Radio name="areaA" bind:group={areaA} value={0}>Please select Area A</Radio>
   </li>
- {#each formTopics as topic} 
+ {#each formTopics as topic, i} 
   <li>
-    <Radio name="areaA" bind:group={areaA} value={topic.id}>{topic.name}</Radio>
+    <Radio name="areaA" bind:group={areaA} value={i}>{topic.name}</Radio>
   </li>
   {/each}
 </Dropdown>
@@ -42,10 +42,12 @@ let areaC = 0;
   <li>
     <Radio name="areaB" bind:group={areaB} value={0}>Please select Area B</Radio>
   </li>
- {#each formTopics as topic} 
+ {#each formTopics as topic}
+  {#if topic != formTopics[{areaA}]}
   <li>
-    <Radio name="areaB" bind:group={areaB} value={topic.id}>{topic.name}</Radio>
+    <Radio name="areaB" bind:group={areaB} value={i}>{topic.name}</Radio>
   </li>
+  {/if}
   {/each}
 </Dropdown>
 
@@ -54,11 +56,11 @@ let areaC = 0;
 </Button>
 <Dropdown class="w-44 p-3 space-y-3 text-sm">
   <li>
-    <Radio name="areaC" bind:group={areaC} value={0}>Please select Area B</Radio>
+    <Radio name="areaC" bind:group={areaC} value={0}>Please select Area C</Radio>
   </li>
  {#each formTopics as topic} 
   <li>
-    <Radio name="areaC" bind:group={areaC} value={topic.id}>{topic.name}</Radio>
+    <Radio name="areaC" bind:group={areaC} value={topic.name}>{topic.name}</Radio>
   </li>
   {/each}
 </Dropdown>
