@@ -93,7 +93,6 @@ To declare these skills, add for each respective lecture its English name as lis
 				{#each $data.lectures as lecture, lectureIdx}
 				<TableBodyRow>
 					<TableBodyCell class="p-2"><GenericValidatedInput type="text" bind:value={lecture.name} validateFn={() => checkDuplicateLecture(lectureIdx)} class="text-2xs"/></TableBodyCell>
-					<TableBodyCell class="p-2 text-2xs"><PositiveNumberInput bind:value={lecture.points} class="text-2xs text-center"/></TableBodyCell>
 					{#each topic.subtopics as subTopic}
 					<TableBodyCell class="p-2"><Checkbox bind:checked={lecture.skills[subTopic]} on:change={() => addSkill(lectureIdx, subTopic)} class="m-auto"/></TableBodyCell>
 					{/each}
