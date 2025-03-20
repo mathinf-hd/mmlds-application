@@ -47,11 +47,11 @@ let areaC = 'Please select Area C';
 <Button>
   {areaC}<ChevronDownOutline class="text-2xs m-2" />
 </Button>
-<Dropdown class="text-2xs p-2">
+<Dropdown class="text-2xs p-2" bind:open={dropdownOpen}>
  {#each formTopics as topic}
   {#if topic.name != areaA}
    {#if topic.name != areaB}
-  <li>
+  <li on:click={() => (dropdownOpen = false)}>
     <Radio name="areaC" bind:group={areaC} value={topic.name} on:click={() => (dropdownOpen = false)}>{topic.name}</Radio>
   </li>
   {/if}
