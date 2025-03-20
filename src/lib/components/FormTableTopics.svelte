@@ -41,7 +41,7 @@ let areaC = 'Please select Area C';
   </li>
   {/each}
 </Dropdown>
-<Button>
+<Button on:click={() => (areaC = 'Please select Area C')}>
   {areaB}<ChevronDownOutline class="text-2xs m-2" />
 </Button>
 <Dropdown class="text-2xs p-2">
