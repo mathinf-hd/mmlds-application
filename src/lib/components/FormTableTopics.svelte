@@ -84,7 +84,7 @@ To declare these skills, add for each respective lecture its English name as lis
 <div class="my-4">
 	<Heading tag="h4" class="mb-4">{topic.name} <Button color="yellow" id="{topic.id}">{topic.name} Modul</Button>	
 	<Popover class="w-64 text-sm font-light " title="{topic.name}" triggeredBy="#{topic.id}">{topic.name} Right?</Popover>	
-	<Button color="green" on:click={() => (let hidden1 = false, let draweridx = {topicidx})}>Show drawer</Button>
+	<Button color="green" on:click={() => (hidden1 = false, draweridx = {topicidx})}>Show drawer</Button>
 	</Heading>
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
