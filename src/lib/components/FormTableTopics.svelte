@@ -37,7 +37,7 @@ let areaC = 'Please select Area C';
 <Dropdown class="text-2xs p-2">
  {#each formTopics as topic} 
   <li>
-    <Radio name="areaA" bind:group={areaA} value={topic.name}  on:click={() => (areaB = 'Please select Area B')}>{topic.name}</Radio>
+    <Radio name="areaA" bind:group={areaA} value={topic.name}>{topic.name}</Radio>
   </li>
   {/each}
 </Dropdown>
