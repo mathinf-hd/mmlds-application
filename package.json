@@ -47,6 +47,10 @@
 		"onlyBuiltDependencies": [
 			"esbuild",
 			"svelte-preprocess"
+		],
+		"ignoredBuiltDependencies": [
+			"esbuild",
+			"svelte-preprocess"
 		]
 	}
 }
