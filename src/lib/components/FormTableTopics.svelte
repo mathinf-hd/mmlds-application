@@ -51,7 +51,7 @@ let areaC = 'Please select Area C';
  {#each formTopics as topic}
   {#if topic.name != areaA}
    {#if topic.name != areaB}
-  <li on:click={() => (dropdownOpen = false)}>
+  <li>
     <Radio name="areaC" bind:group={areaC} value={topic.name} on:click={() => (dropdownOpen = false)}>{topic.name}</Radio>
   </li>
   {/if}
