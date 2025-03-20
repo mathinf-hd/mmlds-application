@@ -52,7 +52,7 @@ let areaC = 'Please select Area C';
   {#if topic.name != areaA}
    {#if topic.name != areaB}
   <li>
-    <Radio name="areaC" bind:group={areaC} value={topic.name}>{topic.name}</Radio>
+    <Radio name="areaC" bind:group={areaC} value={topic.name} on:click={() => (dropdownOpen = false)}>{topic.name}</Radio>
   </li>
   {/if}
     {/if}
