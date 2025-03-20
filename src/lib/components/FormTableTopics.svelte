@@ -82,7 +82,6 @@ To declare these skills, add for each respective lecture its English name as lis
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
 				<TableHeadCell class="min-w-60 text-2xs p-2">Lecture Name in Transcript</TableHeadCell>
-				<TableHeadCell class="w-12 text-2xs p-2">Points</TableHeadCell>
 				{#each topic.subtopics as subTopic}
 					<TableHeadCell class="text-2xs p-2 m-auto">{subTopic}</TableHeadCell>
 				{/each}
