@@ -66,7 +66,9 @@ To declare these skills, add for each respective lecture its English name as lis
 <div class="my-4">
 	<Heading tag="h4" class="mb-4">{topic.name} <Button color="yellow" id="{topic.id}">{topic.name} Modul</Button>	
 	<Popover class="w-64 text-sm font-light " title="{topic.name}" triggeredBy="#{topic.id}">{topic.name} Right?</Popover>	
- 	</Heading>
+	<Button color="green" on:click={() => (hidden1 = false)}>Show drawer</Button>	       
+
+	</Heading>
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
 				<TableHeadCell class="min-w-60 text-2xs p-2">Lecture Name in Transcript</TableHeadCell>

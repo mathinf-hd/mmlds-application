@@ -12,9 +12,10 @@ let timeS = 'Please select Time slot';
 
 </script>
 
-<P> Please declare the details on your bachelor's field of study, your lectures and skills to be recognized, and provide your answers to the motivation questions, by filling in this form and then clicking "Save form data" at the bottom to save its contents to a file. Subsequently, upload this file to your application in heiCO. <b>Please notice </b> that the form is filled locally on your computer, i.e., your contents are not sent to any server.   In case you are invited to an online interview which general time slot would be mor copnveninet for you. 
-</P>
+<P> Please declare the details on your bachelor's field of study, your lectures and skills to be recognized, and provide your answers to the motivation questions, by filling in this form and then clicking "Save form data" at the bottom to save its contents to a file. Subsequently, upload this file to your application in heiCO. <b>Please notice </b> that the form is filled locally on your computer, i.e., your contents are not sent to any server.</P>
 
+<Heading tag="h4" class="mb-4">Time slot for an online interview</Heading>
+<P> In case you are invited to an online interview which general time slot would be more convenient for you. </P>
 <div class="my-4">
 <Button>
   {timeS} <ChevronDownOutline class="text-2xs m-2" />
@@ -27,3 +28,4 @@ let timeS = 'Please select Time slot';
   {/each}
 </Dropdown>
 </div>
+
