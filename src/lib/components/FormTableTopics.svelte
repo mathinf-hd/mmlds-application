@@ -31,13 +31,13 @@ let areaC = 'Please select Area C';
 </P>
 
 <div class="my-4">
-<Button on:click={() => ({areaB = 'Please select Area B', areaC = 'Please select Area C'})}>
+<Button>
   {areaA} <ChevronDownOutline class="text-2xs m-2" />
 </Button>
 <Dropdown class="text-2xs p-2">
  {#each formTopics as topic} 
   <li>
-    <Radio name="areaA" bind:group={areaA} value={topic.name}>{topic.name}</Radio>
+    <Radio name="areaA" bind:group={areaA} value={topic.name}  on:click={() => (areaB = 'Please select Area B')}>{topic.name}</Radio>
   </li>
   {/each}
 </Dropdown>
