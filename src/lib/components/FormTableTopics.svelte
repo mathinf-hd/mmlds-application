@@ -31,7 +31,7 @@ let areaC = 'Please select Area C';
 </P>
 
 <div class="my-4">
-<Button on:click={() => ({areaB = 'Please select Area B', areaC = 'Please select Area C'})}>
+<Button on:click={() => (areaB = 'Please select Area B')}>
   {areaA} <ChevronDownOutline class="text-2xs m-2" />
 </Button>
 <Dropdown class="text-2xs p-2">
