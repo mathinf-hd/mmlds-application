@@ -72,18 +72,19 @@ let areaC = 'Please select Area C';
 To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript and its number of points as listed in the transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
 </P>
 
+	<Drawer transitionType="fly" {transitionParams} bind:hidden={hidden1} id="sidebar1">
+  	 <div class="flex items-center">
+    	 <CloseButton on:click={() => (hidden1 = true)} class="mb-4 dark:text-white" />
+	 </div>    
+ 	 <p class="mb-6 text-sm text-gray-500 dark:text-gray-400"> Drawer id {draweridx}  </p>
+	</Drawer>
+
 
 {#each formTopics as topic, topicidx}
 <div class="my-4">
 	<Heading tag="h4" class="mb-4">{topic.name} <Button color="yellow" id="{topic.id}">{topic.name} Modul</Button>	
 	<Popover class="w-64 text-sm font-light " title="{topic.name}" triggeredBy="#{topic.id}">{topic.name} Right?</Popover>	
-	<Button color="green" on:click={() => (hidden1 = false, draweridx = topicidx)}>Show drawer</Button>
-	<Drawer transitionType="fly" {transitionParams} bind:hidden={hidden1} id="sidebar1">
-  	 <div class="flex items-center">
-    	 <CloseButton on:click={() => (hidden1 = true)} class="mb-4 dark:text-white" />
-	 </div>    
- 	 <p class="mb-6 text-sm text-gray-500 dark:text-gray-400"> Drawer id {draweridx} Topic id {topicidx} {formTopics[draweridx].name} </p>
-	</Drawer>
+	<Button color="green" on:click={() => (let hidden1 = false, let draweridx = {topicidx})}>Show drawer</Button>
 	</Heading>
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
