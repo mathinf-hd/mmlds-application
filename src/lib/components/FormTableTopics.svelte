@@ -17,7 +17,6 @@ let areaC = 'Please select Area C';
 
  import { sineIn } from 'svelte/easing';
  let hidden1 = true;
- let draweridx = 0;
  let transitionParams = {
     x: -320,
     duration: 200,
@@ -73,17 +72,18 @@ To declare these skills, add for each respective lecture its English name as lis
 </P>
 
 
-{#each formTopics as topic, topicidx}
-<div class="my-4">
-	<Heading tag="h4" class="mb-4">{topic.name} <Button color="yellow" id="{topic.id}">{topic.name} Modul</Button>	
-	<Popover class="w-64 text-sm font-light " title="{topic.name}" triggeredBy="#{topic.id}">{topic.name} Right?</Popover>	
 	<Button color="green" on:click={() => (hidden1 = false)}>Show drawer</Button>
 	<Drawer transitionType="fly" {transitionParams} bind:hidden={hidden1} id="sidebar1">
- 	 <div class="flex items-center">		 
-	     <CloseButton on:click={() => (hidden1 = true)} class="mb-4 dark:text-white" />
-         </div>     
- 	  <p class="mb-6 text-sm text-gray-500 dark:text-gray-400"> {topic.name} </p>
-	  </Drawer>
+	 <div class="flex items-center">		 
+	 <CloseButton on:click={() => (hidden1 = true)} class="mb-4 dark:text-white" />
+         </div>          
+ 	 <p class="mb-6 text-sm text-gray-500 dark:text-gray-400"> test </p>
+	 </Drawer>	 
+
+{#each formTopics as topic, topicidx}
+<div class="my-4">
+	<Heading tag="h4" class="mb-4">{topic.name} <Button color="yellow" id="{topicidx}">{topic.name} Modul</Button>	
+	<Popover class="w-64 text-sm font-light " title="{topic.name}" triggeredBy="#{topicidx}">{topic.name} Right?</Popover>	
 	</Heading>
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
