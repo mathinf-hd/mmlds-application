@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Drawer, Popover,  Dropdown, DropdownItem, Radio,
+import { Popover,  Dropdown, DropdownItem, Radio,
        	 	   Button, CloseButton, Checkbox, Heading, Input, P, Table, 
 		   TableBody, TableBodyCell, TableBodyRow, 
 		   TableHead, TableHeadCell } from 'flowbite-svelte';
@@ -14,16 +14,6 @@ import { data, addLecture, deleteLecture, addSkill, checkDuplicateLecture } from
 let areaA = 'Please select Area A';
 let areaB = 'Please select Area B';
 let areaC = 'Please select Area C';
-
-import { sineIn } from 'svelte/easing';
-
-let hidden6 = true;
-
-let transitionParams = {
-    x: -320,
-    duration: 200,
-    easing: sineIn
-};
 
 </script>
 
