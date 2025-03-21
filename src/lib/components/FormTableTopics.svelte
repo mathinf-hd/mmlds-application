@@ -103,7 +103,7 @@ To declare these skills, add for each respective lecture its English name as lis
   test
    <ul>
   {#each topic.modul as modul}
-  <il> { modul } </il>
+  <li> { modul } </li>
   {/each}
   </ul>
 </p>	
