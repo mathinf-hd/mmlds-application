@@ -1,4 +1,4 @@
-type Topic = {name: string, subtopics: Skills};
+type Topic = {name: string, description: string, subtopics: Skills};
 type Topics = Array<Topic>;
 type Skill = string;
 type Skills = Array<Skill>

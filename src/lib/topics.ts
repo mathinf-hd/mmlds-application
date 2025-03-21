@@ -1,7 +1,8 @@
 export const formTopics: Topics = [
 	{
-	        id: 'Tp1',
+	    id: 'Tp1',
 		name: 'Differential Geometry',
+		description: 'Differential Geometry',
 		subtopics: [
 			'Manifolds',
 			'Vector bundles',
@@ -14,6 +15,7 @@ export const formTopics: Topics = [
 	{
 		id: 'Tp2',	
 		name: 'Functional Analysis',
+		description: 'Functional Analysis',
 		subtopics: [
 			'Continuation of uniformly continuous maps',
 			'Banach spaces and linear operators',
@@ -26,6 +28,7 @@ export const formTopics: Topics = [
 	{
 		id: 'Tp3',		
 		name: 'Numerical Analysis',
+		description: 'Numerical Analysis',
 		subtopics: [
 			'Conditioning and stability',
 			'Interpolation and quadrature (1d)',
@@ -38,6 +41,7 @@ export const formTopics: Topics = [
 	{
 		id: 'Tp4',
 		name:'Statistics and Probability Theory',
+		description: 'Statistics and Probability Theory',
 		subtopics: [
 			'Radon-Nikodym theorem',
 			'Markov kernels',
@@ -50,6 +54,7 @@ export const formTopics: Topics = [
 	{
 		id: 'Tp5',
 		name: 'Variational Methods and Optimization',
+		description: 'Variational Methods and Optimization',
 		subtopics: [
 			'Gateaux and Frechet derivative',
 			'Convex duality in optimization',

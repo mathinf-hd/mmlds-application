@@ -2,7 +2,7 @@
 import { Popover,  Dropdown, DropdownItem, Radio,
        	 	   Button, CloseButton, Checkbox, Heading, Input, P, Table, 
 		   TableBody, TableBodyCell, TableBodyRow, 
-		   TableHead, TableHeadCell } from 'flowbite-svelte';
+		   TableHead, TableHeadCell, Drawer } from 'flowbite-svelte';
 import { TrashBinOutline, ChevronDownOutline }  from 'flowbite-svelte-icons';
 
 import PositiveNumberInput from './PositiveNumberInput.svelte';
@@ -22,6 +22,15 @@ let areaC = 'Please select Area C';
     duration: 200,
     easing: sineIn
   };
+
+
+let selectedIndex = 0;
+
+// Function to open the drawer
+function openDrawer(index: number) {
+	selectedIndex = index;
+	hidden1 = false;
+}
 
 </script>
 
@@ -73,8 +82,8 @@ To declare these skills, add for each respective lecture its English name as lis
 
 {#each formTopics as topic, topicidx}
 <div class="my-4">
-	<Heading tag="h4" class="mb-4">{topic.name} <Button color="yellow" id="{topicidx}">{topic.name} Modul</Button>	
-	<Popover class="w-64 text-sm font-light " title="{topic.name}" triggeredBy="#{topicidx}">{topic.name} Right?</Popover>	
+	<Heading tag="h4" class="mb-4">{topic.name} 
+		<Button color="yellow" on:click={() => openDrawer(topicidx)}>{topic.name} Module</Button>	
 	</Heading>
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
@@ -101,3 +110,16 @@ To declare these skills, add for each respective lecture its English name as lis
 	<Button class="text-2xs m-2" on:click={() => addLecture()}>Add Another Lecture</Button>
 </div>
 {/each}
+
+<Drawer placement="left" transitionType="fly" bind:hidden={hidden1} transitionParams={transitionParams} class="w-64 text-sm font-light">
+	<div class="flex items-start">
+		<h5 id="drawer-label" class="text-base font-semibold text-gray-500 dark:text-gray-400">
+			{formTopics[selectedIndex].name} Module Description
+		</h5>
+		<CloseButton on:click={() => (hidden1 = true)} class="ml-auto dark:text-white"/>
+	</div>
+	<br>
+	<p class="mb-6 text-sm text-gray-500 dark:text-gray-400">
+		{formTopics[selectedIndex].description} 
+	</p>
+</Drawer>	
