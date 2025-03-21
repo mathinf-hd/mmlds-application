@@ -26,7 +26,7 @@ let hiddenList = Array.from({ length: formTopics.length }, (_, index) => ({
 
 let transitionParams = {
     x: -460,
-    duration: 200,
+    duration: 300,
     easing: sineIn
   };
 
@@ -93,7 +93,7 @@ To declare these skills, add for each respective lecture its English name as lis
 
 <div class="my-4">
      <Heading tag="h4" class="mb-4">{topic.name}  <Button on:click={() => (hiddenList[topicIdx].open = false)}> List of skills </Button>
-     <Drawer transitionType="fly" {transitionParams} bind:open={hiddenList[topicIdx].open}  id={hiddenList[topicIdx].id}>
+     <Drawer transitionType="fly" {transitionParams} bind:hidden={hiddenList[topicIdx].open}  id={hiddenList[topicIdx].id}>
      <div class="flex items-center">
      <CloseButton on:click={() => (hiddenList[topicIdx].open = true)} class="mb-4 dark:text-white" />
      </div>
