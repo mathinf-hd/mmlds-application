@@ -84,11 +84,10 @@ To declare these skills, add for each respective lecture its English name as lis
 </P>
 
 
-{ formTopics.length }
+
 
 {#each formTopics as topic, topicIdx}
-
-{ hiddenList[topicIdx].id } { hiddenList[topicIdx].open }
+{ hiddenList[testIdx].id } { hiddenList[topicIdx].open }
 
 <div class="text-center">
   <Button on:click={() => (hiddenList[topicIdx].open = false)}>Show drawer {hiddenList[topicIdx].id} </Button>
@@ -98,16 +97,17 @@ To declare these skills, add for each respective lecture its English name as lis
   <div class="flex items-center">
     <CloseButton on:click={() => (hiddenList[topicIdx].open = true)} class="mb-4 dark:text-white" />
   </div>
-  <p class="mb-6 text-sm text-gray-500 dark:text-gray-400">
-  { hiddenList[topicIdx].open }
+  <p class="normal-case bg-primary-700 text-white">
+  <ul>
+  {#each topic.modul as modul}
+  <il> { modul } </il>
+  {/each}
+  </ul>
   </p>
 </Drawer>
 
-{/each}
 
 
-
-{#each formTopics as topic, topicIdx}
 <div class="my-4">
 	<Heading tag="h4" class="mb-4">{topic.name} <Button color="yellow" id="poptop{topicIdx}">{topic.name} Modul</Button>	
 	<Popover class="w-64 text-sm font-light " title="{topic.name}" triggeredBy="#poptop{topicIdx}">{topic.name} Right?</Popover>	

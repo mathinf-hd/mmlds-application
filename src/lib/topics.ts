@@ -9,6 +9,9 @@ export const formTopics: Topics = [
 			'Simplicial complexes',
 			'Group actions',
 			'Covering spaces'
+		],
+		modul: [
+		'fehlt noch'
 		]
 	},
 	{
@@ -21,6 +24,11 @@ export const formTopics: Topics = [
 			'Measure theory and Lp spaces',
 			'Hilbert spaces and self adjoint operators',
 			'Spectral theory of compact operators'			
+		],
+		modul: [
+		'Metric spaces and their mappings: including completion, Baire's theorem, (relatively) compact subsets and their characterization, extendability of uniformly continuous mappings',
+		'Normed spaces and their mappings: including Banach spaces, dual spaces, weak topologies, topological vector spaces, examples of function spaces, spectral theory of compact operators, with the usual theorems (including the spectral theorem)',
+		'Hilbert spaces and their mappings'
 		]
 	},
 	{
@@ -33,7 +41,10 @@ export const formTopics: Topics = [
 			'Iterative methods and solution of nonlinear problems',
 			'Numerical methods for (stiff) ODEs',
 			'Eigenvalue problems'
-		]
+		],
+		modul:  [
+		'fehlt noch'
+		]		
 	},
 	{
 		id: 'Tp4',
@@ -45,6 +56,13 @@ export const formTopics: Topics = [
 			'Neyman-Pearson theory',
 			'Maximum likelihood estimation',
 			'Asymptotic normality'
+		],
+		modul:  [
+			'Measure and integration theory: Algebras, Borel algebra, measurable mappings, construction of probability measures, product spaces. Expectation as a measure integral, Lebesgue's, Beppo Levi's, Fubini's, and Radon-Nikodym's theorems',		
+			'Conditional distributions: Conditional expectations, Markov kernels',
+			'Stochastic processes  and stopping times',
+			'Martingales in discrete time',
+			'Markov chains in discrete time'
 		]
 	},
 	{
@@ -57,6 +75,12 @@ export const formTopics: Topics = [
 			'Positive (semi-)definite matrix cone',
 			'Conic programs (LPs, SOCPs, SDPs)',
 			'Proximal point methods'
+		],
+		modul:  [
+		'Classification of optimization problems',
+		'Optimality conditions, gradient and Newton methods for unconstrained differentiable optimization problems',
+		'Optimality conditions, duality, simplex method for linear optimization problems',
+		'Directional derivative and subdifferential of convex functions, optimality conditions, gradient and proximal-point methods for convex optimization problems'
 		]
 	}
 ]
