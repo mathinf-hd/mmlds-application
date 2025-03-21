@@ -81,7 +81,7 @@ To declare these skills, add for each respective lecture its English name as lis
   <div class="flex items-center">
     <CloseButton on:click={() => (hidden6 = true)} class="mb-4 dark:text-white" />
   </div>
-  <p class="mb-6 text-sm text-gray-500 dark:text-gray-400"> Lecture Name in </p>
+  <p class="mb-6 text-sm text-gray-500 dark:text-gray-400"> Lecture Name in Transcript </p>
 </Drawer>
 
 
