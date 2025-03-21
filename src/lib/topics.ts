@@ -26,7 +26,7 @@ export const formTopics: Topics = [
 			'Spectral theory of compact operators'			
 		],
 		modul: [
-		'Metric spaces and their mappings: including completion, Baire's theorem, (relatively) compact subsets and their characterization, extendability of uniformly continuous mappings',
+		'Metric spaces and their mappings: including completion, Baire theorem, (relatively) compact subsets and their characterization, extendability of uniformly continuous mappings',
 		'Normed spaces and their mappings: including Banach spaces, dual spaces, weak topologies, topological vector spaces, examples of function spaces, spectral theory of compact operators, with the usual theorems (including the spectral theorem)',
 		'Hilbert spaces and their mappings'
 		]
@@ -58,7 +58,7 @@ export const formTopics: Topics = [
 			'Asymptotic normality'
 		],
 		modul:  [
-			'Measure and integration theory: Algebras, Borel algebra, measurable mappings, construction of probability measures, product spaces. Expectation as a measure integral, Lebesgue's, Beppo Levi's, Fubini's, and Radon-Nikodym's theorems',		
+			'Measure and integration theory: Algebras, Borel algebra, measurable mappings, construction of probability measures, product spaces. Expectation as a measure integral, Lebesgue, Beppo Levi, Fubini, and Radon-Nikodym theorems',		
 			'Conditional distributions: Conditional expectations, Markov kernels',
 			'Stochastic processes  and stopping times',
 			'Martingales in discrete time',
