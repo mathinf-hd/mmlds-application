@@ -23,6 +23,7 @@ let hiddenList = Array.from({ length: formTopics.length }, (_, index) => ({
   }));
 
 
+
 let transitionParams = {
     x: -320,
     duration: 200,
@@ -90,13 +91,27 @@ To declare these skills, add for each respective lecture its English name as lis
 
 { hiddenList[topicIdx].id } { hiddenList[topicIdx].open }
 
+<div class="text-center">
+  <Button on:click={() => (hiddenList[topicIdx].open = false)}>Show drawer {hiddenList[topicIdx].id} </Button>
+</div>
+
+<Drawer transitionType="fly" {transitionParams} bind:hidden={hiddenList[topicIdx].open} placement="right" id={hiddenList[topicIdx].id}>
+  <div class="flex items-center">
+    <CloseButton on:click={() => (hiddenList[topicIdx].open = true)} class="mb-4 dark:text-white" />
+  </div>
+  <p class="normal-case bg-primary-700 text-white">
+  test
+   <ul>
+  {#each topic.modul as modul}
+  <il> { modul } </il>
+  {/each}
+  </ul>
+</p>	
+</Drawer>
 
 
 
 <div class="my-4">
-	<Heading tag="h4" class="mb-4">{topic.name} <Button color="yellow" id="poptop{topicIdx}">{topic.name} Modul</Button>	
-	<Popover class="w-64 text-sm font-light " title="{topic.name}" triggeredBy="#poptop{topicIdx}">{topic.name} Right?</Popover>	
-	</Heading>
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
 				<TableHeadCell class="min-w-60 text-2xs p-2">Lecture Name in Transcript</TableHeadCell>
