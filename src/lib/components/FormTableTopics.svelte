@@ -17,11 +17,11 @@ let areaC = 'Please select Area C';
 
 import { sineIn } from 'svelte/easing';
 
-const hiddenDrawers = [];
+let hiddenList = Array.from({ length: formTopics.length }, (_, index) => ({
+    id: index + 1,
+    open: false,
+  }));
 
-{#each formTopics as topic, topicIdx}
- hiddenDrawers[topicIdx] = true; 
-{/each}
 
 let transitionParams = {
     x: -320,
@@ -83,6 +83,12 @@ let transitionParams = {
 To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript and its number of points as listed in the transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
 </P>
 
+
+{#each formTopics as topic, topicIdx}
+
+{ hiddenList[topicIdx] }
+
+{/each}
 
 
 
