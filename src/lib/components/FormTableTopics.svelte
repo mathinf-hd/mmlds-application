@@ -84,20 +84,6 @@ To declare these skills, add for each respective lecture its English name as lis
 
 
 
-{#each formTopics as topic, topicIdx}
-<div class="text-center">
-  <Button on:click={() => (hidden{topicIdx} = false)}>Show drawer {topicIdx} </Button>
-</div>
-
-<Drawer transitionType="fly" {transitionParams} bind:hidden={hidden{topicIdx}} id="sidebar{topicIdx}">
-  <div class="flex items-center">
-    <CloseButton on:click={() => (hidden{topicIdx} = true)} class="mb-4 dark:text-white" />
-  </div>
-  <p class="mb-6 text-sm text-gray-500 dark:text-gray-400">
-  { hidden{topicIdx} }
-  </p>
-</Drawer>
-{/each}
 
 {#each formTopics as topic, topicIdx}
 <div class="my-4">
