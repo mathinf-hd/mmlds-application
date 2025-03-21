@@ -87,6 +87,7 @@ To declare these skills, add for each respective lecture its English name as lis
 
 
 {#each formTopics as topic, topicIdx}
+
 { hiddenList[testIdx].id } { hiddenList[topicIdx].open }
 
 <div class="text-center">
@@ -98,12 +99,8 @@ To declare these skills, add for each respective lecture its English name as lis
     <CloseButton on:click={() => (hiddenList[topicIdx].open = true)} class="mb-4 dark:text-white" />
   </div>
   <p class="normal-case bg-primary-700 text-white">
-  <ul>
-  {#each topic.modul as modul}
-  <il> { modul } </il>
-  {/each}
-  </ul>
-  </p>
+  test
+ </p>	
 </Drawer>
 
 
