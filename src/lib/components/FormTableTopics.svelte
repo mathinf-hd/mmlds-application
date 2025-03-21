@@ -17,13 +17,13 @@ let areaC = 'Please select Area C';
 
 import { sineIn } from 'svelte/easing';
 
-let hidden1 = true;
+let hidden6 = true;
 
 let transitionParams = {
     x: -320,
     duration: 200,
     easing: sineIn
-  };
+};
 
 </script>
 
@@ -74,16 +74,14 @@ To declare these skills, add for each respective lecture its English name as lis
 </P>
 
 <div class="text-center">
-  <Button on:click={() => (hidden1 = false)}>Show drawer</Button>
+  <Button on:click={() => (hidden6 = false)}>Test drawer</Button>
 </div>
 
-<Drawer transitionType="fly" {transitionParams} bind:hidden={hidden1} id="sidebar1">
+<Drawer placement="right" transitionType="fly" transitionParams={transitionParams} bind:hidden={hidden6} id="sidebar6">
   <div class="flex items-center">
-    <CloseButton on:click={() => (hidden1 = true)} class="mb-4 dark:text-white" />
+    <CloseButton on:click={() => (hidden6 = true)} class="mb-4 dark:text-white" />
   </div>
-  <p class="mb-6 text-sm text-gray-500 dark:text-gray-400">
-    Lecture Name in
-  </p>
+  <p class="mb-6 text-sm text-gray-500 dark:text-gray-400"> Lecture Name in </p>
 </Drawer>
 
 
