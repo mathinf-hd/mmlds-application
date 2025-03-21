@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Popover,  Dropdown, DropdownItem, Radio,
-       	 	   Button, CloseButton, Checkbox, Heading, Input, P, Table, 
+       	 	   Drawer, Button, CloseButton, Checkbox, Heading, Input, P, Table, 
 		   TableBody, TableBodyCell, TableBodyRow, 
 		   TableHead, TableHeadCell } from 'flowbite-svelte';
 import { TrashBinOutline, ChevronDownOutline }  from 'flowbite-svelte-icons';
@@ -14,6 +14,18 @@ import { data, addLecture, deleteLecture, addSkill, checkDuplicateLecture } from
 let areaA = 'Please select Area A';
 let areaB = 'Please select Area B';
 let areaC = 'Please select Area C';
+
+import { sineIn } from 'svelte/easing';
+
+{#each formTopics as topic, topicIdx}
+let hidden{topicIdx} = true;
+{\each}
+
+let transitionParams = {
+    x: -320,
+    duration: 200,
+    easing: sineIn
+  };
 
 </script>
 
@@ -70,6 +82,22 @@ To declare these skills, add for each respective lecture its English name as lis
 </P>
 
 
+
+
+{#each formTopics as topic, topicIdx}
+<div class="text-center">
+  <Button on:click={() => (hidden{topicIdx} = false)}>Show drawer {topicIdx} </Button>
+</div>
+
+<Drawer transitionType="fly" {transitionParams} bind:hidden={hidden{topicIdx}} id="sidebar{topicIdx}">
+  <div class="flex items-center">
+    <CloseButton on:click={() => (hidden{topicIdx} = true)} class="mb-4 dark:text-white" />
+  </div>
+  <p class="mb-6 text-sm text-gray-500 dark:text-gray-400">
+  { hidden{topicIdx} }
+  </p>
+</Drawer>
+{/each}
 
 {#each formTopics as topic, topicIdx}
 <div class="my-4">
