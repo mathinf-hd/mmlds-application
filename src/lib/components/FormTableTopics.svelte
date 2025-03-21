@@ -104,7 +104,7 @@ To declare these skills, add for each respective lecture its English name as lis
      test </p>
      <ul>
      {#each topic.modul as modul}
-     <li> {modul} <li>
+     <li style="list-style-type: circle"> {modul} <li>
      {/each}
      </ul>	
      </Drawer>
