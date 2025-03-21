@@ -84,9 +84,11 @@ To declare these skills, add for each respective lecture its English name as lis
 </P>
 
 
+{ formTopics.length }
+
 {#each formTopics as topic, topicIdx}
 
-{ hiddenList[topicIdx] }
+{ hiddenList[topicIdx].id } { hiddenList[topicIdx].open }
 
 {/each}
 
