@@ -92,10 +92,7 @@ To declare these skills, add for each respective lecture its English name as lis
 { hiddenList[topicIdx].id } { hiddenList[topicIdx].open }
 
 <div class="my-4">
-     <Heading tag="h4" class="mb-4">{topic.name}
-     <div class="text-center">
-     <Button on:click={() => (hiddenList[topicIdx].open = false)}>Show drawer {hiddenList[topicIdx].id} </Button>
-     </div>
+     <Heading tag="h4" class="mb-4">{topic.name}  <Button on:click={() => (hiddenList[topicIdx].open = false)}>Show drawer {hiddenList[topicIdx].id} </Button>
      <Drawer transitionType="fly" {transitionParams} bind:hidden={hiddenList[topicIdx].open} placement="right" id={hiddenList[topicIdx].id}>
      <div class="flex items-center">
      <CloseButton on:click={() => (hiddenList[topicIdx].open = true)} class="mb-4 dark:text-white" />
