@@ -72,6 +72,9 @@ function expandSkills(data: any): any{
     return data;
 }
 
+
+
+
 function isEqual(obj1: any, obj2: any){
     /* quick check */
     if (Object.keys(obj1).length != Object.keys(obj2).length) return false;

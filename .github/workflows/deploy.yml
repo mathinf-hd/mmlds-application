@@ -1,6 +1,6 @@
 name: Build and deploy to gh-pages
 
-on: push
+on: [push, workflow_dispatch]
 
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
         with:
           path: 'build/'
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/jj'
     needs: build
     permissions:
       pages: write
