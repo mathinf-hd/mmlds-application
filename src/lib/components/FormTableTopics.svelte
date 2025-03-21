@@ -53,12 +53,16 @@ let areaC = 'Please select Area C';
  {#each formTopics as topic}
   {#if topic.name != areaA}
    {#if topic.name != areaB}
-  <li>
-    <Radio name="areaC" bind:group={areaC} value={topic.name}>{topic.name}</Radio>
-  </li>
-  {/if}
-    {/if}
-  {/each}
+     <li>
+      <Radio name="areaC" bind:group={areaC} value={topic.name}>{topic.name}</Radio>
+    </li>
+   {:else}
+    <Radio name="areaC" bind:group={areaC} value={topic.name} disabled>{topic.name}</Radio>
+   {/if}
+  {:else}
+   <Radio name="areaC" bind:group={areaC} value={topic.name} disabled>{topic.name}</Radio>
+  {/if}  
+ {/each}
 </Dropdown>
 </div>
 <P>
