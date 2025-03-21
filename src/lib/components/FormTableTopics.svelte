@@ -25,7 +25,7 @@ let hiddenList = Array.from({ length: formTopics.length }, (_, index) => ({
 
 
 let transitionParams = {
-    x: -360,
+    x: -460,
     duration: 200,
     easing: sineIn
   };
