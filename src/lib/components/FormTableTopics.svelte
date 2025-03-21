@@ -65,10 +65,10 @@ To declare these skills, add for each respective lecture its English name as lis
 
 
 
-{#each formTopics as topic, topicidx}
+{#each formTopics as topic}
 <div class="my-4">
-	<Heading tag="h4" class="mb-4">{topic.name} <Button color="yellow" id="{topicidx}">{topic.name} Modul</Button>	
-	<Popover class="w-64 text-sm font-light " title="{topic.name}" triggeredBy="#{topicidx}">{topic.name} Right?</Popover>	
+	<Heading tag="h4" class="mb-4">{topic.name} <Button color="yellow" id="{topic.id}">{topic.name} Modul</Button>	
+	<Popover class="w-64 text-sm font-light " title="{topic.name}" triggeredBy="#{topic.id}">{topic.name} Right?</Popover>	
 	</Heading>
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
