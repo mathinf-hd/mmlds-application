@@ -18,7 +18,7 @@ let areaC = 'Please select Area C';
 import { sineIn } from 'svelte/easing';
 
 let hiddenList = Array.from({ length: formTopics.length }, (_, index) => ({
-    id: index + 1,
+    id: `sidebar${index + 1}`,
     open: false,
   }));
 
@@ -89,6 +89,19 @@ To declare these skills, add for each respective lecture its English name as lis
 {#each formTopics as topic, topicIdx}
 
 { hiddenList[topicIdx].id } { hiddenList[topicIdx].open }
+
+<div class="text-center">
+  <Button on:click={() => (hiddenList[topicIdx].open = false)}>Show drawer {hiddenList[topicIdx].id} </Button>
+</div>
+
+<Drawer transitionType="fly" {transitionParams} bind:hidden={hiddenList[topicIdx].open} placement="right" id={hiddenList[topicIdx].id}>
+  <div class="flex items-center">
+    <CloseButton on:click={() => (hiddenList[topicIdx].open = true)} class="mb-4 dark:text-white" />
+  </div>
+  <p class="mb-6 text-sm text-gray-500 dark:text-gray-400">
+  { hiddenList[topicIdx].open }
+  </p>
+</Drawer>
 
 {/each}
 
