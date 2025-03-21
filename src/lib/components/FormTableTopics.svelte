@@ -100,13 +100,7 @@ To declare these skills, add for each respective lecture its English name as lis
     <CloseButton on:click={() => (hiddenList[topicIdx].open = true)} class="mb-4 dark:text-white" />
   </div>
   <p class="normal-case bg-primary-700 text-white">
-  test
-   <ul>
-  {#each topic.modul as modul}
-  <li> { modul } </li>
-  {/each}
-  </ul>
-</p>	
+  test </p>	
 </Drawer>
 
 
