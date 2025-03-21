@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Popover,  Dropdown, DropdownItem, Radio,
+import { Drawer, Popover,  Dropdown, DropdownItem, Radio,
        	 	   Button, CloseButton, Checkbox, Heading, Input, P, Table, 
 		   TableBody, TableBodyCell, TableBodyRow, 
 		   TableHead, TableHeadCell } from 'flowbite-svelte';
@@ -15,9 +15,11 @@ let areaA = 'Please select Area A';
 let areaB = 'Please select Area B';
 let areaC = 'Please select Area C';
 
- import { sineIn } from 'svelte/easing';
- let hidden1 = true;
- let transitionParams = {
+import { sineIn } from 'svelte/easing';
+
+let hidden1 = true;
+
+let transitionParams = {
     x: -320,
     duration: 200,
     easing: sineIn
@@ -71,7 +73,18 @@ let areaC = 'Please select Area C';
 To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript and its number of points as listed in the transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
 </P>
 
+<div class="text-center">
+  <Button on:click={() => (hidden1 = false)}>Show drawer</Button>
+</div>
 
+<Drawer transitionType="fly" {transitionParams} bind:hidden={hidden1} id="sidebar1">
+  <div class="flex items-center">
+    <CloseButton on:click={() => (hidden1 = true)} class="mb-4 dark:text-white" />
+  </div>
+  <p class="mb-6 text-sm text-gray-500 dark:text-gray-400">
+    Lecture Name in
+  </p>
+</Drawer>
 
 
 {#each formTopics as topic, topicidx}
