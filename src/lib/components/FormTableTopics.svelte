@@ -38,6 +38,7 @@ onMount(() => {
         ...item,
         open: false,
     }));
+     console.log('hiddenList after reset:', hiddenList);	
 });
 
 
@@ -102,7 +103,11 @@ To declare these skills, add for each respective lecture its English name as lis
 
 <div class="my-4">
      <Heading tag="h4" class="mb-4">{topic.name}  <Button on:click={() => (hiddenList[topicIdx].open = false)}> Overview of perequired skills</Button>
-     <Drawer transitionType="fly" {transitionParams} bind:hidden={hiddenList[topicIdx].open}  id={hiddenList[topicIdx].id}>
+     <Drawer
+     transitionType="fly"
+     {transitionParams}
+     bind:hidden={hiddenList[topicIdx].open}
+     id={hiddenList[topicIdx].id}>
      <div class="flex items-center">
      <CloseButton on:click={() => (hiddenList[topicIdx].open = true)} class="mb-4 dark:text-white" />
      </div>
