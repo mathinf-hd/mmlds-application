@@ -37,8 +37,7 @@ onMount(() => {
     hiddenList = hiddenList.map(item => ({
         ...item,
         open: false,
-    }));
-     console.log('hiddenList after reset:', hiddenList);	
+    }));	
 });
 
 
@@ -108,16 +107,6 @@ To declare these skills, add for each respective lecture its English name as lis
      {transitionParams}
      bind:hidden={hiddenList[topicIdx].open}
      id={hiddenList[topicIdx].id}>
-     <div class="flex items-center">
-     <CloseButton on:click={() => (hiddenList[topicIdx].open = true)} class="mb-4 dark:text-white" />
-     </div>
-     <p class="text-2xs p-2 bg-primary-700 text-white">
-     Required skills in {topic.name} <br> {hiddenList[topicIdx].open}</p>
-     <ul>
-     {#each topic.modul as modul}
-     <li class="text-xs" style="list-style-type: circle"> {modul} </li>
-     {/each}
-     </ul>	
      </Drawer>
      </Heading>	
 	<Table class="overflow-x-auto" striped={true}>	
