@@ -30,6 +30,17 @@ let transitionParams = {
     easing: sineIn
   };
 
+import { onMount } from 'svelte';
+
+onMount(() => {
+    // Alle Drawers beim Laden der Seite sicherstellen, dass sie geschlossen sind
+    hiddenList = hiddenList.map(item => ({
+        ...item,
+        open: false,
+    }));
+});
+
+
 </script>
 
 <P>
