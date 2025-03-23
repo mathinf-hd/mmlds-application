@@ -30,7 +30,7 @@
 
 	<Card size="xl" class="my-2">
 		<Heading tag="h3" class="mb-4 text-center">Programming skills</Heading>
-		<FormLectureAssigment />
+		<FormTableProgramming />
 	</Card>
 
 	<Card size="xl" class="my-2">
