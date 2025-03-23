@@ -19,7 +19,7 @@ import { sineIn } from 'svelte/easing';
 
 let hiddenList = Array.from({ length: formTopics.length }, (_, index) => ({
     id: `sidebar${index + 1}`,
-    open: false,
+    open: true,
   }));
 
 
@@ -36,7 +36,7 @@ onMount(() => {
     // Alle Drawers beim Laden der Seite sicherstellen, dass sie geschlossen sind
     hiddenList = hiddenList.map(item => ({
         ...item,
-        open: false,
+        open: true,
     }));	
 });
 
@@ -101,12 +101,23 @@ To declare these skills, add for each respective lecture its English name as lis
 {#each formTopics as topic, topicIdx}
 
 <div class="my-4">
-     <Heading tag="h4" class="mb-4">{topic.name}  <Button on:click={() => (hiddenList[topicIdx].open = false)}> Overview of perequired skills</Button>
+     <Heading tag="h4" class="mb-4">{topic.name}
+     <Button on:click={() => (hiddenList[topicIdx].open = false)}> Overview of perequired skills</Button>
      <Drawer
      transitionType="fly"
      {transitionParams}
      bind:hidden={hiddenList[topicIdx].open}
      id={hiddenList[topicIdx].id}>
+     <div class="flex items-center">
+     <CloseButton on:click={() => (hiddenList[topicIdx].open = true)} class="mb-4 dark:text-wh" />
+     </div>
+     <p class="text-2xs p-2 bg-primary-700 text-white">
+     Required skills in {topic.name} <br> {hiddenList[topicIdx].open}</p>
+     <ul>
+     {#each topic.modul as modul}
+     <li class="text-xs" style="list-style-type: circle"> {modul} </li>
+     {/each}
+     </ul>
      </Drawer>
      </Heading>	
 	<Table class="overflow-x-auto" striped={true}>	
