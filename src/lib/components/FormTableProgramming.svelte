@@ -58,7 +58,7 @@ you acquired skills in areas such as Algorithms and data structures through corr
 <div class="my-5">
     <Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
-				<TableHeadCell class="min-w-60 text-2xs p-2"Name of open source project</TableHeadCell>
+				<TableHeadCell class="min-w-60 text-2xs p-2">Name of open source project</TableHeadCell>
 				<TableHeadCell class="text-2xs p-2">Link to public repository</TableHeadCell>
 				<TableHeadCell class="text-2xs p-2">Personal identifier</TableHeadCell>
 				<TableHeadCell class="text-2xs p-2"></TableHeadCell>
