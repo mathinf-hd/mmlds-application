@@ -89,8 +89,6 @@ To declare these skills, add for each respective lecture its English name as lis
 
 {#each formTopics as topic, topicIdx}
 
-{ topicIdx } { hiddenList[topicIdx].id } { hiddenList[topicIdx].open }
-
 <div class="my-4">
      <Heading tag="h4" class="mb-4">{topic.name}  <Button on:click={() => (hiddenList[topicIdx].open = false)}> Overview of perequired skills</Button>
      <Drawer transitionType="fly" {transitionParams} bind:hidden={hiddenList[topicIdx].open}  id={hiddenList[topicIdx].id}>
@@ -101,7 +99,7 @@ To declare these skills, add for each respective lecture its English name as lis
      Required skills in {topic.name} <br> {hiddenList[topicIdx].open}</p>
      <ul>
      {#each topic.modul as modul}
-     <li style="list-style-type: circle"> {modul} <li>
+     <li class="text-xs" style="list-style-type: circle"> {modul} </li>
      {/each}
      </ul>	
      </Drawer>
