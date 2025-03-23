@@ -92,7 +92,7 @@ onMount(() => {
 </Dropdown>
 </div>
 <P>
-To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript and its number of points as listed in the transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
+To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
 </P>
 
 
@@ -112,7 +112,7 @@ To declare these skills, add for each respective lecture its English name as lis
      <CloseButton on:click={() => (hiddenList[topicIdx].open = true)} class="mb-4 dark:text-wh" />
      </div>
      <p class="text-sm p-2 bg-primary-700 text-white">
-     Required skills in <br>  {topic.name}</p>
+     Prerequired skills in <br>  {topic.name}</p>
      <ul>
      {#each topic.modul as modul}
      <li class="text-sm" style="list-style-type: circle"> {modul} </li>
