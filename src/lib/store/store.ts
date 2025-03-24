@@ -97,15 +97,6 @@ function generateEmptyDataObject(extentDetails: ExtentDetails, questions: Questi
     /* add first lecture for convienience */
     data.lectures = [{ name: '', points: 0, description: '', subject: null, skills: {}}]
 
-
-    /* add first cslecture, osporject, plecture for convienience */
-    /* data.cslecture.check = false */      
-    /* data.cslectures = [{ name: '', description: ''}] */
-    /* data.plecture.check = false */      
-    /* data.plectures = [{ name: '', description: ''} */]
-    /* data.osproject.check = false */            
-    /* data.osprojects = [{ name: '', repolink: '', persoid: ''}] */	
-
     for (const question of questions) {
 		data['questions'][question] = '';
 	}
