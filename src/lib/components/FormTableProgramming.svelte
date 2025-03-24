@@ -33,24 +33,3 @@
 you acquired skills in areas such as Algorithms and data structures through corresponding foundational lectures. To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript. Copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
 </P>
 
-<div class="my-5">
-    <Table class="overflow-x-auto" striped={true}>	
-			<TableHead class="normal-case bg-primary-700 text-white">
-				<TableHeadCell class="min-w-60 text-2xs p-2">Lecture Name in Transcript</TableHeadCell>
-				<TableHeadCell class="text-2xs p-2">Module Description</TableHeadCell>
-				<TableHeadCell class="text-2xs p-2"></TableHeadCell>
-			</TableHead>
-			<TableBody>
-			{#each $data.lectures as lecture, lectureIdx}
-			<TableBodyRow>
-		 	   <TableBodyCell class="p-2"><GenericValidatedInput type="text" bind:value={lecture.name} validateFn={() => checkDuplicateLecture(lectureIdx)} class="text-2xs"/></TableBodyCell>		  
-			       <TableBodyCell class="p-2 text-2xs"><Input type="text" bind:value={lecture.description} class="text-2xs"/></TableBodyCell>
-			   <TableBodyCell class="p-2"><Button color="red" size="xs" class="text-2xs" on:click={() => deleteLecture(lectureIdx)}><TrashBinOutline /></Button></TableBodyCell>
-		    	</TableBodyRow>	       
-			{/each}
-			</TableBody>
-	</Table>
-	<Button class="text-2xs m-2" on:click={() => addLecture()}>Add Another Lecture</Button>
-</div>
-
-
