@@ -126,12 +126,10 @@ To declare these skills, add for each respective lecture its English name as lis
 {/each}
 
      <Drawer
-     placement="left"
      transitionType="fly"
      transitionParams={transitionParams}
      bind:hidden={hiddenDrawer}
-     id=sidebarDrawer
-     class="w-64 text-sm font-light">
+     id=sidebarDrawer>
      <div class="flex items-center">
      <CloseButton on:click={() => (hiddenDrawer = true)} class="mb-4 dark:text-wh" />
      </div>
