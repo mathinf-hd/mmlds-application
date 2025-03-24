@@ -18,12 +18,12 @@
 		<FormIntroDetails />	
 	</Card>
 	
-	<!--<Card size="xl" class="my-2">
+	<Card size="xl" class="my-2">
 		<Heading tag="h3" class="mb-4 text-center">Details on Field of Study</Heading>
 		<FormExtentDetails />
 	</Card>
 
-	<Card size="xl" class="my-2">
+	<!--<Card size="xl" class="my-2">
 		<Heading tag="h3" class="mb-4 text-center">Skills in Mathematics</Heading>
 		<FormTableTopics />
 	</Card>
