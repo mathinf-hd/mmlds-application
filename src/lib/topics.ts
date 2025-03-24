@@ -1,6 +1,5 @@
 export const formTopics: Topics = [
 	{
-	        id: 'Tp1',
 		name: 'Differential Geometry',
 		subtopics: [
 			'Manifolds',
@@ -15,7 +14,6 @@ export const formTopics: Topics = [
 		]
 	},
 	{
-		id: 'Tp2',	
 		name: 'Functional Analysis',
 		subtopics: [
 			'Continuation of uniformly continuous maps',
@@ -32,7 +30,6 @@ export const formTopics: Topics = [
 		]
 	},
 	{
-		id: 'Tp3',		
 		name: 'Numerical Analysis',
 		subtopics: [
 			'Conditioning and stability',
@@ -47,7 +44,6 @@ export const formTopics: Topics = [
 		]		
 	},
 	{
-		id: 'Tp4',
 		name:'Statistics and Probability Theory',
 		subtopics: [
 			'Radon-Nikodym theorem',
@@ -66,7 +62,6 @@ export const formTopics: Topics = [
 		]
 	},
 	{
-		id: 'Tp5',
 		name: 'Variational Methods and Optimization',
 		subtopics: [
 			'Gateaux and Frechet derivative',

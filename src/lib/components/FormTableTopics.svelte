@@ -17,28 +17,23 @@ let areaC = 'Please select Area C';
 
 import { sineIn } from 'svelte/easing';
 
-let hiddenList = Array.from({ length: formTopics.length }, (_, index) => ({
-    id: `sidebar${index + 1}`,
-    open: true,
-  }));
 
+let selectedDrawer = 0;
+let hiddenDrawer = true;
+
+// Function to open the drawer
+function openDrawer(index: number) {
+	selectedDrawer = index;
+	hiddenDrawer = false;
+}
 
 
 let transitionParams = {
-    x: -460,
-    duration: 300,
+    x: -320,
+    duration: 200,
     easing: sineIn
   };
 
-import { onMount } from 'svelte';
-
-onMount(() => {
-    // Alle Drawers beim Laden der Seite sicherstellen, dass sie geschlossen sind
-    hiddenList = hiddenList.map(item => ({
-        ...item,
-        open: true,
-    }));	
-});
 
 
 </script>
@@ -102,23 +97,7 @@ To declare these skills, add for each respective lecture its English name as lis
 
 <div class="my-4">
      <Heading tag="h4" class="mb-4">{topic.name}
-     <Button on:click={() => (hiddenList[topicIdx].open = false)}> Overview of perequired skills</Button>
-     <Drawer
-     transitionType="fly"
-     {transitionParams}
-     bind:hidden={hiddenList[topicIdx].open}
-     id={hiddenList[topicIdx].id}>
-     <div class="flex items-center">
-     <CloseButton on:click={() => (hiddenList[topicIdx].open = true)} class="mb-4 dark:text-wh" />
-     </div>
-     <p class="text-sm p-2 bg-primary-700 text-white">
-     Prerequired skills in <br>  {topic.name}</p>
-     <ul>
-     {#each topic.modul as modul}
-     <li class="text-sm" style="list-style-type: circle"> {modul} </li>
-     {/each}
-     </ul>
-     </Drawer>
+     <Button  on:click={() => openDrawer(topicIdx)}> Overview of perequired skills</Button>
      </Heading>	
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
@@ -145,3 +124,22 @@ To declare these skills, add for each respective lecture its English name as lis
 	<Button class="text-2xs m-2" on:click={() => addLecture()}>Add Another Lecture</Button>
 </div>
 {/each}
+
+     <Drawer
+     placement="left"
+     transitionType="fly"
+     transitionParams={transitionParams}
+     bind:hidden={hiddenDrawer}
+     id=sidebarDrawer
+     class="w-64 text-sm font-light">
+     <div class="flex items-center">
+     <CloseButton on:click={() => (hiddenDrawer = true)} class="mb-4 dark:text-wh" />
+     </div>
+     <p class="text-sm p-2 bg-primary-700 text-white">
+     Prerequired skills in <br> {formTopics[selectedDrawer].name}</p>
+     <ul>
+     {#each formTopics[selectedDrawer].modul as modul}
+     <li class="text-sm" style="list-style-type: circle"> {modul} </li>
+     {/each}
+     </ul>
+     </Drawer>

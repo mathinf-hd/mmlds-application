@@ -1,5 +1,7 @@
 import { get, writable } from "svelte/store";
 
+import { formTimeSlots } from '$lib/times';
+import { formFields } from '$lib/fields';
 import { formExtendDetails } from "$lib/extentDetails";
 import { formTopics } from "$lib/topics";
 import { formSubjectAreas } from "$lib/subjectAreas";
@@ -86,7 +88,7 @@ function isEqual(obj1: any, obj2: any){
 function generateEmptyDataObject(extentDetails: ExtentDetails, questions: Questions) {
 
     /* create empty data object */
-	const data: Data = { extentDetails: {} as FormDataExtentDetails, topics: formTopics, lectures: [] as FormDataLectures, questions: {} as FormDataQuestions };
+	const data: Data = { timeslots: formTimeSlots, fields: formFields, extentDetails: {} as FormDataExtentDetails, topics: formTopics, lectures: [] as FormDataLectures, questions: {} as FormDataQuestions };
 	
     for (const extentDetail of extentDetails){
 		data['extentDetails'][extentDetail] = null
@@ -94,15 +96,6 @@ function generateEmptyDataObject(extentDetails: ExtentDetails, questions: Questi
 	
     /* add first lecture for convienience */
     data.lectures = [{ name: '', points: 0, description: '', subject: null, skills: {}}]
-
-
-    /* add first cslecture, osporject, plecture for convienience */
-    data.cslecture.check = false      
-    data.cslectures = [{ name: '', description: ''}]
-    data.plecture.check = false      
-    data.plectures = [{ name: '', description: ''}]
-    data.osproject.check = false            
-    data.osprojects = [{ name: '', repolink: '', persoid: ''}]	
 
     for (const question of questions) {
 		data['questions'][question] = '';
@@ -220,9 +213,17 @@ export function countSubjectECTS(subject: Subject) {
 } 
 
 export function isValidDataFormat(data: Data){
+    const timeslots = data.timeslots
+    const fields = data.fields
     const extendDetails = data.extentDetails
     const topics = data.topics
     const questions = data.questions
+
+    /* check timeslots */
+    if (!isEqual(timeslots, formTimeSlots)) return false;
+
+    /* check fields */
+    if (!isEqual(fields, formFields)) return false;
 
     /* check extendDetails */
     if (!isEqual(Object.keys(extendDetails), formExtendDetails)) return false;
@@ -356,133 +357,3 @@ export function isValidFormData(data: Data){
 }
 
 
-/**
- * Programming skills
- */
-
-export function addCslecture(){
-    let newCslecture: Cslecture = { name: '', description: ''}
-
-    data.update((data: Data) => {
-        data.cslectures = [...data.cslectures, newCslecture]
-        return data
-    })
-}
-
-export function deleteCslecture(idx: number){
-    data.update((data: Data) => {    
-    data.cslectures.splice(idx ,1); 
-    return data
-    })
-}
-
-export function checkDuplicateCslecture(cslectureIdx: number){
-        
-        /* ignore empty fields */
-        if (get(data).cslectures[cslectureIdx].name === "") return;
-
-        const cslectures: Array<Cslecture> = JSON.parse(JSON.stringify(get(data).cslectures));
-
-        /* splice removes the new cslecture from all cslectures */
-        const newCslecture = cslectures.splice(cslectureIdx,1)[0]; 
-
-        const existing: boolean = cslectures.some(cslecture => 
-            cslecture.name.toLowerCase() === newCslecture.name.toLowerCase()
-        );
-
-        if (existing) {
-            alert("You can only declare a lecture once.")
-
-            data.update((data: Data) => { 
-                data.cslectures[cslectureIdx].name = "";
-                return data
-            })
-        }
-
-}
-
-
-
-export function addOsproject(){
-    let newOsproject: Osproject = { name: '', repolink: '', persoid: ''}
-
-    data.update((data: Data) => {
-        data.osprojects = [...data.osprojects, newOsproject]
-        return data
-    })
-}
-
-export function deleteOsproject(idx: number){
-    data.update((data: Data) => {    
-    data.osprojects.splice(idx ,1); 
-    return data
-    })
-}
-
-
-export function checkDuplicateOsproject(osprojectIdx: number){
-        
-        /* ignore empty fields */
-        if (get(data).osprojects[osprojectIdx].name === "") return;
-
-        const osprojects: Array<Osproject> = JSON.parse(JSON.stringify(get(data).osprojects));
-
-        /* splice removes the new osproject from all osprojects */
-        const newOsproject = osprojects.splice(osprojectIdx,1)[0]; 
-
-        const existing: boolean = osprojects.some(osproject => 
-            osproject.name.toLowerCase() === newOsproject.name.toLowerCase()
-        );
-
-        if (existing) {
-            alert("You can only declare a project once.")
-
-            data.update((data: Data) => { 
-                data.osprojects[osprojectIdx].name = "";
-                return data
-            })
-        }
-
-}
-
-
-export function addPlecture(){
-    let newPlecture: Plecture = { name: '', description: ''}
-
-    data.update((data: Data) => {
-        data.plectures = [...data.plectures, newPlecture]
-        return data
-    })
-}
-
-export function deletePlecture(idx: number){
-    data.update((data: Data) => {    
-    data.plectures.splice(idx ,1); 
-    return data
-    })
-}
-
-export function checkDuplicatePlecture(plectureIdx: number){
-        
-        /* ignore empty fields */
-        if (get(data).plectures[plectureIdx].name === "") return;
-
-        const plectures: Array<Plecture> = JSON.parse(JSON.stringify(get(data).plectures));
-
-        /* splice removes the new plecture from all plectures */
-        const newPlecture = plectures.splice(plectureIdx,1)[0]; 
-
-        const existing: boolean = plectures.some(plecture => 
-            plecture.name.toLowerCase() === newPlecture.name.toLowerCase()
-        );
-
-        if (existing) {
-            alert("You can only declare a lecture once.")
-
-            data.update((data: Data) => { 
-                data.plectures[plectureIdx].name = "";
-                return data
-            })
-        }
-
-}
