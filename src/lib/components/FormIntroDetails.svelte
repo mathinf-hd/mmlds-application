@@ -1,6 +1,6 @@
 <script lang="ts">
-import { Popover,  Dropdown, DropdownItem, Radio,
-       	 	   Button, Checkbox, Heading, Input,
+import { Dropdown, DropdownItem, Radio,
+       	 	   Button, Heading, Input,
 		   P     } from 'flowbite-svelte';
 import { ChevronDownOutline }  from 'flowbite-svelte-icons';
 
