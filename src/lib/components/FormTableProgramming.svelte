@@ -10,7 +10,6 @@
         TableBodyRow,
         TableHead,
         TableHeadCell,
-	Checkbox,
 		type SelectOptionType
 
     } from 'flowbite-svelte';
@@ -43,8 +42,11 @@ you acquired skills in areas such as Algorithms and data structures through corr
 			<TableBody>
 				{#each $data.cslectures as Cslecture, CslectureIdx}
 				<TableBodyRow>
-                    <TableBodyCell class="p-2"><GenericValidatedInput type="text" bind:value={Cslecture.name} validateFn={() => checkDuplicateCslecture(CslectureIdx)} class="text-2xs"/></TableBodyCell>
-                    <TableBodyCell class="p-2 text-2xs"><Input type="text" class="text-2xs" bind:value={Cslecture.description} /></TableBodyCell>
+/* <TableBodyCell class="p-2"><GenericValidatedInput type="text" bind:value={Cslecture.name} validateFn={() => checkDuplicateCslecture(CslectureIdx)} class="text-2xs"/></TableBodyCell> */
+/*                    <TableBodyCell class="p-2 text-2xs"><Input type="text" class="text-2xs" bind:value={Cslecture.description} /></TableBodyCell> */
+/*		    <TableBodyCell class="p-2"><Button color="red" size="xs" class="text-2xs" on:click={() => deleteCslecture(CslectureIdx)}><TrashBinOutline /></Button></TableBodyCell> */
+                    <TableBodyCell class="p-2"> Text </TableBodyCell>
+                    <TableBodyCell class="p-2 text-2xs"> Text </TableBodyCell>
 		    <TableBodyCell class="p-2"><Button color="red" size="xs" class="text-2xs" on:click={() => deleteCslecture(CslectureIdx)}><TrashBinOutline /></Button></TableBodyCell>
 				</TableBodyRow>
 				{/each}
