@@ -67,7 +67,7 @@ you acquired skills in areas such as Algorithms and data structures through corr
 				<TableHeadCell class="text-2xs p-2"></TableHeadCell>
 			</TableHead>
 			<TableBody>
-				{#each $data.osprojects as Osproject, OsprojectIdx}
+			{#each $data.lectures as lecture, lectureIdx}
 				<TableBodyRow>
 			<TableBodyCell class="p-2"><GenericValidatedInput type="text" bind:value={lecture.name} validateFn={() => checkDuplicateLecture(lectureIdx)} class="text-2xs"/></TableBodyCell>		  
 			<TableBodyCell class="p-2 text-2xs"><Input type="text" bind:value={lecture.description} class="text-2xs"/></TableBodyCell>
@@ -80,7 +80,7 @@ you acquired skills in areas such as Algorithms and data structures through corr
 	<Button class="text-2xs m-2" on:click={() => addLecture()}>Add Another Project</Button>
 </div>
 
-<P> Please check the box <input type="checkbox" bind:checked={checkedFlag}>, if you particpate in an open source project. To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript. Copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).</P> 
+<P> Please check the box <input type="checkbox" bind:checked={checkedFlag}> if you particpate in an open source project. To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript. Copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).</P> 
 
 <div class="my-5">
     <Table class="overflow-x-auto" striped={true}>	
@@ -90,7 +90,7 @@ you acquired skills in areas such as Algorithms and data structures through corr
 				<TableHeadCell class="text-2xs p-2"></TableHeadCell>
 			</TableHead>
 			<TableBody>
-				{#each $data.plectures as Plecture, PlectureIdx}
+			{#each $data.lectures as lecture, lectureIdx}
 				<TableBodyRow>
 			<TableBodyCell class="p-2"><GenericValidatedInput type="text" bind:value={lecture.name} validateFn={() => checkDuplicateLecture(lectureIdx)} class="text-2xs"/></TableBodyCell>		  
 			<TableBodyCell class="p-2 text-2xs"><Input type="text" bind:value={lecture.description} class="text-2xs"/></TableBodyCell>
