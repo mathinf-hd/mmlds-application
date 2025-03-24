@@ -4,12 +4,10 @@
 			TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TrashBinOutline }  from 'flowbite-svelte-icons';
 
-	import PositiveNumberInput from './PositiveNumberInput.svelte';
 	import GenericValidatedInput from './GenericValidatedInput.svelte';
-	import { formTopics } from '$lib/topics';
 	import { formFields } from '$lib/fields';	
 
-	import { data, addLecture, deleteLecture, addSkill, checkDuplicateLecture } from '$lib/store/store';
+	import { data } from '$lib/store/store';
 
 </script>
 

@@ -6,7 +6,7 @@ import { ChevronDownOutline }  from 'flowbite-svelte-icons';
 
 import { formTimeSlots } from '$lib/times';
 
-import { data, addLecture, deleteLecture, addSkill, checkDuplicateLecture } from '$lib/store/store';
+import { data } from '$lib/store/store';
 
 let timeS = 'Please select Time slot';
 

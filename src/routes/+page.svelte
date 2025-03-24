@@ -18,7 +18,7 @@
 		<FormIntroDetails />	
 	</Card>
 	
-	<Card size="xl" class="my-2">
+	<!--<Card size="xl" class="my-2">
 		<Heading tag="h3" class="mb-4 text-center">Details on Field of Study</Heading>
 		<FormExtentDetails />
 	</Card>
@@ -37,7 +37,7 @@
 		<Heading tag="h3" class="mb-4 text-center">Motivation</Heading>
 		<FormTableQuestions />
 	</Card>
-	<ButtonDownloadData />
+	<ButtonDownloadData />-->
 	<!--<Card size="xl" class="my-2"></Card>
 		<ButtonDownloadData />
 	</Card>-->
