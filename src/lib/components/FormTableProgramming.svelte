@@ -40,18 +40,20 @@ you acquired skills in areas such as Algorithms and data structures through corr
 				<TableHeadCell class="text-2xs p-2"></TableHeadCell>
 			</TableHead>
 			<TableBody>
-				{#each $data.cslectures as Cslecture, CslectureIdx}
+			/*	{#each $data.cslectures as Cslecture, CslectureIdx} */
+				{#each $data.lectures as lecture, lectureIdx}
 				<TableBodyRow>
 /* <TableBodyCell class="p-2"><GenericValidatedInput type="text" bind:value={Cslecture.name} validateFn={() => checkDuplicateCslecture(CslectureIdx)} class="text-2xs"/></TableBodyCell> */
-/*                    <TableBodyCell class="p-2 text-2xs"><Input type="text" class="text-2xs" bind:value={Cslecture.description} /></TableBodyCell> */
+/*                  <TableBodyCell class="p-2 text-2xs"><Input type="text" class="text-2xs" bind:value={Cslecture.description} /></TableBodyCell> */
 /*		    <TableBodyCell class="p-2"><Button color="red" size="xs" class="text-2xs" on:click={() => deleteCslecture(CslectureIdx)}><TrashBinOutline /></Button></TableBodyCell> */
-                    <TableBodyCell class="p-2"> Text </TableBodyCell>
-                    <TableBodyCell class="p-2 text-2xs"> Text </TableBodyCell>
-		    <TableBodyCell class="p-2"><Button color="red" size="xs" class="text-2xs" on:click={() => deleteCslecture(CslectureIdx)}><TrashBinOutline /></Button></TableBodyCell>
-				</TableBodyRow>
+		    <TableBodyCell class="p-2"><GenericValidatedInput type="text" bind:value={lecture.name} validateFn={() => checkDuplicateLecture(lectureIdx)} class="text-2xs"/></TableBodyCell>		  
+		    <TableBodyCell class="p-2 text-2xs"><Input type="text" bind:value={lecture.description} class="text-2xs"/></TableBodyCell>
+		    <TableBodyCell class="p-2"><Button color="red" size="xs" class="text-2xs" on:click={() => deleteLecture(lectureIdx)}><TrashBinOutline /></Button></TableBodyCell>
+		    		</TableBodyRow>
 				{/each}
 			</TableBody>
 	</Table>
-	<Button class="text-2xs m-2" on:click={() => addCslecture()}>Add Another Lecture</Button>
+	/*<Button class="text-2xs m-2" on:click={() => addlecture()}>Add Another Lecture</Button>*/
+	<Button class="text-2xs m-2" on:click={() => addLecture()}>Add Another Lecture</Button>
 </div>
 
