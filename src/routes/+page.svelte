@@ -23,12 +23,12 @@
 		<FormExtentDetails />
 	</Card>
 
-	<!--<Card size="xl" class="my-2">
+	<Card size="xl" class="my-2">
 		<Heading tag="h3" class="mb-4 text-center">Skills in Mathematics</Heading>
 		<FormTableTopics />
 	</Card>
 
-	<Card size="xl" class="my-2">
+	<!--<Card size="xl" class="my-2">
 		<Heading tag="h3" class="mb-4 text-center">Programming skills</Heading>
 		<FormTableProgramming />
 	</Card>
