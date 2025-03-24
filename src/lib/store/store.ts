@@ -412,7 +412,7 @@ export function addOsproject(){
     })
 }
 
-export function deleteOsprojects(idx: number){
+export function deleteOsproject(idx: number){
     data.update((data: Data) => {    
     data.osprojects.splice(idx ,1); 
     return data
