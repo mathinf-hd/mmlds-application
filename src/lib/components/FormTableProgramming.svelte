@@ -23,7 +23,6 @@
     import { addOsproject, deleteOsproject, checkDuplicateOsproject } from '$lib/store/store'
     import { addPlecture, deletePlecture, checkDuplicatePlecture } from '$lib/store/store'		
 
- let Cslecture
 
 </script>
 
