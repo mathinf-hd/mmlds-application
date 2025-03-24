@@ -81,13 +81,16 @@ you acquired skills in areas such as Algorithms and data structures through corr
 	<Button class="text-2xs m-2" on:click={() => addLecture()}>Add Another Project</Button>
 </div>
 
-<P> Please check the box <Checkbox inline class="me-2" bind:checked={checkedFlag} /> if you particpate in an open source project. To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript. Copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).</P> 
+<P> Please check the box <Checkbox inline class="me-2" bind:checked={checkedFlag} /> if you particpate in a programming course, e.g. dedicated to a specific programming language.
+To declare these skills, add for each respective programming course its English name as listed in the (translated) transcript together with the  entire official description of the course.
+Alternatively for extracurricular courses provide the file name of the certificate as uploaded to heiCO.
+.</P> 
 
 <div class="my-5">
     <Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
-				<TableHeadCell class="min-w-60 text-2xs p-2">Lecture Name in Transcript</TableHeadCell>
-				<TableHeadCell class="text-2xs p-2">Module Description</TableHeadCell>
+				<TableHeadCell class="min-w-60 text-2xs p-2">Course Name as in Transcript / File name of certificate</TableHeadCell>
+				<TableHeadCell class="text-2xs p-2">Module Description as applicable</TableHeadCell>
 				<TableHeadCell class="text-2xs p-2"></TableHeadCell>
 			</TableHead>
 			<TableBody>
