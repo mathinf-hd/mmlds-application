@@ -4,7 +4,7 @@
 	import FormIntroDetails from '$lib/components/FormIntroDetails.svelte';
 	import FormExtentDetails from '$lib/components/FormExtentDetails.svelte';
 	import FormTableTopics from '$lib/components/FormTableTopics.svelte';
-	import FormLectureAssigment from '$lib/components/FormLectureAssigment.svelte';
+	import FormTableProgramming from '$lib/components/FormTableProgramming.svelte';
 	import FormTableQuestions from '$lib/components/FormTableQuestions.svelte';
 
 	import ButtonDownloadData from '$lib/components/ButtonDownloadData.svelte';
@@ -30,7 +30,7 @@
 
 	<Card size="xl" class="my-2">
 		<Heading tag="h3" class="mb-4 text-center">Programming skills</Heading>
-		<FormLectureAssigment />
+		<FormTableProgramming />
 	</Card>
 
 	<Card size="xl" class="my-2">

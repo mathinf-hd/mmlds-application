@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Popover,  Dropdown, DropdownItem, Radio,
-       	 	   Button, CloseButton, Checkbox, Heading, Input, P, Table, 
+       	 	   Drawer, Button, CloseButton, Checkbox, Heading, Input, P, Table, 
 		   TableBody, TableBodyCell, TableBodyRow, 
 		   TableHead, TableHeadCell } from 'flowbite-svelte';
 import { TrashBinOutline, ChevronDownOutline }  from 'flowbite-svelte-icons';
@@ -15,13 +15,31 @@ let areaA = 'Please select Area A';
 let areaB = 'Please select Area B';
 let areaC = 'Please select Area C';
 
- import { sineIn } from 'svelte/easing';
- let hidden1 = true;
- let transitionParams = {
-    x: -320,
-    duration: 200,
+import { sineIn } from 'svelte/easing';
+
+let hiddenList = Array.from({ length: formTopics.length }, (_, index) => ({
+    id: `sidebar${index + 1}`,
+    open: true,
+  }));
+
+
+
+let transitionParams = {
+    x: -460,
+    duration: 300,
     easing: sineIn
   };
+
+import { onMount } from 'svelte';
+
+onMount(() => {
+    // Alle Drawers beim Laden der Seite sicherstellen, dass sie geschlossen sind
+    hiddenList = hiddenList.map(item => ({
+        ...item,
+        open: true,
+    }));	
+});
+
 
 </script>
 
@@ -49,6 +67,8 @@ let areaC = 'Please select Area C';
   <li>
     <Radio name="areaB" bind:group={areaB} value={topic.name}>{topic.name}</Radio>
   </li>
+  {:else}
+    <Radio name="areaB" bind:group={areaB} value={topic.name} disabled>{topic.name}</Radio>
   {/if}
   {/each}
 </Dropdown>
@@ -59,23 +79,47 @@ let areaC = 'Please select Area C';
  {#each formTopics as topic}
   {#if topic.name != areaA}
    {#if topic.name != areaB}
-  <li>
-    <Radio name="areaC" bind:group={areaC} value={topic.name}>{topic.name}</Radio>
-  </li>
-  {/if}
-    {/if}
-  {/each}
+     <li>
+      <Radio name="areaC" bind:group={areaC} value={topic.name}>{topic.name}</Radio>
+    </li>
+   {:else}
+    <Radio name="areaC" bind:group={areaC} value={topic.name} disabled>{topic.name}</Radio>
+   {/if}
+  {:else}
+   <Radio name="areaC" bind:group={areaC} value={topic.name} disabled>{topic.name}</Radio>
+  {/if}  
+ {/each}
 </Dropdown>
 </div>
 <P>
-To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript and its number of points as listed in the transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
+To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
 </P>
 
-{#each formTopics as topic, topicidx}
+
+
+
+{#each formTopics as topic, topicIdx}
+
 <div class="my-4">
-	<Heading tag="h4" class="mb-4">{topic.name} <Button color="yellow" id="{topicidx}">{topic.name} Modul</Button>	
-	<Popover class="w-64 text-sm font-light " title="{topic.name}" triggeredBy="#{topicidx}">{topic.name} Right?</Popover>	
-	</Heading>
+     <Heading tag="h4" class="mb-4">{topic.name}
+     <Button on:click={() => (hiddenList[topicIdx].open = false)}> Overview of perequired skills</Button>
+     <Drawer
+     transitionType="fly"
+     {transitionParams}
+     bind:hidden={hiddenList[topicIdx].open}
+     id={hiddenList[topicIdx].id}>
+     <div class="flex items-center">
+     <CloseButton on:click={() => (hiddenList[topicIdx].open = true)} class="mb-4 dark:text-wh" />
+     </div>
+     <p class="text-sm p-2 bg-primary-700 text-white">
+     Prerequired skills in <br>  {topic.name}</p>
+     <ul>
+     {#each topic.modul as modul}
+     <li class="text-sm" style="list-style-type: circle"> {modul} </li>
+     {/each}
+     </ul>
+     </Drawer>
+     </Heading>	
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
 				<TableHeadCell class="min-w-60 text-2xs p-2">Lecture Name in Transcript</TableHeadCell>
