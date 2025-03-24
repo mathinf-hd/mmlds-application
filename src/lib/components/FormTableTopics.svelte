@@ -29,8 +29,8 @@ function openDrawer(index: number) {
 
 
 let transitionParams = {
-    x: -460,
-    duration: 300,
+    x: -320,
+    duration: 200,
     easing: sineIn
   };
 
@@ -126,10 +126,12 @@ To declare these skills, add for each respective lecture its English name as lis
 {/each}
 
      <Drawer
+     placement="left"
      transitionType="fly"
      transitionParams={transitionParams}
      bind:hidden={hiddenDrawer}
-     id=sidebarDrawer>
+     id=sidebarDrawer
+     class="w-64 text-sm font-light">
      <div class="flex items-center">
      <CloseButton on:click={() => (hiddenDrawer = true)} class="mb-4 dark:text-wh" />
      </div>

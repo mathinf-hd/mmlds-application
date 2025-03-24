@@ -21,10 +21,6 @@
     import PositiveNumberInput from './PositiveNumberInput.svelte';
 
     import { data, addLecture, deleteLecture, addSkill, checkDuplicateLecture } from '$lib/store/store';
-    import { addCslecture, deleteCslecture, checkDuplicateCslecture } from '$lib/store/store';
-    import { addOsproject, deleteOsproject, checkDuplicateOsproject } from '$lib/store/store';
-    import { addPlecture, deletePlecture, checkDuplicatePlecture } from '$lib/store/store';		
-
 
 let checkedFlag = false;
 
