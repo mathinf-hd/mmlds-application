@@ -24,7 +24,7 @@ jobs:
         with:
           path: 'build/'
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/anikou'
     needs: build
     permissions:
       pages: write
