@@ -13,13 +13,14 @@
 
 <div class="flex flex-col md:container md:mx-auto m-2 items-center">
 	<Heading class="my-2 p-4 text-center">Skills, Lectures, and Motivation</Heading>
-	
+
+
 	<Card size="xl" class="my-2">
 		<FormIntroDetails />	
 	</Card>
 	
 	<Card size="xl" class="my-2">
-		<Heading tag="h3" class="mb-4 text-center">Details on Field of Study</Heading>
+		<Heading tag="h3" class="mb-4 text-center">Your Education: Details on Field of Study</Heading>
 		<FormExtentDetails />
 	</Card>
 
