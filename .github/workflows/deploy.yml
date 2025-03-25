@@ -1,6 +1,9 @@
 name: Build and deploy to gh-pages
 
-on: push
+on: 
+  push:
+    branches:
+      - anikou
 
 jobs:
   build:
@@ -24,7 +27,6 @@ jobs:
         with:
           path: 'build/'
   deploy:
-    if: github.ref == 'refs/heads/anikou'
     needs: build
     permissions:
       pages: write
