@@ -1,11 +1,10 @@
 <script lang="ts">
-import { Popover,  Dropdown, DropdownItem, Radio,
+import { Dropdown, DropdownItem, Radio,
        	 	   Button, CloseButton, Checkbox, Heading, Input, P, Table, 
 		   TableBody, TableBodyCell, TableBodyRow, 
 		   TableHead, TableHeadCell, Drawer } from 'flowbite-svelte';
 import { TrashBinOutline, ChevronDownOutline }  from 'flowbite-svelte-icons';
 
-import PositiveNumberInput from './PositiveNumberInput.svelte';
 import GenericValidatedInput from './GenericValidatedInput.svelte';
 import { formTopics } from '$lib/topics';
 
@@ -21,7 +20,7 @@ let areaC = 'Please select Area C';
     x: -320,
     duration: 200,
     easing: sineIn
-  };
+};
 
 
 let selectedIndex = 0;
@@ -39,42 +38,42 @@ function openDrawer(index: number) {
 </P>
 
 <div class="my-4">
-<Button on:click={() => (areaB = 'Please select Area B')}>
-  {areaA} <ChevronDownOutline class="text-2xs m-2" />
-</Button>
-<Dropdown class="text-2xs p-2">
- {#each formTopics as topic} 
-  <li>
-    <Radio name="areaA" bind:group={areaA} value={topic.name}>{topic.name}</Radio>
-  </li>
-  {/each}
-</Dropdown>
-<Button on:click={() => (areaC = 'Please select Area C')}>
-  {areaB}<ChevronDownOutline class="text-2xs m-2" />
-</Button>
-<Dropdown class="text-2xs p-2">
- {#each formTopics as topic}
- {#if topic.name != areaA}
-  <li>
-    <Radio name="areaB" bind:group={areaB} value={topic.name}>{topic.name}</Radio>
-  </li>
-  {/if}
-  {/each}
-</Dropdown>
-<Button>
-  {areaC}<ChevronDownOutline class="text-2xs m-2" />
-</Button>
-<Dropdown class="text-2xs p-2">
- {#each formTopics as topic}
-  {#if topic.name != areaA}
-   {#if topic.name != areaB}
-  <li>
-    <Radio name="areaC" bind:group={areaC} value={topic.name}>{topic.name}</Radio>
-  </li>
-  {/if}
-    {/if}
-  {/each}
-</Dropdown>
+	<Button>
+		{areaA} <ChevronDownOutline class="text-2xs m" />
+	</Button>
+	<Dropdown class="text-2xs p-2">
+		{#each formTopics as topic}
+			{#if topic.name !== areaB && topic.name !== areaC}
+				<li>
+					<Radio name="areaA" bind:group={areaA} value={topic.name}>{topic.name}</Radio>
+				</li>
+			{/if}
+		{/each}
+	</Dropdown>
+	<Button>
+		{areaB} <ChevronDownOutline class="text-2xs m" />
+	</Button>
+	<Dropdown class="text-2xs p-2">
+		{#each formTopics as topic}
+			{#if topic.name !== areaA && topic.name !== areaC}
+				<li>
+					<Radio name="areaB" bind:group={areaB} value={topic.name}>{topic.name}</Radio>
+				</li>
+			{/if}
+		{/each}
+	</Dropdown>
+	<Button>
+		{areaC} <ChevronDownOutline class="text-2xs m" />
+	</Button>
+	<Dropdown class="text-2xs p-2">
+		{#each formTopics as topic}
+			{#if topic.name !== areaA && topic.name !== areaB}
+				<li>
+					<Radio name="areaC" bind:group={areaC} value={topic.name}>{topic.name}</Radio>
+				</li>
+			{/if}
+		{/each}
+	</Dropdown>
 </div>
 <P>
 To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript and its number of points as listed in the transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
