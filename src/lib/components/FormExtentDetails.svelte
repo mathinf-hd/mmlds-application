@@ -16,8 +16,9 @@
 	another comparable field (e.g., Technical Mathematics or
 	Scientific Computing, or a program with mathematical lectures
 	that provide the Mathematical Skills specified below), or a
-	degree recognized as equivalent. Please indicate the name of your Bachelor of Science given in your Transcript and the field (more than one possible).  
-	</P>
+	degree recognized as equivalent. Please indicate the name of
+	your Bachelor of Science given in your Transcript and the
+	field (more than one possible).  </P>
 
 	<div class="my-4">
 	<Heading tag="h4" class="mb-4">Field of study</Heading>
