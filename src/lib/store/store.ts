@@ -2,7 +2,6 @@ import { get, writable } from "svelte/store";
 
 import { formTimeSlots } from '$lib/times';
 import { formFields } from '$lib/fields';
-import { formExtendDetails } from "$lib/extentDetails";
 import { formTopics } from "$lib/topics";
 import { formSubjectAreas } from "$lib/subjectAreas";
 import { formQuestions } from "$lib/questions";
