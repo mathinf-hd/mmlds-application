@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { Button, Checkbox, Heading, Input, P, Table, 
+	import { Checkbox, Heading, Input, P, Table, 
 			TableBody, TableBodyCell, TableBodyRow, 
 			TableHead, TableHeadCell } from 'flowbite-svelte';
-	import { TrashBinOutline }  from 'flowbite-svelte-icons';
-
-	import GenericValidatedInput from './GenericValidatedInput.svelte';
 	import { formFields } from '$lib/fields';	
 
-	import { data } from '$lib/store/store';
+
+	import { addFieldOfStudy, data } from '$lib/store/store';
 
 </script>
 
@@ -24,19 +22,31 @@
 	<Heading tag="h4" class="mb-4">Field of study</Heading>
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
-				<TableHeadCell class="min-w-60 text-2xs p-2">Name of Bachelor of Science in Transcript</TableHeadCell>				
+				<TableHeadCell class="min-w-60 text-2xs p-2">Name of Bachelor of Science in Transcript</TableHeadCell>
 				{#each formFields as field}
 					<TableHeadCell class="text-2xs p-2 m-auto">{field.name}</TableHeadCell>
 				{/each}
 				<TableHeadCell class="text-2xs p-2">Comparable Field</TableHeadCell>				
 			</TableHead>
 			<TableBody>
-				<TableBodyRow>	
-					<TableBodyCell class="p-2"><p style="color: red">Textfeld</p></TableBodyCell>				
-					{#each formFields as field}
-					<TableBodyCell class="p-2"><p style="color: red">Checkbox</p></TableBodyCell>
-					{/each}
-					<TableBodyCell class="p-2 text-2xs" color="red"><p style="color: red">Textfeld</p></TableBodyCell>
+				<TableBodyRow>
+				<!-- Bachelor of Science in Transcript -->
+				<TableBodyCell class="p-2">
+					<Input type="text" bind:value={$data.fieldOfStudy.bachelorField} class="text-2xs" />
+				</TableBodyCell>
+				<!-- Known Field Checkboxes -->
+				{#each formFields as field}
+				<TableBodyCell class="p-2">
+				<Checkbox 
+				checked={$data.fieldOfStudy.selectedFields.includes(field.name)}
+				on:change={(e) => addFieldOfStudy(field.name, e.target.checked)}
+				/>
+				</TableBodyCell>
+				{/each}
+				<!-- Comparable Field Text Input -->
+				<TableBodyCell class="p-2 text-2xs">
+				<Input type="text" bind:value={$data.fieldOfStudy.comparableField} class="text-2xs" />
+				</TableBodyCell>
 				</TableBodyRow>
 			</TableBody>
 	</Table>
