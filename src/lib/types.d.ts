@@ -31,9 +31,9 @@ type Lecture = {
 	skills: Record<Skill, boolean>
 };
 
-type Subject = string
-type SubjectArea = { subject: Subject, cp: number }
-type SubjectAreas = Array<SubjectArea>
+type Subject = string;
+type SubjectArea = { subject: Subject, cp: number };
+type SubjectAreas = Array<SubjectArea>;
 type FormDataLectures = Array<Lecture>;
 
-type Data = { timeSlot: SelectedTimeSlot, fieldOfStudy: FormDataFieldOfStudy, topics: Topics, lectures: FormDataLectures, questions: FormDataQuestions};
+type Data = { timeSlot: SelectedTimeSlot, fieldOfStudy: FormDataFieldOfStudy, topics: Topics, lectures: FormDataLectures, questions: FormDataQuestions };

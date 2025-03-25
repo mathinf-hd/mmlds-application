@@ -2,7 +2,7 @@
 import { Button } from "flowbite-svelte";
 import { DownloadOutline } from "flowbite-svelte-icons";
 
-import { data, countSubjectECTS, isValidFormData } from '$lib/store/store'
+import { data, isValidFormData } from '$lib/store/store'
 import { formSubjectAreas } from "$lib/subjectAreas";
 
 function stripFalseSkills(data: Data) {
@@ -36,15 +36,6 @@ function getVersion(){
     return `dev-${import.meta.env.VITE_BUILD_COMMIT}-${import.meta.env.VITE_BUILD_DATETIME}`
 }
 
-function getECTSEquivalents(){
-    let ECTSEquivalents: {[key: string]: number}= {}
-
-    for (const subjectArea of formSubjectAreas){
-        ECTSEquivalents[subjectArea.subject] = countSubjectECTS(subjectArea.subject) 
-    }
-
-    return ECTSEquivalents
-}
 
 async function getTimeStamp(){
     return await fetch('http://worldtimeapi.org/api/timezone/Etc/UTC')
@@ -71,7 +62,6 @@ function downloadFormAsJsonFile(filename: string, data: Data) {
 async function downloadFormData() {
     const filename = 'form-data.txt';
     const data = stripFalseSkills($data);
-    data["ECTSEquivalents"] = getECTSEquivalents();
     data["time"] = await getTimeStamp();
     data["version"] = getVersion();
     /* check if data is valid - otherwise return */

@@ -136,7 +136,6 @@
 								</div>
 								</AccordionItem>
 							</Accordion>
-
 	
 							<div class="text-gray-900 grid grid-cols-[400px,auto]">
 								<P class="font-bold mb-1">Declared Skills</P>
