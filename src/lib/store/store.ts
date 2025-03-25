@@ -2,6 +2,7 @@ import { get, writable } from "svelte/store";
 
 import { formTimeSlots } from '$lib/times';
 import { formFields } from '$lib/fields';
+import { formExtendDetails } from "$lib/extentDetails";
 import { formTopics } from "$lib/topics";
 import { formSubjectAreas } from "$lib/subjectAreas";
 import { formQuestions } from "$lib/questions";
@@ -19,7 +20,7 @@ function loadData(){
         }       
         return data;
     } catch {
-        return generateEmptyDataObject(formQuestions);
+        return generateEmptyDataObject(formExtendDetails, formQuestions);
     }
 }
 
@@ -46,7 +47,7 @@ export async function loadEvalData(filename: string){
 
         } catch (error) {
             console.error('Error loading file:', error);
-            return generateEmptyDataObject(formQuestions);
+            return generateEmptyDataObject(formExtendDetails, formQuestions);
         }
     }
 }
@@ -84,17 +85,14 @@ function isEqual(obj1: any, obj2: any){
     return JSON.stringify(obj1) == JSON.stringify(obj2)
 };
 
-function generateEmptyDataObject(questions: Questions) {
+function generateEmptyDataObject(extentDetails: ExtentDetails, questions: Questions) {
 
     /* create empty data object */
-	const data: Data = { timeSlot: '',
-	      	    	     fieldOfStudy: {
-	      		      bachelorField: '', 
-            		      selectedFields: [],
-            		      comparableField: ''
-        		      },
-			    topics: formTopics, lectures: [] as FormDataLectures, questions: {} as FormDataQuestions };
+	const data: Data = { timeslots: formTimeSlots, fields: formFields, extentDetails: {} as FormDataExtentDetails, topics: formTopics, lectures: [] as FormDataLectures, questions: {} as FormDataQuestions };
 	
+    for (const extentDetail of extentDetails){
+		data['extentDetails'][extentDetail] = null
+	} 
 	
     /* add first lecture for convienience */
     data.lectures = [{ name: '', points: 0, description: '', subject: null, skills: {}}]
@@ -105,20 +103,6 @@ function generateEmptyDataObject(questions: Questions) {
 
 	return data;
 }
-
-export function addFieldOfStudy(fieldName: string, isChecked: boolean){
-    data.update((d) => {
-        if (isChecked) {
-            if (!d.fieldOfStudy.selectedFields.includes(fieldName)) {
-                d.fieldOfStudy.selectedFields.push(fieldName)
-            }
-        } else {
-            d.fieldOfStudy.selectedFields = d.fieldOfStudy.selectedFields.filter((f) => f !== fieldName);
-        }
-        return d;
-    });
-}
-
 
 export function addLecture(){
     let newLecture: Lecture = { name: '', points: 0, description: '', subject: null, skills: {}}
@@ -192,11 +176,46 @@ export function checkDuplicateLecture(lectureIdx: number){
 
 }
 
+export function pointEquivalentECTS(points: number) {
+
+    const _data = get(data);
+
+    const extentDuration = _data.extentDetails["duration"]
+    const extentPoints = _data.extentDetails["points"]
+
+    if (!extentDuration || !extentPoints ) return 0;
+
+    const pointEquivalent = (180 / extentPoints)  * (extentDuration / 36)
+
+    const cp = points * pointEquivalent
+
+    return Math.round(cp * 100) /100
+} 
+
+
+export function countSubjectECTS(subject: Subject) {
+
+    const _data = get(data);
+
+    const extentDuration = _data.extentDetails["duration"]
+    const extentPoints = _data.extentDetails["points"]
+
+    if (!extentDuration || !extentPoints ) return 0;
+
+    const pointEquivalent = (180 / extentPoints)  * (extentDuration / 36)
+
+    const points = _data.lectures.reduce((sum, lecture) => 
+        lecture.subject === subject ? sum + lecture.points : sum, 0);
+
+    const cp = points * pointEquivalent
+
+    return Math.round(cp * 100) /100
+} 
 
 export function isValidDataFormat(data: Data){
     const timeslots = data.timeslots
     const fields = data.fields
-  
+    const extendDetails = data.extentDetails
     const topics = data.topics
     const questions = data.questions
 
@@ -205,6 +224,9 @@ export function isValidDataFormat(data: Data){
 
     /* check fields */
     if (!isEqual(fields, formFields)) return false;
+
+    /* check extendDetails */
+    if (!isEqual(Object.keys(extendDetails), formExtendDetails)) return false;
 
     /* check topics */
     if (!isEqual(topics, formTopics)) return false;
@@ -223,12 +245,22 @@ export function isValidDataFormat(data: Data){
 export function isValidFormData(data: Data){
    
     let exceptions: Record<string, Record<string, string>> = {
+        "extentDetails": {},
         "lectures": {},
         "subjectAreas": {},
         "questions": {},
 
     }
 
+    /* check extentDetails */
+    for (const extentDetail of formExtendDetails){
+        if (data.extentDetails[extentDetail] == 0 || 
+            data.extentDetails[extentDetail] == null ||
+            data.extentDetails[extentDetail] == undefined) {
+            exceptions["extentDetails"][extentDetail] = `- ${extentDetail} missing`
+        }
+    }
+    
     for (const [lectureIdx, lecture] of data.lectures.entries()){
         let exp = "";
 
@@ -238,6 +270,11 @@ export function isValidFormData(data: Data){
             exp = exp + "\n- Name is missing";
         } 
 
+        if (lecture.points == 0 || 
+            lecture.points == null || 
+            lecture.points == undefined) {
+            exp = exp + "\n- Points are missing";
+        }
         if (lecture.description == '' ||
             lecture.description == null ||
             lecture.description == undefined) {
@@ -256,6 +293,12 @@ export function isValidFormData(data: Data){
         }
     }
 
+    for (const subjectArea of formSubjectAreas){
+        if (countSubjectECTS(subjectArea.subject) < subjectArea.cp){
+            exceptions["subjectAreas"][subjectArea.subject] = `- ${subjectArea.subject} has not enough declared ECTS points. ${subjectArea.cp - countSubjectECTS(subjectArea.subject)} points missing`;
+        }
+    }
+
     for (const [questionIdx, question] of formQuestions.entries()){
         if (data.questions[question] == '' ||
             data.questions[question] == null ||
@@ -266,7 +309,8 @@ export function isValidFormData(data: Data){
     }
 
     // check if isValid -- return
-    if (Object.keys(exceptions["lectures"]).length === 0 &&
+    if (Object.keys(exceptions["extentDetails"]).length === 0 &&
+        Object.keys(exceptions["lectures"]).length === 0 &&
         Object.keys(exceptions["subjectAreas"]).length === 0 &&
         Object.keys(exceptions["questions"]).length === 0
     ) return true;
@@ -274,6 +318,16 @@ export function isValidFormData(data: Data){
     
     // generate absolute sophisticated error message 
     let alertString: string = "File can not be created because some data is missing.\n\n";
+
+    if (Object.keys(exceptions["extentDetails"]).length > 0){
+        alertString += "Details on Field of Study:\n";
+
+        for (const exp of Object.keys(exceptions["extentDetails"])){
+            alertString += exceptions["extentDetails"][exp] + "\n";
+        } 
+
+        alertString += "\n";
+    } 
 
     if (Object.keys(exceptions["lectures"]).length > 0){
         for (const exp of Object.keys(exceptions["lectures"])){
@@ -301,4 +355,5 @@ export function isValidFormData(data: Data){
 
     return false
 }
+
 

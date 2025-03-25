@@ -1,14 +1,8 @@
 type TimeSlot = {name: string};
 type TimeSlots = Array<TimeSlot>;
-type SelectedTimeSlot = string;
 
 type Field = {name: string};
 type Fields = Array<Field>;
-type FormDataFieldOfStudy = {
-	bachelorField: string;
-	selectedFields: Array<string>;
-	comparableField: string;
-}
 
 
 type Topic = {name: string, subtopics: Skills, modul: mSkills};
@@ -18,6 +12,10 @@ type Skills = Array<Skill>
 type mSkill = string;
 type mSkills = Array<mSkill>
 
+
+type ExtentDetail = string;
+type ExtentDetails = Array<ExtentDetail> ;
+type FormDataExtentDetails = Record<ExtentDetail, number | null>;
 
 type Question = string;
 type Questions = Array<Question>;
@@ -31,9 +29,9 @@ type Lecture = {
 	skills: Record<Skill, boolean>
 };
 
-type Subject = string;
-type SubjectArea = { subject: Subject, cp: number };
-type SubjectAreas = Array<SubjectArea>;
+type Subject = string
+type SubjectArea = { subject: Subject, cp: number }
+type SubjectAreas = Array<SubjectArea>
 type FormDataLectures = Array<Lecture>;
 
-type Data = { timeSlot: SelectedTimeSlot, fieldOfStudy: FormDataFieldOfStudy, topics: Topics, lectures: FormDataLectures, questions: FormDataQuestions };
+type Data = { timeslots: TimeSlots, fields: Fields, extentDetails: FormDataExtentDetails, topics: Topics, lectures: FormDataLectures, questions: FormDataQuestions};
