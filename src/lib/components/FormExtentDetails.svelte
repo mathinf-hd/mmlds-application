@@ -11,20 +11,19 @@
 
 </script>
 
-<div class="flex gap-4 flex-col"> <P> As the admission regulations
+<div class="flex gap-4 flex-col"> <P> The admission regulations
 	require a Bachelor of Science in Mathematics or Physics or in
 	another comparable field (e.g., Technical Mathematics or
 	Scientific Computing, or a program with mathematical lectures
 	that provide the Mathematical Skills specified below), or a
-	degree recognized as equivalent. The proof of an above-average
-	bachelor's degree is demonstrated with a minimum grade of 2.3.
+	degree recognized as equivalent. Please indicate the name of your Bachelor of Science given in your Transcript and the field (more than one possible).  
 	</P>
 
 	<div class="my-4">
 	<Heading tag="h4" class="mb-4">Field of study</Heading>
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
-				<TableHeadCell class="min-w-60 text-2xs p-2">Field of Bachelor of Science in Transcript</TableHeadCell>				
+				<TableHeadCell class="min-w-60 text-2xs p-2">Name of Bachelor of Science in Transcript</TableHeadCell>				
 				{#each formFields as field}
 					<TableHeadCell class="text-2xs p-2 m-auto">{field.name}</TableHeadCell>
 				{/each}
