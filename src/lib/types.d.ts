@@ -1,11 +1,15 @@
+type Field = {name: string};
+type Fields = Array<Field>;
+type FormDataFieldOfStudy = {
+	bachelorField: string;
+	selectedFields: Array<string>;
+	comparableField: string;
+}
+
 type Topic = {name: string, description: string, subtopics: Skills};
 type Topics = Array<Topic>;
 type Skill = string;
 type Skills = Array<Skill>
-
-type ExtentDetail = string;
-type ExtentDetails = Array<ExtentDetail> ;
-type FormDataExtentDetails = Record<ExtentDetail, number | null>;
 
 type Question = string;
 type Questions = Array<Question>;
@@ -19,9 +23,9 @@ type Lecture = {
 	skills: Record<Skill, boolean>
 };
 
-type Subject = string
-type SubjectArea = { subject: Subject, cp: number }
-type SubjectAreas = Array<SubjectArea>
+type Subject = string;
+type SubjectArea = { subject: Subject, cp: number };
+type SubjectAreas = Array<SubjectArea>;
 type FormDataLectures = Array<Lecture>;
 
-type Data = { extentDetails: FormDataExtentDetails, topics: Topics, lectures: FormDataLectures, questions: FormDataQuestions};
+type Data = { fieldOfStudy: FormDataFieldOfStudy, topics: Topics, lectures: FormDataLectures, questions: FormDataQuestions };
