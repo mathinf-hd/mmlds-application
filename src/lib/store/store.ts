@@ -2,7 +2,6 @@ import { get, writable } from "svelte/store";
 import { formTopics } from "$lib/topics";
 import { formQuestions } from "$lib/questions";
 
-
 export const data = writable<Data>(loadData())
 data.subscribe((value) => localStorage.data = JSON.stringify(value))
 
