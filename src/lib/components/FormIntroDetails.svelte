@@ -4,8 +4,6 @@ import { Dropdown, DropdownItem, Radio,
 import { ChevronDownOutline }  from 'flowbite-svelte-icons';
 import { formTimeSlots } from '$lib/times';
 import { data } from '$lib/store/store';
-
-
 </script>
 
 <P> Please declare the details on your bachelor's field of study, your lectures and skills to be recognized, and provide your answers to the motivation questions, by filling in this form and then clicking "Save form data" at the bottom to save its contents to a file. Subsequently, upload this file to your application in heiCO. <b>Please notice</b> that the form is filled locally on your computer, i.e., your contents are not sent to any server.</P>
