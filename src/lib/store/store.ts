@@ -81,7 +81,7 @@ function isEqual(obj1: any, obj2: any){
 function generateEmptyDataObject(questions: Questions) {
     
     /* create empty data object */
-	const data: Data = { 
+	const data: Data = { timeSlot: '', 
         fieldOfStudy: {
             bachelorField: '', 
             selectedFields: [],
