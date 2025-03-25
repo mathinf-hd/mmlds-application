@@ -17,7 +17,7 @@
 	Scientific Computing, or a program with mathematical lectures
 	that provide the Mathematical Skills specified below), or a
 	degree recognized as equivalent. Please indicate the name of
-	your Bachelor of Science given in your Transcript and the
+	your Bachelor of Science given in your transcript and the
 	field (more than one possible).  </P>
 
 	<div class="my-4">

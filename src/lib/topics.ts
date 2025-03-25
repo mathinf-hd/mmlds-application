@@ -10,7 +10,12 @@ export const formTopics: Topics = [
 			'Covering spaces'
 		],
 		modul: [
-		'fehlt noch'
+		'Topological and differentiable manifolds',
+		'vector bundles',
+		'Lie groups as an important example class',
+		'triangulations and simplicial complexes',
+		'group actions also from a simplicial perspective',
+		'covering spaces'
 		]
 	},
 	{
@@ -73,9 +78,11 @@ export const formTopics: Topics = [
 		],
 		modul:  [
 		'Classification of optimization problems',
-		'Optimality conditions, gradient and Newton methods for unconstrained differentiable optimization problems',
-		'Optimality conditions, duality, simplex method for linear optimization problems',
-		'Directional derivative and subdifferential of convex functions, optimality conditions, gradient and proximal-point methods for convex optimization problems'
+		'Gradient and Newton methods for unconstrained differentiable optimization',
+		'Subdifferential calculus of convex functions',
+		'Conjugation and convex duality',
+		'Fermat s and Lagrangian optimality conditions',
+		'Proximal point methods, operator splitting for convex optimization problems'
 		]
 	}
 ]
