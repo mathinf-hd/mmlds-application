@@ -7,7 +7,7 @@ import { data } from '$lib/store/store';
 </script>
 
 <P> Please declare the details on your bachelor's field of study, your lectures and skills to be recognized, and provide your answers to the motivation questions, by filling in this form and then clicking "Save form data" at the bottom to save its contents to a file. Subsequently, upload this file to your application in heiCO. <b>Please notice</b> that the form is filled locally on your computer, i.e., your contents are not sent to any server.</P>
-<br>
+<br><br>
 <P> In case you are invited to an online interview which general time slot would be more convenient for you. </P>
 
 <div class="my-4">

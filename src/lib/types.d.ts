@@ -4,16 +4,19 @@ type SelectedTimeSlot = string;
 
 type Field = {name: string};
 type Fields = Array<Field>;
-type FormDataFieldOfStudy = {
+type FormDataFieldOfStudy = { // TODO: rename to Fields for better readability and understanding
 	bachelorField: string;
 	selectedFields: Array<string>;
 	comparableField: string;
 }
 
-type Topic = {name: string, description: string, subtopics: Skills};
+type Topic = {name: string, subtopics: string, module: Skills};
 type Topics = Array<Topic>;
 type Skill = string;
 type Skills = Array<Skill>
+type mSkill = string;
+type mSkills = Array<mSkill>
+
 
 type Question = string;
 type Questions = Array<Question>;

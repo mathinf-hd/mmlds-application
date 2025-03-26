@@ -14,23 +14,23 @@ let areaA = 'Please select Area A';
 let areaB = 'Please select Area B';
 let areaC = 'Please select Area C';
 
- import { sineIn } from 'svelte/easing';
- let hidden1 = true;
- let transitionParams = {
+import { sineIn } from 'svelte/easing';
+
+
+let selectedDrawer = 0;
+let hiddenDrawer = true;
+
+// Function to open the drawer
+function openDrawer(index: number) {
+	selectedDrawer = index;
+	hiddenDrawer = false;
+}
+
+let transitionParams = {
     x: -320,
     duration: 200,
     easing: sineIn
 };
-
-
-let selectedIndex = 0;
-
-// Function to open the drawer
-function openDrawer(index: number) {
-	selectedIndex = index;
-	hidden1 = false;
-}
-
 </script>
 
 <P>
@@ -76,14 +76,18 @@ function openDrawer(index: number) {
 	</Dropdown>
 </div>
 <P>
-To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript and its number of points as listed in the transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
+To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript. To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
 </P>
 
-{#each formTopics as topic, topicidx}
+
+
+
+{#each formTopics as topic, topicIdx}
+
 <div class="my-4">
-	<Heading tag="h4" class="mb-4">{topic.name} 
-		<Button color="yellow" on:click={() => openDrawer(topicidx)}>{topic.name} Module</Button>	
-	</Heading>
+     <Heading tag="h4" class="mb-4">{topic.name}
+     	<Button  on:click={() => openDrawer(topicIdx)}> Overview of perequired skills</Button>
+     </Heading>	
 	<Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
 				<TableHeadCell class="min-w-60 text-2xs p-2">Lecture Name in Transcript</TableHeadCell>
@@ -110,15 +114,22 @@ To declare these skills, add for each respective lecture its English name as lis
 </div>
 {/each}
 
-<Drawer placement="left" transitionType="fly" bind:hidden={hidden1} transitionParams={transitionParams} class="w-64 text-sm font-light">
-	<div class="flex items-start">
-		<h5 id="drawer-label" class="text-base font-semibold text-gray-500 dark:text-gray-400">
-			{formTopics[selectedIndex].name} Module Description
-		</h5>
-		<CloseButton on:click={() => (hidden1 = true)} class="ml-auto dark:text-white"/>
-	</div>
-	<br>
-	<p class="mb-6 text-sm text-gray-500 dark:text-gray-400">
-		{formTopics[selectedIndex].description} 
-	</p>
-</Drawer>	
+     <Drawer
+		placement="left"
+		transitionType="fly"
+		transitionParams={transitionParams}
+		bind:hidden={hiddenDrawer}
+		id=sidebarDrawer
+		class="w-64 text-sm font-light">
+		<!-- test with items-centert and items-start -->
+     <div class="flex items-start"> 
+     	<CloseButton on:click={() => (hiddenDrawer = true)} class="ml-auto dark:text-wh" />
+     </div>
+     <p class="text-sm p-2 bg-primary-700 text-white">
+     Prerequired skills in <br> {formTopics[selectedDrawer].name}</p>
+     <ul>
+     {#each formTopics[selectedDrawer].modul as modul}
+     <li class="text-sm" style="list-style-type: circle"> {modul} </li>
+     {/each}
+     </ul>
+     </Drawer>

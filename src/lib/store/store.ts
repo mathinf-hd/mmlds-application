@@ -1,4 +1,7 @@
 import { get, writable } from "svelte/store";
+
+import { formTimeSlots } from '$lib/times';
+import { formFields } from '$lib/fields';
 import { formTopics } from "$lib/topics";
 import { formQuestions } from "$lib/questions";
 
@@ -93,7 +96,7 @@ function generateEmptyDataObject(questions: Questions) {
 	
     /* add first lecture for convienience */
     data.lectures = [{ name: '', points: 0, description: '', subject: null, skills: {}}]
-	
+
     for (const question of questions) {
 		data['questions'][question] = '';
 	}
@@ -129,6 +132,7 @@ export function deleteLecture(idx: number){
     return data
     })
 }
+
 
 export function addSkill(lectureIdx: number, skill: Skill){
     
@@ -185,8 +189,16 @@ export function checkDuplicateLecture(lectureIdx: number){
 }
 
 export function isValidDataFormat(data: Data){
+    const timeslots = data.timeSlot
+    const fields = data.fields
     const topics = data.topics
     const questions = data.questions
+
+    /* check timeslots */
+    if (!isEqual(timeslots, formTimeSlots)) return false;
+
+    /* check fields */
+    if (!isEqual(fields, formFields)) return false;
 
     /* check topics */
     if (!isEqual(topics, formTopics)) return false;
@@ -283,3 +295,5 @@ export function isValidFormData(data: Data){
 
     return false
 }
+
+
