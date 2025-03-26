@@ -19,7 +19,7 @@
     import GenericValidatedInput from './GenericValidatedInput.svelte';
     import PositiveNumberInput from './PositiveNumberInput.svelte';
 
-    import { data, addLecture, deleteLecture, checkDuplicateLecture, countSubjectECTS } from '$lib/store/store'
+    import { data, addLecture, deleteLecture, checkDuplicateLecture } from '$lib/store/store'
     import { formSubjectAreas } from '$lib/subjectAreas';
 
     const selectionItems: Array<SelectOptionType<Subject>> = []
@@ -56,13 +56,4 @@
 			</TableBody>
 	</Table>
 	<Button class="text-2xs m-2" on:click={() => addLecture()}>Add Another Lecture</Button>
-    <div class="mt-8">
-        {#key $data}
-        {#each formSubjectAreas as subjectArea}
-            <div class="text-gray-900 text-center">
-                ECTS-equivalent of specified points in {subjectArea.subject}: <span class="font-bold">{countSubjectECTS(subjectArea.subject)}</span> (of {subjectArea.cp} required ECTS)
-            </div>
-        {/each}
-        {/key}
-    </div>
 </div>

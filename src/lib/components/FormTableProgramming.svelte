@@ -78,7 +78,7 @@ you acquired skills in areas such as Algorithms and data structures through corr
 	<Button class="text-2xs m-2" on:click={() => addLecture()}>Add Another Project</Button>
 </div>
 
-<P> Please check the box <Checkbox inline class="me-2" bind:checked={checkedFlag} /> if you particpated in a programming course, e.g. dedicated to a specific programming language.
+<P> Please check the box <Checkbox inline class="me-2" bind:checked={checkedFlag} /> if you participated in a programming course, e.g. dedicated to a specific programming language.
 To declare these skills, add for each respective programming course its English name as listed in the (translated) transcript together with the  entire official description of the course.
 Alternatively for extracurricular courses provide the file name of the certificate as uploaded to heiCO.</P> 
 

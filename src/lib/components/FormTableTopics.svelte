@@ -1,11 +1,10 @@
 <script lang="ts">
-import { Popover,  Dropdown, DropdownItem, Radio,
-       	 	   Drawer, Button, CloseButton, Checkbox, Heading, Input, P, Table, 
+import { Dropdown, DropdownItem, Radio,
+       	 	   Button, CloseButton, Checkbox, Heading, Input, P, Table, 
 		   TableBody, TableBodyCell, TableBodyRow, 
-		   TableHead, TableHeadCell } from 'flowbite-svelte';
+		   TableHead, TableHeadCell, Drawer } from 'flowbite-svelte';
 import { TrashBinOutline, ChevronDownOutline }  from 'flowbite-svelte-icons';
 
-import PositiveNumberInput from './PositiveNumberInput.svelte';
 import GenericValidatedInput from './GenericValidatedInput.svelte';
 import { formTopics } from '$lib/topics';
 
@@ -27,15 +26,11 @@ function openDrawer(index: number) {
 	hiddenDrawer = false;
 }
 
-
 let transitionParams = {
     x: -320,
     duration: 200,
     easing: sineIn
-  };
-
-
-
+};
 </script>
 
 <P>
@@ -43,46 +38,40 @@ let transitionParams = {
 </P>
 
 <div class="my-4">
-<Button on:click={() => (areaB = 'Please select Area B')}>
+<Button>
   {areaA} <ChevronDownOutline class="text-2xs m-2" />
 </Button>
 <Dropdown class="text-2xs p-2">
- {#each formTopics as topic} 
-  <li>
-    <Radio name="areaA" bind:group={areaA} value={topic.name}>{topic.name}</Radio>
-  </li>
-  {/each}
-</Dropdown>
-<Button on:click={() => (areaC = 'Please select Area C')}>
-  {areaB}<ChevronDownOutline class="text-2xs m-2" />
-</Button>
-<Dropdown class="text-2xs p-2">
  {#each formTopics as topic}
- {#if topic.name != areaA}
-  <li>
-    <Radio name="areaB" bind:group={areaB} value={topic.name}>{topic.name}</Radio>
-  </li>
-  {:else}
-    <Radio name="areaB" bind:group={areaB} value={topic.name} disabled>{topic.name}</Radio>
-  {/if}
+ 	{#if topic.name !== areaB && topic.name !== areaC}
+  	<li>
+    	<Radio name="areaA" bind:group={areaA} value={topic.name}>{topic.name}</Radio>
+  	</li>
+	{/if}
   {/each}
 </Dropdown>
 <Button>
-  {areaC}<ChevronDownOutline class="text-2xs m-2" />
+  {areaB} <ChevronDownOutline class="text-2xs m-2" />
 </Button>
 <Dropdown class="text-2xs p-2">
  {#each formTopics as topic}
-  {#if topic.name != areaA}
-   {#if topic.name != areaB}
-     <li>
-      <Radio name="areaC" bind:group={areaC} value={topic.name}>{topic.name}</Radio>
-    </li>
-   {:else}
-    <Radio name="areaC" bind:group={areaC} value={topic.name} disabled>{topic.name}</Radio>
-   {/if}
-  {:else}
-   <Radio name="areaC" bind:group={areaC} value={topic.name} disabled>{topic.name}</Radio>
-  {/if}  
+ 	{#if topic.name !== areaA && topic.name !== areaC}
+  	<li>
+    	<Radio name="areaB" bind:group={areaB} value={topic.name}>{topic.name}</Radio>
+  	</li>
+  	{/if}
+  {/each}
+</Dropdown>
+<Button>
+  {areaC} <ChevronDownOutline class="text-2xs m-2" />
+</Button>
+<Dropdown class="text-2xs p-2">
+ {#each formTopics as topic}
+  	{#if topic.name !== areaA && topic.name !== areaB}
+     	<li>
+      	<Radio name="areaC" bind:group={areaC} value={topic.name}>{topic.name}</Radio>
+    	</li>
+	{/if}
  {/each}
 </Dropdown>
 </div>

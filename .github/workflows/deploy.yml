@@ -1,6 +1,9 @@
 name: Build and deploy to gh-pages
 
-on: [push, workflow_dispatch]
+on:
+  push:
+    branches:
+      - jj
 
 jobs:
   build:
