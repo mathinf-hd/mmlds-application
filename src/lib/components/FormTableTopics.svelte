@@ -114,22 +114,23 @@ To declare these skills, add for each respective lecture its English name as lis
 </div>
 {/each}
 
-     <Drawer
-		placement="left"
-		transitionType="fly"
-		transitionParams={transitionParams}
-		bind:hidden={hiddenDrawer}
-		id=sidebarDrawer
-		class="w-64 text-sm font-light">
-		<!-- test with items-centert and items-start -->
-     <div class="flex items-start"> 
-     	<CloseButton on:click={() => (hiddenDrawer = true)} class="ml-auto dark:text-wh" />
-     </div>
-     <p class="text-sm p-2 bg-primary-700 text-white">
-     Prerequired skills in <br> {formTopics[selectedDrawer].name}</p>
-     <ul>
-     {#each formTopics[selectedDrawer].modul as modul}
-     <li class="text-sm" style="list-style-type: circle"> {modul} </li>
-     {/each}
-     </ul>
-     </Drawer>
+<Drawer
+	placement="left"
+	transitionType="fly"
+	transitionParams={transitionParams}
+	bind:hidden={hiddenDrawer}
+	id=sidebarDrawer
+	class="w-64 text-sm font-light">
+	<!-- test with items-centert and items-start -->
+	<div class="flex items-start"> 
+		<CloseButton on:click={() => (hiddenDrawer = true)} class="ml-auto dark:text-wh" />
+	</div>
+	<p class="text-sm p-2 bg-primary-700 text-white">
+		Prerequired skills in <br> {formTopics[selectedDrawer].name}
+	</p>
+	<ul>
+		{#each formTopics[selectedDrawer].modul as modul}
+			<li class="text-sm" style="list-style-type: circle"> {modul} </li>
+		{/each}
+	</ul>
+</Drawer>
