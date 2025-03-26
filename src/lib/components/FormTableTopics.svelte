@@ -2,7 +2,7 @@
 import { Dropdown, DropdownItem, Radio,
        	 	   Button, CloseButton, Checkbox, Heading, Input, P, Table, 
 		   TableBody, TableBodyCell, TableBodyRow, 
-		   TableHead, TableHeadCell, Drawer} from 'flowbite-svelte';
+		   TableHead, TableHeadCell, Drawer } from 'flowbite-svelte';
 import { TrashBinOutline, ChevronDownOutline }  from 'flowbite-svelte-icons';
 
 import GenericValidatedInput from './GenericValidatedInput.svelte';
@@ -26,15 +26,11 @@ function openDrawer(index: number) {
 	hiddenDrawer = false;
 }
 
-
 let transitionParams = {
     x: -320,
     duration: 200,
     easing: sineIn
 };
-
-
-
 </script>
 
 <P>

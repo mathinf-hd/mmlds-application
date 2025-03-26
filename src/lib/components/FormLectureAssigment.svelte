@@ -19,7 +19,7 @@
     import GenericValidatedInput from './GenericValidatedInput.svelte';
     import PositiveNumberInput from './PositiveNumberInput.svelte';
 
-    import { data, addLecture, deleteLecture, checkDuplicateLecture} from '$lib/store/store'
+    import { data, addLecture, deleteLecture, checkDuplicateLecture } from '$lib/store/store'
     import { formSubjectAreas } from '$lib/subjectAreas';
 
     const selectionItems: Array<SelectOptionType<Subject>> = []

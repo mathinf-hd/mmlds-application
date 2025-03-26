@@ -36,7 +36,6 @@ function getVersion(){
     return `dev-${import.meta.env.VITE_BUILD_COMMIT}-${import.meta.env.VITE_BUILD_DATETIME}`
 }
 
-
 async function getTimeStamp(){
     return await fetch('http://worldtimeapi.org/api/timezone/Etc/UTC')
         .then(response => response.json())

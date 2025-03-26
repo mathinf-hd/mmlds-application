@@ -193,7 +193,7 @@ export function checkDuplicateLecture(lectureIdx: number){
 }
 
 export function isValidDataFormat(data: Data){
-    const timeslots = data.timeslots
+    const timeslots = data.timeSlot
     const fields = data.fields
     const topics = data.topics
     const questions = data.questions
@@ -265,7 +265,7 @@ export function isValidFormData(data: Data){
 
     // check if isValid -- return
     if (Object.keys(exceptions["lectures"]).length === 0 &&
-        Object.keys(exceptions["subjectAreas"]).length === 0 &&	
+        Object.keys(exceptions["subjectAreas"]).length === 0 &&
         Object.keys(exceptions["questions"]).length === 0
     ) return true;
 
