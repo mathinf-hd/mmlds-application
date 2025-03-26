@@ -1,7 +1,7 @@
 <script lang="ts">
 
 	import { Card, Alert, Checkbox, Heading, P, Button, Accordion, AccordionItem} from 'flowbite-svelte';
-	import { data, loadEvalData, pointEquivalentECTS } from '$lib/store/store';
+	import { data, loadEvalData } from '$lib/store/store';
 	import { BadgeCheckSolid, ExclamationCircleSolid, PrinterSolid, InfoCircleSolid } from "flowbite-svelte-icons";
 
 	import { onMount, tick } from "svelte";
@@ -115,13 +115,6 @@
 
 		<Card size="xl" class="my-2">
 			<Heading tag="h3" class="mb-4 text-center">Details on Field of Study</Heading>
-			<div class="flex items-center justify-center">
-					<div class="w-40"><P class="font-bold">Duration (months)</P></div>
-					<div class="w-20 text-2xs bg-gray-50 border-gray-300 rounded-lg p-2 text-xs text-gray-900 border text-center">{$data["extentDetails"]["duration"]}</div>
-					<div class="w-32" />
-					<div class="w-32"><P class="font-bold">Total Points</P></div>
-					<div class="w-20 text-2xs bg-gray-50 border-gray-300 rounded-lg p-2 text-xs text-gray-900 border text-center">{$data["extentDetails"]["points"]}</div>
-			</div>
 		</Card>
 	
 		<Card size="xl" class="my-2">
@@ -132,9 +125,6 @@
 					<div class="mb-24 flex flex-col">
 						
 							<Heading tag="h5">Lecture {lectureIdx + 1}: {lecture.name}</Heading>
-							<div class="mb-4">
-								{pointEquivalentECTS(lecture.points)} ECTS ({lecture.points} Points in original data)
-							</div>
 	
 							<Accordion flush class="mb-8">
 								<AccordionItem>
@@ -147,24 +137,6 @@
 								</AccordionItem>
 							</Accordion>
 
-							<div class="text-gray-900 grid grid-cols-[400px,auto] mb-8">
-							<P class="font-bold mb-1">Subject Area</P>
-							<P class="font-bold mb-1">Confirm?</P>
-							
-							{#if lecture.subject == "computer science"}
-								<div class="pl-2">
-									{lecture.subject}
-								</div>
-								<Checkbox class="computer-science" value={pointEquivalentECTS(lecture.points)} on:change={updateScore} checked></Checkbox>
-							{/if}
-	
-							{#if lecture.subject == "mathematics"}
-								<div class="pl-2">
-									{lecture.subject}
-								</div>
-								<Checkbox class="mathematics" value={pointEquivalentECTS(lecture.points)} on:change={updateScore} checked></Checkbox>
-							{/if}
-							</div>
 	
 							<div class="text-gray-900 grid grid-cols-[400px,auto]">
 								<P class="font-bold mb-1">Declared Skills</P>
