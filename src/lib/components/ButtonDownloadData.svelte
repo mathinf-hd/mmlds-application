@@ -2,39 +2,38 @@
 import { Button } from "flowbite-svelte";
 import { DownloadOutline } from "flowbite-svelte-icons";
 
-import { data, isValidFormData } from '$lib/store/store'
-import { formSubjectAreas } from "$lib/subjectAreas";
+import { data, /* isValidFormData */ } from '$lib/store/store'
 
-function stripFalseSkills(data: Data) {
+// function stripFalseSkills(data: Data) {
     
-    /* generate deepcopy to avoid mutating the original object*/
-    let strippedData: any = JSON.parse(JSON.stringify(data))
+//     /* generate deepcopy to avoid mutating the original object*/
+//     let strippedData: any = JSON.parse(JSON.stringify(data))
 
-    /* filter skills */
-    data.lectures.forEach((lecture,idx) => {
-        let skills = [];
-        for (let [key, value] of Object.entries(lecture.skills)) {
-            if (value) {
-                skills.push(key);
-            }
-        }
-        strippedData.lectures[idx].skills = skills;
-        delete strippedData.lectures[idx].confirmed;
-    });
+//     /* filter skills */
+//     data.lectures.forEach((lecture,idx) => {
+//         let skills = [];
+//         for (let [key, value] of Object.entries(lecture.skills)) {
+//             if (value) {
+//                 skills.push(key);
+//             }
+//         }
+//         strippedData.lectures[idx].skills = skills;
+//         delete strippedData.lectures[idx].confirmed;
+//     });
 
-    return strippedData
-}
+//     return strippedData
+// }
 
 
-function getVersion(){
-    const mode = import.meta.env.MODE
+// function getVersion(){
+//     const mode = import.meta.env.MODE
 
-    if (mode == "production"){
-        return `prod-${import.meta.env.VITE_BUILD_COMMIT}-${import.meta.env.VITE_BUILD_DATETIME}`
-    }
+//     if (mode == "production"){
+//         return `prod-${import.meta.env.VITE_BUILD_COMMIT}-${import.meta.env.VITE_BUILD_DATETIME}`
+//     }
     
-    return `dev-${import.meta.env.VITE_BUILD_COMMIT}-${import.meta.env.VITE_BUILD_DATETIME}`
-}
+//     return `dev-${import.meta.env.VITE_BUILD_COMMIT}-${import.meta.env.VITE_BUILD_DATETIME}`
+// }
 
 async function getTimeStamp(){
     return await fetch('http://worldtimeapi.org/api/timezone/Etc/UTC')
@@ -60,11 +59,11 @@ function downloadFormAsJsonFile(filename: string, data: Data) {
 
 async function downloadFormData() {
     const filename = 'form-data.txt';
-    const data = stripFalseSkills($data);
+    // const data = stripFalseSkills($data);
     data["time"] = await getTimeStamp();
-    data["version"] = getVersion();
+    // data["version"] = getVersion();
     /* check if data is valid - otherwise return */
-    if (!isValidFormData(data)) return;
+    // if (!isValidFormData(data)) return;
     
     downloadFormAsJsonFile(filename, data);
 }

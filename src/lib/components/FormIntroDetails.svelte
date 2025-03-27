@@ -1,6 +1,6 @@
 <script lang="ts">
-import { Dropdown, DropdownItem, Radio,
-       	 	   Button, Heading, Input, P} from 'flowbite-svelte';
+import { Dropdown, Radio,
+       	 	   Button, P} from 'flowbite-svelte';
 import { ChevronDownOutline }  from 'flowbite-svelte-icons';
 import { formTimeSlots } from '$lib/times';
 import { data } from '$lib/store/store';
