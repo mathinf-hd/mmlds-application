@@ -1,4 +1,4 @@
-type TimeSlot = {name: string; };
+type TimeSlot = { name: string; };
 type TimeSlots = Array<TimeSlot>;
 
 interface Field { name: string; }
@@ -24,8 +24,6 @@ interface MathLecture {
 	skills: Array<string>;
 	moduleDescription: string;
 }
-
-
 interface MathematicsData {
 	area: Array<string>,
 	lectures: Record<Area, Lectures>

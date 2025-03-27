@@ -18,7 +18,6 @@
 	addProgrammingCourse,
 	removeProgrammingCourse
 	} from '$lib/store/store';
-
 </script>
 
 
