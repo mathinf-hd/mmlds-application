@@ -1,40 +1,72 @@
-type TimeSlot = {name: string};
+type TimeSlot = {name: string; };
 type TimeSlots = Array<TimeSlot>;
-type SelectedTimeSlot = string;
 
-
-
-type Field = {name: string};
+interface Field { name: string; }
 type Fields = Array<Field>;
-type FormDataFieldOfStudy = { // TODO: rename to Fields for better readability and understanding
-	bachelorField: string;
-	selectedFields: Array<string>;
-	comparableField: string;
+interface FormDataField {
+	// mandatory input
+	bachelorName: string; 
+	fieldsSelected: Array<string>;
+	// not mandatory input
+	comparableField?: string; 
 }
 
-type Topic = {name: string, subtopics: string, module: Skills};
 type Topics = Array<Topic>;
-type Skill = string;
-type Skills = Array<Skill>;
-type mSkill = string;
-type mSkills = Array<mSkill>;
+interface Topic {
+	name: string,
+	subtopics: Array<string>,
+	module: Array<string>
+}
 
+type Lectures = Array<MathLecture>;
+interface MathLecture {
+	lectureName: string;
+	skills: Array<string>;
+	moduleDescription: string;
+}
+
+
+interface MathematicsData {
+	area: Array<string>,
+	lectures: Record<Area, Lectures>
+}
+
+interface ProgrammingLecture {
+	name: string;
+	moduleDescription: string;
+}
+
+interface OpenSourceProject {
+	projectName: string;
+	publicRepoLink: string;
+	personalIdentifier: string;
+}
+
+interface ProgrammingCourse {
+	courseName: string;
+	moduleDescription: string;
+}
+
+interface ProgrammingData {
+	lectures?: Array<ProgrammingLecture>;
+	openSourceProjects?: Array<OpenSourceProject>;
+	extraCourses?: Array<ProgrammingCourse>;
+	lecturesEnabled?: boolean;
+	openSourceProjectsEnabled?: boolean;
+	extraCoursesEnabled?: boolean;
+}
 
 type Question = string;
 type Questions = Array<Question>;
-type FormDataQuestions = Record<Question, string>;
+type MotivationAnswers = Record<Question, string>;
 
-type Lecture = {
-	name: string;
-	points: number;
-	description: string;
-	subject: Subject | null;
-	skills: Record<Skill, boolean>
-};
-
-type Subject = string;
-type SubjectArea = { subject: Subject, cp: number };
-type SubjectAreas = Array<SubjectArea>;
-type FormDataLectures = Array<Lecture>;
-
-type Data = { timeSlot: SelectedTimeSlot, fieldOfStudy: FormDataFieldOfStudy, topics: Topics, lectures: FormDataLectures, questions: FormDataQuestions };
+// Top-Level Data Structure
+interface Data {
+	// mandatory input
+	timeSlot: string;         
+	fieldDetails: FormDataField;
+	mathematics: MathematicsData;
+	questions: MotivationAnswers;
+	// not mandatory input
+	programming?: ProgrammingData;
+  }

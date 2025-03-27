@@ -1,6 +1,6 @@
 <script lang="ts">
-import { Dropdown, DropdownItem, Radio,
-       	 	   Button, Heading, Input, P} from 'flowbite-svelte';
+import { Dropdown, Radio,
+       	 	   Button, P} from 'flowbite-svelte';
 import { ChevronDownOutline }  from 'flowbite-svelte-icons';
 import { formTimeSlots } from '$lib/times';
 import { data } from '$lib/store/store';
@@ -13,6 +13,7 @@ import { data } from '$lib/store/store';
     { $data.timeSlot ? $data.timeSlot : "Please select Time slot"} 
     <ChevronDownOutline class="text-2xs m-2" />
   </Button>
+  
  <!-- Dropdown of radio buttons for each possible slot -->
   <Dropdown class="text-2xs p-2">
     {#each formTimeSlots as time}

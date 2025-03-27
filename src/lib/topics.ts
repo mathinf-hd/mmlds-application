@@ -9,13 +9,13 @@ export const formTopics: Topics = [
 			'Group actions',
 			'Covering spaces'
 		],
-		modul: [
+		module: [
 		'Topological and differentiable manifolds',
-		'vector bundles',
+		'Vector bundles',
 		'Lie groups as an important example class',
-		'triangulations and simplicial complexes',
-		'group actions also from a simplicial perspective',
-		'covering spaces'
+		'Triangulations and simplicial complexes',
+		'Group actions also from a simplicial perspective',
+		'Covering spaces'
 		]
 	},
 	{
@@ -28,7 +28,7 @@ export const formTopics: Topics = [
 			'Hilbert spaces and self adjoint operators',
 			'Spectral theory of compact operators'			
 		],
-		modul: [
+		module: [
 		'Metric spaces and their mappings: including completion, Baire theorem, (relatively) compact subsets and their characterization, extendability of uniformly continuous mappings',
 		'Normed spaces and their mappings: including Banach spaces, dual spaces, weak topologies, topological vector spaces, examples of function spaces, spectral theory of compact operators, with the usual theorems (including the spectral theorem)',
 		'Hilbert spaces and their mappings'
@@ -44,7 +44,7 @@ export const formTopics: Topics = [
 			'Numerical methods for (stiff) ODEs',
 			'Eigenvalue problems'
 		],
-		modul:  [
+		module:  [
 		'fehlt noch'
 		]		
 	},
@@ -58,12 +58,15 @@ export const formTopics: Topics = [
 			'Maximum likelihood estimation',
 			'Asymptotic normality'
 		],
-		modul:  [
+		module:  [
 			'Measure and integration theory: Algebras, Borel algebra, measurable mappings, construction of probability measures, product spaces. Expectation as a measure integral, Lebesgue, Beppo Levi, Fubini, and Radon-Nikodym theorems',		
-			'Conditional distributions: Conditional expectations, Markov kernels',
-			'Stochastic processes  and stopping times',
-			'Martingales in discrete time',
-			'Markov chains in discrete time'
+			'Conditional distributions: Conditional expectations, Markov kernels, Bayes model',
+			'Stochastic processes, adapted, predictable, stopping times, stopped process',
+			'Martingales in discrete time, convergence, optional sampling, optional stopping, Doob decomposition and square variation',
+			'Markov chains in discrete time, strong Markov property, recurrence, transience, irreducibility, aperiodicity, invariant distribution, convergence',
+			'Strong laws of large numbers and central limit theorems',
+			'Linear models: least squares estimation, confidence intervals and testing',
+			'Asymptotic normality of maximum likelihood estimators and construction of asymptotic confidence regions'
 		]
 	},
 	{
@@ -76,7 +79,7 @@ export const formTopics: Topics = [
 			'Conic programs (LPs, SOCPs, SDPs)',
 			'Proximal point methods'
 		],
-		modul:  [
+		module:  [
 		'Classification of optimization problems',
 		'Gradient and Newton methods for unconstrained differentiable optimization',
 		'Subdifferential calculus of convex functions',
