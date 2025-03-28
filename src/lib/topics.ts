@@ -45,7 +45,12 @@ export const formTopics: Topics = [
 			'Eigenvalue problems'
 		],
 		module:  [
-		'fehlt noch'
+		'Conditioning, Stability, Rounding Errors',
+		'Interpolation, Approximation and Numerical Integration',
+		'Systems of Linear Equations and Least Squares Problems (incl. LU, QR, SVD Factorisations)',
+		'Iterative Methods for Systems of Nonlinear Equations',
+		'and either: Numerical Solution of ODEs: Explicit and Implicit Methods for Initial-Value Problems (Runge-Kutta, Linear Multistep Methods,…); Consistency, Stability, Convergence',
+		'or Numerical Linear Algebra: Eigenvalue Problems (Iterative Methods, QR Method); Krylov Subspace Methods'
 		]		
 	},
 	{
