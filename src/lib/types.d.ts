@@ -64,7 +64,8 @@ interface Data {
 	timeSlot: string;         
 	fieldDetails: FormDataField;
 	mathematics: MathematicsData;
-	questions: MotivationAnswers;
 	// not mandatory input
 	programming?: ProgrammingData;
+	// mandatory input
+	questions: MotivationAnswers;	
   }

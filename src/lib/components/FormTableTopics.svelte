@@ -166,16 +166,15 @@ To declare these skills, add for each respective lecture its English name as lis
   bind:hidden={hiddenDrawer}
   id=sidebarDrawer
   class="w-64 text-sm font-light">
-  <!-- test with items-center and items-start -->
-  <div class="flex items-start">
-     <CloseButton on:click={() => (hiddenDrawer = true)} class="ml-auto dark:text-wh" />
-  </div>
-  <p class="text-sm p-2 bg-primary-700 text-white">
+  <div class="bg-primary-700 flex items-start p-2 items-center justify-between">
+  <p class="text-base font-semibold">	      
    Prerequired skills in <br> {formTopics[selectedDrawer].name}
   </p>
-  <ul>
-   {#each formTopics[selectedDrawer].module as modul}
-    <li class="text-sm" style="list-style-type: circle"> {modul} </li>
+   <CloseButton on:click={() => (hiddenDrawer = true)} class="hover:bg-primary-800 text-white" />
+  </div>
+  <ul class="p-2 bg-gray-50">
+   {#each formTopics[selectedDrawer].module as module}
+    <li class="text-sm list-disc ml-4 mb-2" style="list-style-type: circle"> {module} </li>
    {/each}
   </ul>
 </Drawer>
