@@ -5,7 +5,7 @@ import { DownloadOutline } from "flowbite-svelte-icons";
 import { data, isValidFormData } from '$lib/store/store'
 
 
-unction getVersion(){
+function getVersion(){
     const mode = import.meta.env.MODE
 
     if (mode == "production"){
