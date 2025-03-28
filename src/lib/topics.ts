@@ -53,7 +53,7 @@ export const formTopics: Topics = [
 		subtopics: [
 			'Radon-Nikodym theorem',
 			'Markov kernels',
-			'Martingales',
+			'Martingales and Markov chains',
 			'Neyman-Pearson theory',
 			'Maximum likelihood estimation',
 			'Asymptotic normality'
