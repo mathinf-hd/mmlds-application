@@ -95,7 +95,7 @@
 	<TableBodyCell class="p-2"><Button color="red" size="xs" class="text-2xs" on:click={() => removeOpenSourceProject(Idx)}><TrashBinOutline /></Button></TableBodyCell>
 	</TableBodyRow>
 	{/each}
-	/TableBody>
+	</TableBody>
     </Table>
     <Button class="text-2xs m-2" on:click={() => addOpenSourceProject()}>Add Another Project</Button>
 </div>
