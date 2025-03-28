@@ -7,6 +7,7 @@ import { data } from '$lib/store/store';
 </script>
 
 <P> In case you are invited to an online interview, which general time slot would be more convenient for you? </P>
+
 <div class="my-4">
  <!-- Button that shows the currently selected slot (or a placeholder if empty) -->
   <Button>
