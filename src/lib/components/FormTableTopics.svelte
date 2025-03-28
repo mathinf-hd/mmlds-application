@@ -160,17 +160,16 @@ let transitionParams = {
 	transitionParams={transitionParams}
 	bind:hidden={hiddenDrawer}
 	id=sidebarDrawer
-	class="w-64 text-sm font-light">
-	<!-- test with items-centert and items-start -->
-	<div class="flex items-start"> 
-		<CloseButton on:click={() => (hiddenDrawer = true)} class="ml-auto dark:text-wh" />
+	class="w-72 text-sm font-light">
+	<div class="bg-primary-700 flex items-start p-2 items-center justify-between"> 
+		<p class="text-base font-semibold">
+			Prerequired skills in {formTopics[selectedDrawer].name}
+		</p>
+		<CloseButton on:click={() => (hiddenDrawer = true)} class="hover:bg-primary-800 text-white" />
 	</div>
-	<p class="text-sm p-2 bg-primary-700 text-white">
-		Prerequired skills in <br> {formTopics[selectedDrawer].name}
-	</p>
-	<ul>
-		{#each formTopics[selectedDrawer].module as modul}
-			<li class="text-sm" style="list-style-type: circle"> {modul} </li>
+	<ul class="p-2 bg-gray-50">
+		{#each formTopics[selectedDrawer].module as module}
+			<li class="text-sm list-disc ml-4 mb-2" style="list-style-type: circle"> {module} </li>
 		{/each}
 	</ul>
 </Drawer>

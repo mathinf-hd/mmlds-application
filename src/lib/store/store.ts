@@ -1,7 +1,4 @@
-import { get, writable } from "svelte/store";
-
-import { formTimeSlots } from '$lib/times';
-import { formFields } from '$lib/fields';
+import { writable } from "svelte/store";
 import { formTopics } from "$lib/topics";
 import { formQuestions } from "$lib/questions";
 
@@ -12,7 +9,6 @@ function loadData(){
     /* load data from localStorage */  
     try {
         const data: Data = JSON.parse(localStorage.data);
-        
         // if (!isValidDataFormat(data)) {
         //     throw new Error('Discarding old data because DataFormat is invalid or changed')
         // }       
@@ -50,35 +46,13 @@ export async function loadEvalData(filename: string){
     }
 }
 
-// function expandSkills(data: any): any{
-//     const allSkills = [...data.topics.flatMap((topic: any) => topic.subtopics)]
-
-//     const expandedSkillList: Record<Skill, boolean> = allSkills.reduce(
-//         (skills, item) => {skills[item] = false; return skills;}, 
-//         {} as Record<Skill, boolean>)
-
-//     console.log(expandedSkillList)
-
-//     data.lectures.forEach((lecture: any) => {
-//         let skills = JSON.parse(JSON.stringify(expandedSkillList));
-
-//         lecture.skills.forEach((skill: any) => {
-//             skills[skill] = true;
-            
-//         })
-//         lecture.skills = skills;
-//     })
-
-//     return data;
-// }
-
-// function isEqual(obj1: any, obj2: any){
-//     /* quick check */
-//     if (Object.keys(obj1).length != Object.keys(obj2).length) return false;
+function isEqual(obj1: any, obj2: any){
+    /* quick check */
+    if (Object.keys(obj1).length != Object.keys(obj2).length) return false;
     
-//     /* check if every key is defined and the value is equal*/
-//     return JSON.stringify(obj1) == JSON.stringify(obj2)
-// };
+    /* check if every key is defined and the value is equal*/
+    return JSON.stringify(obj1) == JSON.stringify(obj2)
+};
 
 function generateEmptyDataObject(questions: Questions) {
     
@@ -90,12 +64,11 @@ function generateEmptyDataObject(questions: Questions) {
           bachelorName: '',
           fieldsSelected: [],
           comparableField: ''
-        },
+        } as FormDataField,
         mathematics: {
           area: [],
-          lectures: {}
-        },
-        questions: {} as MotivationAnswers,
+          lectures: Object.fromEntries(formTopics.map(topic => [topic.name, [{ lectureName: '', skills: [], moduleDescription: ''}]])) as Record<string, Lectures>
+        } as MathematicsData,
         // not mandatory input
         programming: {
           lectures: [{ name: '', moduleDescription: '' }],
@@ -104,10 +77,10 @@ function generateEmptyDataObject(questions: Questions) {
           lecturesEnabled: false,
           openSourceProjectsEnabled: false,
           extraCoursesEnabled: false
-        }
+        } as ProgrammingData,
+        // mandatory input
+        questions: {} as MotivationAnswers
     };
-
-     /* add first lecture for convienience */
 
     for (const question of questions) {
 		data['questions'][question] = '';
@@ -170,11 +143,13 @@ export function removeLecture(areaName: string, lectureIdx: number) {
   
   export function toggleSkill(areaName: string, lectureIdx: number, skill: string, checked: boolean) {
     data.update(d => {
-      const lecture = d.mathematics.lectures[areaName][lectureIdx];
-      if (checked) {
-        if (!lecture.skills.includes(skill)) lecture.skills.push(skill);
-      } else {
-        lecture.skills = lecture.skills.filter(s => s !== skill);
+      const lecture = d.mathematics.lectures[areaName]?.[lectureIdx];
+      if (lecture) {
+        if (checked) {
+            if (!lecture.skills.includes(skill)) lecture.skills.push(skill);
+        } else {
+            lecture.skills = lecture.skills.filter(s => s !== skill);
+        }
       }
       return d;
     });
@@ -239,130 +214,108 @@ export function removeProgrammingCourse(idx: number) {
     });
 }
 
-
-// export function isValidDataFormat(data: Data){
-//     const timeslots = data.timeSlot
-//     const fields = data.fields
-//     const topics = data.topics
-//     const questions = data.questions
-
-//     /* check timeslots */
-//     if (!isEqual(timeslots, formTimeSlots)) return false;
-
-//     /* check that each field is in formFields */
-
-//     /* check fields */
-//     // if (!isEqual(fields, formFields)) return false;
-
-//     /* check topics */
-//     if (!isEqual(topics, formTopics)) return false;
-
-//     /* check questions */
-//     if (!isEqual(Object.keys(questions), formQuestions)) return false;
-
-//     return true
-// }
-
 /**
  * quick and dirty formValidation
  * perhaps implement zod or yup valdation
  */
 
-// export function isValidFormData(data: Data): boolean {
-//     // Create a local error object that groups errors by component/section.
-//     const errors = {
-//       TimeSlot: [] as string[],
-//       FieldOfStudy: [] as string[],
-//       MathSkills: {} as Record<string, string[]>, // Each key is an area name.
-//       MotivationQuestions: [] as string[]
-//     };
+export function isValidFormData(data: Data): boolean {
+    // Updated property names: InterviewTime, Education, MathSkills, Questions
+    const errors: Record<string, string[]> = {
+      InterviewTime: [],
+      Education: [],
+      MathSkills: [],
+      Questions: []
+    };
   
-//     // 1) Validate TimeSlot (mandatory)
-//     if (!data.timeSlot) {
-//       errors.TimeSlot.push("No time slot selected.");
-//     }
+    // InterviewTime
+    if (!data.timeSlot) {
+      errors.InterviewTime.push('Select a time slot.');
+    }
   
-//     // 2) Validate FieldOfStudy: check bachelorName and that at least one field is selected.
-//     if (!data.fieldDetails.bachelorName) {
-//       errors.FieldOfStudy.push("Bachelor name is missing.");
-//     }
-//     if (data.fieldDetails.fieldsSelected.length === 0) {
-//       errors.FieldOfStudy.push("No field of study selected.");
-//     }
+    // Education
+    if (!data.fieldDetails.bachelorName) {
+      errors.Education.push('Bachelor name is required.');
+    }
+    if (!data.fieldDetails.fieldsSelected.length) {
+      errors.Education.push('At least one field must be selected.');
+    }
   
-    // 3) Validate MathSkills:
-    // For each area in selectedAreas, ensure an area object exists in mathSkills.areas,
-    // and that it contains at least one lecture. Then, each lecture must have both
-    // a lectureName and a moduleDescription.
-//     for (const selectedAreaName of data.mathematics.selectedAreas) {
-//       const areaObj = data.mathematics.areas.find(area => area.areaName === selectedAreaName);
-//       if (!areaObj) {
-//         errors.MathSkills[selectedAreaName] = [
-//           `Selected area "${selectedAreaName}" not found in mathSkills.areas.`
-//         ];
-//         continue;
-//       }
-//       if (areaObj.lectures.length === 0) {
-//         errors.MathSkills[selectedAreaName] = [
-//           "At least one lecture must be entered for this area."
-//         ];
-//         continue;
-//       }
-//       // Check each lecture in this area.
-//       const lectureErrors: string[] = [];
-//       areaObj.lectures.forEach((lecture, idx) => {
-//         if (!lecture.lectureName) {
-//           lectureErrors.push(`Lecture #${idx + 1} is missing a lecture name.`);
-//         }
-//         if (!lecture.moduleDescription) {
-//           lectureErrors.push(`Lecture #${idx + 1} is missing a module description.`);
-//         }
-//       });
-//       if (lectureErrors.length > 0) {
-//         errors.MathSkills[selectedAreaName] = lectureErrors;
-//       }
-//     }
+    // MathSkills
+    //  - exactly 3 must be chosen
+    //  - each chosen area must have at least one lecture with name + description
+    if (data.mathematics.area.length < 3) {
+      errors.MathSkills.push('You must select all 3 areas.');
+    }
+    for (const areaName of data.mathematics.area) {
+      const lectures = data.mathematics.lectures[areaName] ?? [];
+      if (!lectures.length) {
+        errors.MathSkills.push(`No lecture entered for "${areaName}".`);
+        continue;
+      }
+      lectures.forEach((lec, idx) => {
+        if (!lec.lectureName) {
+          errors.MathSkills.push(`Lecture #${idx + 1} in "${areaName}" missing name.`);
+        }
+        if (!lec.moduleDescription) {
+          errors.MathSkills.push(`Lecture #${idx + 1} in "${areaName}" missing description.`);
+        }
+      });
+    }
   
-//     // 4) Validate MotivationQuestions:
-//     // Iterate over the keys in the questions object (which should match formQuestions)
-//     // and check that each answer is non-empty.
-//     for (const question in data.questions) {
-//       if (!data.questions[question]) {
-//         errors.MotivationQuestions.push(`Answer missing for question: "${question}".`);
-//       }
-//     }
+    // Questions
+    for (const question of Object.keys(data.questions)) {
+      if (!data.questions[question]) {
+        errors.Questions.push(`Answer missing for: "${question}".`);
+      }
+    }
   
-//     // Check if any errors were collected.
-//     const hasTimeSlotError = errors.TimeSlot.length > 0;
-//     const hasFieldError = errors.FieldOfStudy.length > 0;
-//     const hasMathSkillsError = Object.keys(errors.MathSkills).length > 0;
-//     const hasMotivationError = errors.MotivationQuestions.length > 0;
+    // Summarize errors
+    const hasInterviewTimeError = errors.InterviewTime.length > 0;
+    const hasEducationError = errors.Education.length > 0;
+    const hasMathError = errors.MathSkills.length > 0;
+    const hasQuestionsError = errors.Questions.length > 0;
   
-//     if (!hasTimeSlotError && !hasFieldError && !hasMathSkillsError && !hasMotivationError) {
-//       return true;
-//     }
+    if (!hasInterviewTimeError && !hasEducationError && !hasMathError && !hasQuestionsError) {
+      return true;
+    }
   
-//     // Build a comprehensive error message string.
-//     let alertMessage = "File cannot be created because some data is missing.\n\n";
-//     if (hasTimeSlotError) {
-//       alertMessage += "TimeSlot:\n  - " + errors.TimeSlot.join("\n  - ") + "\n\n";
-//     }
-//     if (hasFieldError) {
-//       alertMessage += "FieldOfStudy:\n  - " + errors.FieldOfStudy.join("\n  - ") + "\n\n";
-//     }
-//     if (hasMathSkillsError) {
-//       alertMessage += "MathSkills:\n";
-//       for (const areaName in errors.MathSkills) {
-//         alertMessage += `  [${areaName}]:\n    - ${errors.MathSkills[areaName].join("\n    - ")}\n`;
-//       }
-//       alertMessage += "\n";
-//     }
-//     if (hasMotivationError) {
-//       alertMessage += "MotivationQuestions:\n  - " + errors.MotivationQuestions.join("\n  - ") + "\n\n";
-//     }
-//     alert(alertMessage);
-//     return false;
-// }
+    // Build a grouped alert message
+    let message = 'File cannot be created because some data is missing.\n\n';
   
-
-
+    if (hasInterviewTimeError) {
+      message += 'Interview Time:\n';
+      for (const e of errors.InterviewTime) {
+        message += `  - ${e}\n`;
+      }
+      message += '\n';
+    }
+  
+    if (hasEducationError) {
+      message += 'Education:\n';
+      for (const e of errors.Education) {
+        message += `  - ${e}\n`;
+      }
+      message += '\n';
+    }
+  
+    if (hasMathError) {
+      message += 'Skills in Mathematics:\n';
+      for (const e of errors.MathSkills) {
+        message += `  - ${e}\n`;
+      }
+      message += '\n';
+    }
+  
+    if (hasQuestionsError) {
+      message += 'Questions:\n';
+      for (const e of errors.Questions) {
+        message += `  - ${e}\n`;
+      }
+      message += '\n';
+    }
+  
+    alert(message);
+    return false;
+  }
+  
