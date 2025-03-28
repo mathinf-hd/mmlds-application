@@ -19,6 +19,7 @@
 	</Card>
 
 	<Card size="xl" class="my-2">
+		<Heading tag="h3" class="mb-4 text-center">Interview Time</Heading>
 		<FormIntroDetails />	
 	</Card>
 	
