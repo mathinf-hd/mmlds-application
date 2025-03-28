@@ -64,7 +64,10 @@ export const formTopics: Topics = [
 			'Conditional distributions: Conditional expectations, Markov kernels',
 			'Stochastic processes and stopping times',
 			'Martinggales in discrete time',
-			'Markov chains in discrete time'
+			'Markov chains in discrete time',
+			'Strong laws of large numbers and central limit theorems',
+			'Linear models: least squares estimation, confidence intervals and testing',
+			'Asymptotic normality of maximum likelihood estimators and construction of asymptotic confidence regions'
 		]
 	},
 	{
