@@ -46,13 +46,6 @@ export async function loadEvalData(filename: string){
     }
 }
 
-function isEqual(obj1: any, obj2: any){
-    /* quick check */
-    if (Object.keys(obj1).length != Object.keys(obj2).length) return false;
-    
-    /* check if every key is defined and the value is equal*/
-    return JSON.stringify(obj1) == JSON.stringify(obj2)
-};
 
 function generateEmptyDataObject(questions: Questions) {
     
@@ -133,99 +126,6 @@ export function addLecture(areaName: string){
         return d;
     });
 }
-
-export function removeLecture(areaName: string, lectureIdx: number) {
-    data.update(d => {
-      d.mathematics.lectures[areaName].splice(lectureIdx, 1);
-      return d;
-    });
-  }
-  
-  export function toggleSkill(areaName: string, lectureIdx: number, skill: string, checked: boolean) {
-    data.update(d => {
-      const lecture = d.mathematics.lectures[areaName]?.[lectureIdx];
-      if (lecture) {
-        if (checked) {
-            if (!lecture.skills.includes(skill)) lecture.skills.push(skill);
-        } else {
-            lecture.skills = lecture.skills.filter(s => s !== skill);
-        }
-      }
-      return d;
-    });
-  }
-  
-export function toggleProgrammingCategory(category: 'lectures' | 'openSourceProjects' | 'extraCourses', checked: boolean) {
-    data.update(d => {
-        if (!d.programming) {
-            d.programming = { lecture: [], openSourceProjects: [], extraCourses: [] };
-        }
-        d.programming[`${category}Enabled`] = checked;
-        return d;
-    });
-}
-
-export function addProgrammingLecture() {
-    data.update(d => {
-      if (!d.programming) d.programming = {};
-      if(!d.programming.lectures) d.programming.lectures = [];
-      d.programming.lectures.push({ name: '', moduleDescription: '' });
-      return d;
-    });
-}
-
-export function removeProgrammingLecture(idx: number) {
-    data.update(d => {
-      d.programming?.lectures.splice(idx, 1);
-      return d;
-    });
-}
-
-export function addOpenSourceProject() {
-    data.update(d => {
-        // Ensure programming object exists
-        if (!d.programming) d.programming = {};
-        if(!d.programming.openSourceProjects) d.programming.openSourceProjects = [];    
-        d.programming.openSourceProjects.push({ projectName: '', publicRepoLink: '', personalIdentifier: '' });
-        return d;
-    });
-}
-
-export function removeOpenSourceProject(idx: number) {
-    data.update(d => {
-        d.programming?.openSourceProjects.splice(idx, 1);
-        return d;
-    });
-}
-
-export function addProgrammingCourse() {
-    data.update(d => {
-        if (!d.programming) d.programming = {};
-        if(!d.programming.extraCourses) d.programming.extraCourses = [];
-        d.programming.extraCourses.push({ courseName: '', moduleDescription: '' });
-        return d;
-    });
-}
-
-export function removeProgrammingCourse(idx: number) {
-    data.update(d => {
-        d.programming?.extraCourses.splice(idx, 1);
-        return d;
-    });
-}
-
-export function addLecture(areaName: string){
-    ensureLectureExist(areaName);
-    data.update(d => {
-        d.mathematics.lectures[areaName].push({
-            lectureName: '',
-            skills: [],
-            moduleDescription: ''
-        });
-        return d;
-    });
-}
-
 export function removeLecture(areaName: string, lectureIdx: number) {
     data.update(d => {
       d.mathematics.lectures[areaName].splice(lectureIdx, 1);
