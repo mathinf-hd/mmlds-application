@@ -2,7 +2,7 @@
     import { 
         Button, Input, P,
         Table, TableBody, TableBodyCell, TableBodyRow,
-        TableHead, TableHeadCell, Checkbox, 
+        TableHead, TableHeadCell, Checkbox, Heading,
     } from 'flowbite-svelte';
 
 	import { TrashBinOutline }  from 'flowbite-svelte-icons';
@@ -22,12 +22,14 @@
 
 
 <P>
-  	The admission regulations recognize <b> Programming skills</b>. <br> <br>
-  	Please check the box <Checkbox inline class="me-2" bind:checked={$data.programming.lectureEnabled} on:changed={() => toggleProgrammingCategory('lectures', $data.programming.lecturesEnabled)}/> if
+  	The admission regulations recognize <b> Programming skills</b>. These can be proved in the following 3 (not mutually exclusive) ways: 
+	<br> <br>
+  	Please check the box <Checkbox inline class="me-2" bind:checked={$data.programming.lecturesEnabled} on:changed={() => toggleProgrammingCategory('lectures', $data.programming.lecturesEnabled)}/> if
 	you acquired skills in areas such as Algorithms and data structures through corresponding foundational lectures. To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript. Copy and paste the entire official description of the lecture (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field (after translation to English using some automatic translation service, in case it is not given in English).
 </P>
 
 <div class="my-5">
+	<Heading tag="h4" class="mb-4">Foundational Lecture</Heading>
     <Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
 				<TableHeadCell class="min-w-60 text-2xs p-2">Lecture Name in Transcript</TableHeadCell>
@@ -57,6 +59,7 @@
 </P> 
 
 <div class="my-5">
+	<Heading tag="h4" class="mb-4">Open Source Project</Heading>
     <Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
 				<TableHeadCell class="min-w-60 text-2xs p-2">Name of open source project</TableHeadCell>
@@ -83,6 +86,7 @@ To declare these skills, add for each respective programming course its English 
 Alternatively for extracurricular courses provide the file name of the certificate as uploaded to heiCO.</P> 
 
 <div class="my-5">
+	<Heading tag="h4" class="mb-4">Programming Course</Heading>
     <Table class="overflow-x-auto" striped={true}>	
 			<TableHead class="normal-case bg-primary-700 text-white">
 				<TableHeadCell class="min-w-60 text-2xs p-2">Course Name as in Transcript / File name of certificate</TableHeadCell>
