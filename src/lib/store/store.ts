@@ -242,21 +242,31 @@ export function isValidFormData(data: Data): boolean {
     if (data.mathematics.area.length < 3) {
       errors.MathSkills.push('You must select all 3 areas.');
     }
+
     for (const areaName of data.mathematics.area) {
       const lectures = data.mathematics.lectures[areaName] ?? [];
+
+      // If no lectures at all
       if (!lectures.length) {
         errors.MathSkills.push(`No lecture entered for "${areaName}".`);
         continue;
       }
-      lectures.forEach((lec, idx) => {
-        if (!lec.lectureName) {
+
+      // Validate every lecture row
+      lectures?.forEach((lec, idx) => {
+        if (!lec.lectureName?.trim()) {
           errors.MathSkills.push(`Lecture #${idx + 1} in "${areaName}" missing name.`);
         }
-        if (!lec.moduleDescription) {
+        if (!lec.moduleDescription?.trim()) {
           errors.MathSkills.push(`Lecture #${idx + 1} in "${areaName}" missing description.`);
         }
+        // If you also want to require at least one skill checkbox, do:
+        // if (!lec.skills.length) {
+        //   errors.MathSkills.push(`Lecture #${idx + 1} in "${areaName}" missing subtopic skill selection.`);
+        // }
       });
     }
+
 
     // Programming skills validation
     if (data.programming?.lecturesEnabled) {
