@@ -10,12 +10,12 @@ export const formTopics: Topics = [
 			'Covering spaces'
 		],
 		module: [
-			'Topological and differentiable manifolds',
-			'Vector bundles',
-			'Lie groups as an important example class',
-			'Triangulations and simplicial complexes',
-			'group actions also from a simplicial perspective',
-			'covering spaces'
+		'Topological and differentiable manifolds',
+		'Vector bundles',
+		'Lie groups as an important example class',
+		'Triangulations and simplicial complexes',
+		'Group actions also from a simplicial perspective',
+		'Covering spaces'
 		]
 
 	},
@@ -30,9 +30,9 @@ export const formTopics: Topics = [
 			'Spectral theory of compact operators'			
 		],
 		module: [
-			'Metric spaces and their mappings: including completion, Baire theorem, (relatively) compact subsets and their characterisation, extendability of uniformly continuous mappings',
-			'Normed spaces and their mappings: including Banach spaces, dual spaces, weak topologies, topological vector spaces, examples of function spaces, spectral theory of compact operators, with the usual theorems (including the spectral theorem)',
-			'Hilbert spaces and their mappings'
+		'Metric spaces and their mappings: including completion, Baire theorem, (relatively) compact subsets and their characterization, extendability of uniformly continuous mappings',
+		'Normed spaces and their mappings: including Banach spaces, dual spaces, weak topologies, topological vector spaces, examples of function spaces, spectral theory of compact operators, with the usual theorems (including the spectral theorem)',
+		'Hilbert spaces and their mappings'
 		]
 	},
 	{	
@@ -45,26 +45,31 @@ export const formTopics: Topics = [
 			'Numerical methods for (stiff) ODEs',
 			'Eigenvalue problems'
 		],
-		module: [
-			'fehlt noch'
-		]
+		module:  [
+		'Conditioning, Stability, Rounding Errors',
+		'Interpolation, Approximation and Numerical Integration',
+		'Systems of Linear Equations and Least Squares Problems (incl. LU, QR, SVD Factorisations)',
+		'Iterative Methods for Systems of Nonlinear Equations',
+		'and either: Numerical Solution of ODEs: Explicit and Implicit Methods for Initial-Value Problems (Runge-Kutta, Linear Multistep Methods,…); Consistency, Stability, Convergence',
+		'or Numerical Linear Algebra: Eigenvalue Problems (Iterative Methods, QR Method); Krylov Subspace Methods'
+		]		
 	},
 	{
 		name:'Statistics and Probability Theory',
 		subtopics: [
 			'Radon-Nikodym theorem',
 			'Markov kernels',
-			'Martingales',
+			'Martingales and Markov chains',
 			'Neyman-Pearson theory',
 			'Maximum likelihood estimation',
 			'Asymptotic normality'
 		],
-		module: [
-			'Measure and integration theory: Algebras, Borel algebra, measurable mappings, construction of probability measures, product spaces. Expectation as a measure integral, Lebesgue, Beppo Levi, Fubini, and Radon-Nikodym theorems',
-			'Conditional distributions: Conditional expectations, Markov kernels',
-			'Stochastic processes and stopping times',
-			'Martinggales in discrete time',
-			'Markov chains in discrete time',
+		module:  [
+			'Measure and integration theory: Algebras, Borel algebra, measurable mappings, construction of probability measures, product spaces. Expectation as a measure integral, Lebesgue, Beppo Levi, Fubini, and Radon-Nikodym theorems',		
+			'Conditional distributions: Conditional expectations, Markov kernels, Bayes model',
+			'Stochastic processes, adapted, predictable, stopping times, stopped process',
+			'Martingales in discrete time, convergence, optional sampling, optional stopping, Doob decomposition and square variation',
+			'Markov chains in discrete time, strong Markov property, recurrence, transience, irreducibility, aperiodicity, invariant distribution, convergence',
 			'Strong laws of large numbers and central limit theorems',
 			'Linear models: least squares estimation, confidence intervals and testing',
 			'Asymptotic normality of maximum likelihood estimators and construction of asymptotic confidence regions'
@@ -80,13 +85,13 @@ export const formTopics: Topics = [
 			'Conic programs (LPs, SOCPs, SDPs)',
 			'Proximal point methods'
 		],
-		module: [
-			'Classification of optimization problems',
-			'Gradient and Newton methods for unconstrained differentiable optimization',
-			'Subdifferental calculus of convex functions',
-			'Conjugation and convex duality',
-			'Fermat s and Lagrangian optimality conditions',
-			'Proximal point methods, operator splitting for convex optimizatoin problems'
+		module:  [
+		'Classification of optimization problems',
+		'Gradient and Newton methods for unconstrained differentiable optimization',
+		'Subdifferential calculus of convex functions',
+		'Conjugation and convex duality',
+		'Fermat s and Lagrangian optimality conditions',
+		'Proximal point methods, operator splitting for convex optimization problems'
 		]
 	}
 ]
