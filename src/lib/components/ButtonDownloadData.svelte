@@ -2,28 +2,7 @@
 import { Button } from "flowbite-svelte";
 import { DownloadOutline } from "flowbite-svelte-icons";
 
-import { data, countSubjectECTS, isValidFormData } from '$lib/store/store'
-import { formSubjectAreas } from "$lib/subjectAreas";
-
-function stripFalseSkills(data: Data) {
-    
-    /* generate deepcopy to avoid mutating the original object*/
-    let strippedData: any = JSON.parse(JSON.stringify(data))
-
-    /* filter skills */
-    data.lectures.forEach((lecture,idx) => {
-        let skills = [];
-        for (let [key, value] of Object.entries(lecture.skills)) {
-            if (value) {
-                skills.push(key);
-            }
-        }
-        strippedData.lectures[idx].skills = skills;
-        delete strippedData.lectures[idx].confirmed;
-    });
-
-    return strippedData
-}
+import { data, isValidFormData } from '$lib/store/store'
 
 
 function getVersion(){
@@ -34,16 +13,6 @@ function getVersion(){
     }
     
     return `dev-${import.meta.env.VITE_BUILD_COMMIT}-${import.meta.env.VITE_BUILD_DATETIME}`
-}
-
-function getECTSEquivalents(){
-    let ECTSEquivalents: {[key: string]: number}= {}
-
-    for (const subjectArea of formSubjectAreas){
-        ECTSEquivalents[subjectArea.subject] = countSubjectECTS(subjectArea.subject) 
-    }
-
-    return ECTSEquivalents
 }
 
 async function getTimeStamp(){
@@ -59,6 +28,30 @@ async function getTimeStamp(){
         });
 }
 
+async function formatDataForDownload(original: Data): Promise<Data> {
+  // Clone the data so we don't mutate the original.
+  const data = structuredClone(original);
+
+  // Clean up mathematics
+  // (Remove any lecture that doesn't have a name, description, or skills)
+  for (const area in data.mathematics.lectures) {
+    data.mathematics.lectures[area] = data.mathematics.lectures[area].filter(
+      (lec) => lec.lectureName || lec.moduleDescription || lec.skills.length > 0
+    );
+  }
+
+  // Clean up programming
+  if (data.programming?.lectures?.length === 0) delete data.programming.lectures;
+  if (data.programming?.openSourceProjects?.length === 0) delete data.programming.openSourceProjects;
+  if (data.programming?.extraCourses?.length === 0) delete data.programming.extraCourses;
+
+  // 4. Add your metadata
+  (data as any).time = await getTimeStamp();     
+  (data as any).version = getVersion();          
+
+  return data;
+}
+
 function downloadFormAsJsonFile(filename: string, data: Data) {    
     const link = document.createElement('a');
 	const file = new Blob([JSON.stringify(data)], { type: 'text/plain' });
@@ -70,10 +63,9 @@ function downloadFormAsJsonFile(filename: string, data: Data) {
 
 async function downloadFormData() {
     const filename = 'form-data.txt';
-    const data = stripFalseSkills($data);
-    data["ECTSEquivalents"] = getECTSEquivalents();
-    data["time"] = await getTimeStamp();
-    data["version"] = getVersion();
+
+    const data = await formatDataForDownload($data);
+
     /* check if data is valid - otherwise return */
     if (!isValidFormData(data)) return;
     

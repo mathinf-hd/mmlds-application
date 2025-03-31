@@ -1,8 +1,5 @@
-import { get, writable } from "svelte/store";
-
-import { formExtendDetails } from "$lib/extentDetails";
+import { writable } from "svelte/store";
 import { formTopics } from "$lib/topics";
-import { formSubjectAreas } from "$lib/subjectAreas";
 import { formQuestions } from "$lib/questions";
 
 export const data = writable<Data>(loadData())
@@ -12,13 +9,12 @@ function loadData(){
     /* load data from localStorage */  
     try {
         const data: Data = JSON.parse(localStorage.data);
-        
-        if (!isValidDataFormat(data)) {
-            throw new Error('Discarding old data because DataFormat is invalid or changed')
-        }       
+        // if (!isValidDataFormat(data)) {
+        //     throw new Error('Discarding old data because DataFormat is invalid or changed')
+        // }       
         return data;
     } catch {
-        return generateEmptyDataObject(formExtendDetails, formQuestions);
+        return generateEmptyDataObject(formQuestions);
     }
 }
 
@@ -40,36 +36,14 @@ export async function loadEvalData(filename: string){
                 throw new Error('Discarding old data because DataFormat is invalid or changed')
             } */ 
            
-            data = expandSkills(data);
+            // data = expandSkills(data);
             return data;
 
         } catch (error) {
             console.error('Error loading file:', error);
-            return generateEmptyDataObject(formExtendDetails, formQuestions);
+            return generateEmptyDataObject(formQuestions);
         }
     }
-}
-
-function expandSkills(data: any): any{
-    const allSkills = [...data.topics.flatMap((topic: any) => topic.subtopics)]
-
-    const expandedSkillList: Record<Skill, boolean> = allSkills.reduce(
-        (skills, item) => {skills[item] = false; return skills;}, 
-        {} as Record<Skill, boolean>)
-
-    console.log(expandedSkillList)
-
-    data.lectures.forEach((lecture: any) => {
-        let skills = JSON.parse(JSON.stringify(expandedSkillList));
-
-        lecture.skills.forEach((skill: any) => {
-            skills[skill] = true;
-            
-        })
-        lecture.skills = skills;
-    })
-
-    return data;
 }
 
 function isEqual(obj1: any, obj2: any){
@@ -80,18 +54,34 @@ function isEqual(obj1: any, obj2: any){
     return JSON.stringify(obj1) == JSON.stringify(obj2)
 };
 
-function generateEmptyDataObject(extentDetails: ExtentDetails, questions: Questions) {
-
+function generateEmptyDataObject(questions: Questions) {
+    
     /* create empty data object */
-	const data: Data = { extentDetails: {} as FormDataExtentDetails, topics: formTopics, lectures: [] as FormDataLectures, questions: {} as FormDataQuestions };
-	
-    for (const extentDetail of extentDetails){
-		data['extentDetails'][extentDetail] = null
-	} 
-	
-    /* add first lecture for convienience */
-    data.lectures = [{ name: '', points: 0, description: '', subject: null, skills: {}}]
-	
+	const data: Data = {
+        // mandatory input
+        timeSlot: '',
+        fieldDetails: {
+          bachelorName: '',
+          fieldsSelected: [],
+          comparableField: ''
+        } as FormDataField,
+        mathematics: {
+          area: [],
+          lectures: Object.fromEntries(formTopics.map(topic => [topic.name, [{ lectureName: '', skills: [], moduleDescription: ''}]])) as Record<string, Lectures>
+        } as MathematicsData,
+        // not mandatory input
+        programming: {
+          lectures: [{ name: '', moduleDescription: '' }],
+          openSourceProjects: [{ projectName: '', publicRepoLink: '', personalIdentifier: '' }],
+          extraCourses: [{ courseName: '', moduleDescription: '' }],    
+          lecturesEnabled: false,
+          openSourceProjectsEnabled: false,
+          extraCoursesEnabled: false
+        } as ProgrammingData,
+        // mandatory input
+        questions: {} as MotivationAnswers
+    };
+
     for (const question of questions) {
 		data['questions'][question] = '';
 	}
@@ -99,245 +89,358 @@ function generateEmptyDataObject(extentDetails: ExtentDetails, questions: Questi
 	return data;
 }
 
-export function addLecture(){
-    let newLecture: Lecture = { name: '', points: 0, description: '', subject: null, skills: {}}
-
-    data.update((data: Data) => {
-        data.lectures = [...data.lectures, newLecture]
-        return data
-    })
-}
-
-export function deleteLecture(idx: number){
-    data.update((data: Data) => {    
-    data.lectures.splice(idx ,1); 
-    return data
-    })
-}
-
-export function addSkill(lectureIdx: number, skill: Skill){
-    
-    /* get other lectures */
-    const otherLectures: Array<Lecture> = JSON.parse(JSON.stringify(get(data).lectures));
-    otherLectures.splice(lectureIdx,1); 
-    
-    /* get existing skills */
-    let otherLectureSkills: Array<Skill> = []; 
-    
-    console.log(get(data))
-
-    otherLectures.forEach((lecture) => {
-        for (let [key, value] of Object.entries(lecture.skills)) {
-            if (value) {
-                otherLectureSkills.push(key);
+export function toggleStudyField(field: string, isChecked: boolean){
+    data.update((d) => {
+        if (isChecked) {
+            // Add field if not present
+            if (!d.fieldDetails.fieldsSelected.some((f) => f === field)) {
+                d.fieldDetails.fieldsSelected.push(field);
             }
+        } else {
+            d.fieldDetails.fieldsSelected = d.fieldDetails.fieldsSelected.filter((f) => f !== field);
         }
+        return d;
     });
-
-    /* alert if skill already exists */
-    if (otherLectureSkills.includes(skill)) {
-        alert("You can only declare a skill once.\n\nPlease select the lecture that contributed the most to your skill acquisition. ")
-
-        data.update((data: Data) => { 
-            data.lectures[lectureIdx].skills[skill] = false;
-            return data
-        })
-    } 
 }
 
-export function checkDuplicateLecture(lectureIdx: number){
-        
-        /* ignore empty fields */
-        if (get(data).lectures[lectureIdx].name === "") return;
-
-        const lectures: Array<Lecture> = JSON.parse(JSON.stringify(get(data).lectures));
-
-        /* splice removes the new lecture from all lectures */
-        const newLecture = lectures.splice(lectureIdx,1)[0]; 
-
-        const existing: boolean = lectures.some(lecture => 
-            lecture.name.toLowerCase() === newLecture.name.toLowerCase()
-        );
-
-        if (existing) {
-            alert("You can only declare a lecture once.")
-
-            data.update((data: Data) => { 
-                data.lectures[lectureIdx].name = "";
-                return data
-            })
+export function ensureLectureExist(areaName: string){
+    data.update(d => {
+        if(!d.mathematics.lectures[areaName]){
+            d.mathematics.lectures[areaName] = []
         }
-
+        return d;
+    });
 }
 
-export function pointEquivalentECTS(points: number) {
-
-    const _data = get(data);
-
-    const extentDuration = _data.extentDetails["duration"]
-    const extentPoints = _data.extentDetails["points"]
-
-    if (!extentDuration || !extentPoints ) return 0;
-
-    const pointEquivalent = (180 / extentPoints)  * (extentDuration / 36)
-
-    const cp = points * pointEquivalent
-
-    return Math.round(cp * 100) /100
-} 
-
-
-export function countSubjectECTS(subject: Subject) {
-
-    const _data = get(data);
-
-    const extentDuration = _data.extentDetails["duration"]
-    const extentPoints = _data.extentDetails["points"]
-
-    if (!extentDuration || !extentPoints ) return 0;
-
-    const pointEquivalent = (180 / extentPoints)  * (extentDuration / 36)
-
-    const points = _data.lectures.reduce((sum, lecture) => 
-        lecture.subject === subject ? sum + lecture.points : sum, 0);
-
-    const cp = points * pointEquivalent
-
-    return Math.round(cp * 100) /100
-} 
-
-export function isValidDataFormat(data: Data){
-    const extendDetails = data.extentDetails
-    const topics = data.topics
-    const questions = data.questions
-
-    /* check extendDetails */
-    if (!isEqual(Object.keys(extendDetails), formExtendDetails)) return false;
-
-    /* check topics */
-    if (!isEqual(topics, formTopics)) return false;
-
-    /* check questions */
-    if (!isEqual(Object.keys(questions), formQuestions)) return false;
-
-    return true
+export function selectArea(areaName: string){
+    data.update(d => {
+        // Add the area if not already chosen
+        if (!d.mathematics.area.includes(areaName)) {
+            d.mathematics.area.push(areaName);
+        }
+        return d;
+    });
 }
+
+export function addLecture(areaName: string){
+    ensureLectureExist(areaName);
+    data.update(d => {
+        d.mathematics.lectures[areaName].push({
+            lectureName: '',
+            skills: [],
+            moduleDescription: ''
+        });
+        return d;
+    });
+}
+
+export function removeLecture(areaName: string, lectureIdx: number) {
+    data.update(d => {
+      d.mathematics.lectures[areaName].splice(lectureIdx, 1);
+      return d;
+    });
+  }
+  
+  export function toggleSkill(areaName: string, lectureIdx: number, skill: string, checked: boolean) {
+    data.update(d => {
+      const lecture = d.mathematics.lectures[areaName]?.[lectureIdx];
+      if (lecture) {
+        if (checked) {
+            if (!lecture.skills.includes(skill)) lecture.skills.push(skill);
+        } else {
+            lecture.skills = lecture.skills.filter(s => s !== skill);
+        }
+      }
+      return d;
+    });
+  }
+  
+export function toggleProgrammingCategory(category: 'lectures' | 'openSourceProjects' | 'extraCourses', checked: boolean) {
+    data.update(d => {
+        if (!d.programming) {
+            d.programming = { lecture: [], openSourceProjects: [], extraCourses: [] };
+        }
+        d.programming[`${category}Enabled`] = checked;
+        return d;
+    });
+}
+
+export function addProgrammingLecture() {
+    data.update(d => {
+      if (!d.programming) d.programming = {};
+      if(!d.programming.lectures) d.programming.lectures = [];
+      d.programming.lectures.push({ name: '', moduleDescription: '' });
+      return d;
+    });
+}
+
+export function removeProgrammingLecture(idx: number) {
+    data.update(d => {
+      d.programming?.lectures.splice(idx, 1);
+      return d;
+    });
+}
+
+export function addOpenSourceProject() {
+    data.update(d => {
+        // Ensure programming object exists
+        if (!d.programming) d.programming = {};
+        if(!d.programming.openSourceProjects) d.programming.openSourceProjects = [];    
+        d.programming.openSourceProjects.push({ projectName: '', publicRepoLink: '', personalIdentifier: '' });
+        return d;
+    });
+}
+
+export function removeOpenSourceProject(idx: number) {
+    data.update(d => {
+        d.programming?.openSourceProjects.splice(idx, 1);
+        return d;
+    });
+}
+
+export function addProgrammingCourse() {
+    data.update(d => {
+        if (!d.programming) d.programming = {};
+        if(!d.programming.extraCourses) d.programming.extraCourses = [];
+        d.programming.extraCourses.push({ courseName: '', moduleDescription: '' });
+        return d;
+    });
+}
+
+export function removeProgrammingCourse(idx: number) {
+    data.update(d => {
+        d.programming?.extraCourses.splice(idx, 1);
+        return d;
+    });
+}
+
+export function addLecture(areaName: string){
+    ensureLectureExist(areaName);
+    data.update(d => {
+        d.mathematics.lectures[areaName].push({
+            lectureName: '',
+            skills: [],
+            moduleDescription: ''
+        });
+        return d;
+    });
+}
+
+export function removeLecture(areaName: string, lectureIdx: number) {
+    data.update(d => {
+      d.mathematics.lectures[areaName].splice(lectureIdx, 1);
+      return d;
+    });
+  }
+
+
+export function toggleSkill(areaName: string, lectureIdx: number, skill: string, checked: boolean) {
+    data.update(d => {
+      const lecture = d.mathematics.lectures[areaName]?.[lectureIdx];
+      if (lecture) {
+        if (checked) {
+            if (!lecture.skills.includes(skill)) lecture.skills.push(skill);
+        } else {
+            lecture.skills = lecture.skills.filter(s => s !== skill);
+        }
+      }
+      return d;
+    });
+}
+  
+export function toggleProgrammingCategory(category: 'lectures' | 'openSourceProjects' | 'extraCourses', checked: boolean) {
+    data.update(d => {
+        if (!d.programming) {
+            d.programming = { lecture: [], openSourceProjects: [], extraCourses: [] };
+        }
+        d.programming[`${category}Enabled`] = checked;
+        return d;
+    });
+}
+
+export function addProgrammingLecture() {
+    data.update(d => {
+      if (!d.programming) d.programming = {};
+      if(!d.programming.lectures) d.programming.lectures = [];
+      d.programming.lectures.push({ name: '', moduleDescription: '' });
+      return d;
+    });
+}
+
+export function removeProgrammingLecture(idx: number) {
+    data.update(d => {
+      d.programming?.lectures.splice(idx, 1);
+      return d;
+    });
+}
+
+export function addOpenSourceProject() {
+    data.update(d => {
+        // Ensure programming object exists
+        if (!d.programming) d.programming = {};
+        if(!d.programming.openSourceProjects) d.programming.openSourceProjects = [];    
+        d.programming.openSourceProjects.push({ projectName: '', publicRepoLink: '', personalIdentifier: '' });
+        return d;
+    });
+}
+
+export function removeOpenSourceProject(idx: number) {
+    data.update(d => {
+        d.programming?.openSourceProjects.splice(idx, 1);
+        return d;
+    });
+}
+
+export function addProgrammingCourse() {
+    data.update(d => {
+        if (!d.programming) d.programming = {};
+        if(!d.programming.extraCourses) d.programming.extraCourses = [];
+        d.programming.extraCourses.push({ courseName: '', moduleDescription: '' });
+        return d;
+    });
+}
+
+export function removeProgrammingCourse(idx: number) {
+    data.update(d => {
+        d.programming?.extraCourses.splice(idx, 1);
+        return d;
+    });
+}
+
 
 /**
  * quick and dirty formValidation
  * perhaps implement zod or yup valdation
  */
 
-export function isValidFormData(data: Data){
-   
-    let exceptions: Record<string, Record<string, string>> = {
-        "extentDetails": {},
-        "lectures": {},
-        "subjectAreas": {},
-        "questions": {},
-
+export function isValidFormData(data: Data): boolean {
+    // Updated property names: InterviewTime, Education, MathSkills, Questions
+    const errors: Record<string, string[]> = {
+      InterviewTime: [],
+      Education: [],
+      MathSkills: [],
+      Questions: [],
+      ProgrammingSkills: []
+    };
+  
+    // InterviewTime
+    if (!data.timeSlot) {
+      errors.InterviewTime.push('Select a time slot.');
+    }
+  
+    // Education
+    if (!data.fieldDetails.bachelorName) {
+      errors.Education.push('Bachelor name is required.');
+    }
+    if (!data.fieldDetails.fieldsSelected.length) {
+      errors.Education.push('At least one field must be selected.');
+    }
+  
+    // MathSkills
+    //  - exactly 3 must be chosen
+    //  - each chosen area must have at least one lecture with name + description
+    if (data.mathematics.area.length < 3) {
+      errors.MathSkills.push('You must select all 3 areas.');
+    }
+    for (const areaName of data.mathematics.area) {
+      const lectures = data.mathematics.lectures[areaName] ?? [];
+      if (!lectures.length) {
+        errors.MathSkills.push(`No lecture entered for "${areaName}".`);
+        continue;
+      }
+      lectures.forEach((lec, idx) => {
+        if (!lec.lectureName) {
+          errors.MathSkills.push(`Lecture #${idx + 1} in "${areaName}" missing name.`);
+        }
+        if (!lec.moduleDescription) {
+          errors.MathSkills.push(`Lecture #${idx + 1} in "${areaName}" missing description.`);
+        }
+      });
     }
 
-    /* check extentDetails */
-    for (const extentDetail of formExtendDetails){
-        if (data.extentDetails[extentDetail] == 0 || 
-            data.extentDetails[extentDetail] == null ||
-            data.extentDetails[extentDetail] == undefined) {
-            exceptions["extentDetails"][extentDetail] = `- ${extentDetail} missing`
+    // Programming skills validation
+    if (data.programming?.lecturesEnabled) {
+      data.programming.lectures?.forEach((lec, idx) => {
+        if (!lec.name || !lec.moduleDescription) {
+          errors.ProgrammingSkills.push(`Lecture #${idx + 1} in Programming missing name or description.`);
         }
+      })
     }
-    
-    for (const [lectureIdx, lecture] of data.lectures.entries()){
-        let exp = "";
-
-        if (lecture.name == '' || 
-            lecture.name == null ||
-            lecture.name == undefined) {
-            exp = exp + "\n- Name is missing";
-        } 
-
-        if (lecture.points == 0 || 
-            lecture.points == null || 
-            lecture.points == undefined) {
-            exp = exp + "\n- Points are missing";
+    if (data.programming?.openSourceProjectsEnabled) {
+      data.programming.openSourceProjects?.forEach((proj, idx) => {
+        if (!proj.projectName || !proj.publicRepoLink || !proj.personalIdentifier) {
+          errors.ProgrammingSkills.push(`Open Source Project #${idx + 1} missing name, link or identifier.`);
         }
-        if (lecture.description == '' ||
-            lecture.description == null ||
-            lecture.description == undefined) {
-            exp = exp + "\n- Description is missing";
+      })
+    }
+    if (data.programming?.extraCoursesEnabled) {
+      data.programming.extraCourses?.forEach((course, idx) => {
+        if (!course.courseName) {
+          errors.ProgrammingSkills.push(`Course #${idx + 1} in Programming missing course name.`);
         }
-        if (lecture.subject == '' ||
-            lecture.subject == null ||
-            lecture.subject == undefined)  {
-            exp = exp + "\n- Lecture not assigned to subject";
-            }
-
-        // add exception
-        if (exp != "") {
-            exp = `Lecture ${lecture.name || lectureIdx + 1}:` + exp;
-            exceptions["lectures"][lectureIdx] = exp
-        }
+      })
     }
 
-    for (const subjectArea of formSubjectAreas){
-        if (countSubjectECTS(subjectArea.subject) < subjectArea.cp){
-            exceptions["subjectAreas"][subjectArea.subject] = `- ${subjectArea.subject} has not enough declared ECTS points. ${subjectArea.cp - countSubjectECTS(subjectArea.subject)} points missing`;
-        }
+    // Questions
+    for (const question of Object.keys(data.questions)) {
+      if (!data.questions[question]) {
+        errors.Questions.push(`Answer missing for: "${question}".`);
+      }
+    }
+  
+    // Summarize errors
+    const hasInterviewTimeError = errors.InterviewTime.length > 0;
+    const hasEducationError = errors.Education.length > 0;
+    const hasMathError = errors.MathSkills.length > 0;
+    const hasQuestionsError = errors.Questions.length > 0;
+    const hasProgrammingError = errors.ProgrammingSkills.length > 0;
+  
+    if (!hasInterviewTimeError && !hasEducationError && !hasMathError && !hasQuestionsError && !hasProgrammingError) {
+      return true;
+    }
+  
+    // Build a grouped alert message
+    let message = 'File cannot be created because some data is missing.\n\n';
+  
+    if (hasInterviewTimeError) {
+      message += 'Interview Time:\n';
+      for (const e of errors.InterviewTime) {
+        message += `  - ${e}\n`;
+      }
+      message += '\n';
+    }
+  
+    if (hasEducationError) {
+      message += 'Education:\n';
+      for (const e of errors.Education) {
+        message += `  - ${e}\n`;
+      }
+      message += '\n';
+    }
+  
+    if (hasMathError) {
+      message += 'Skills in Mathematics:\n';
+      for (const e of errors.MathSkills) {
+        message += `  - ${e}\n`;
+      }
+      message += '\n';
     }
 
-    for (const [questionIdx, question] of formQuestions.entries()){
-        if (data.questions[question] == '' ||
-            data.questions[question] == null ||
-            data.questions[question] == undefined
-        ){
-            exceptions["questions"][questionIdx] = `- Question ${questionIdx + 1}): answer is missing`;
-        }
+    if (hasProgrammingError) {
+      message += 'Programming Skills:\n';
+      for (const e of errors.ProgrammingSkills) message += `  - ${e}\n`;
+      message += '\n';
     }
-
-    // check if isValid -- return
-    if (Object.keys(exceptions["extentDetails"]).length === 0 &&
-        Object.keys(exceptions["lectures"]).length === 0 &&
-        Object.keys(exceptions["subjectAreas"]).length === 0 &&
-        Object.keys(exceptions["questions"]).length === 0
-    ) return true;
-
-    
-    // generate absolute sophisticated error message 
-    let alertString: string = "File can not be created because some data is missing.\n\n";
-
-    if (Object.keys(exceptions["extentDetails"]).length > 0){
-        alertString += "Details on Field of Study:\n";
-
-        for (const exp of Object.keys(exceptions["extentDetails"])){
-            alertString += exceptions["extentDetails"][exp] + "\n";
-        } 
-
-        alertString += "\n";
-    } 
-
-    if (Object.keys(exceptions["lectures"]).length > 0){
-        for (const exp of Object.keys(exceptions["lectures"])){
-            alertString += exceptions["lectures"][exp] + "\n\n";
-        } 
-    } 
-
-    if (Object.keys(exceptions["subjectAreas"]).length > 0){
-         alertString += "Lecture Assignment:\n"
-
-        for (const exp of Object.keys(exceptions["subjectAreas"])){
-            alertString += exceptions["subjectAreas"][exp] + "\n";
-        } 
-
-        alertString += "\n";
-    } 
-
-    if (Object.keys(exceptions["questions"]).length > 0){
-        for (const exp of Object.keys(exceptions["questions"])){
-            alertString += exceptions["questions"][exp] + "\n\n";
-        } 
-    } 
-
-    alert(alertString);
-
-    return false
-}
+  
+    if (hasQuestionsError) {
+      message += 'Questions:\n';
+      for (const e of errors.Questions) {
+        message += `  - ${e}\n`;
+      }
+      message += '\n';
+    }
+  
+    alert(message);
+    return false;
+  }
+  

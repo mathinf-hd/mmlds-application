@@ -1,21 +1,66 @@
 <script lang="ts">
-	import { P } from 'flowbite-svelte';
-	import PositiveNumberInput from './PositiveNumberInput.svelte';
+	import { Checkbox, Heading, Input, P, Table, 
+			TableBody, TableBodyCell, TableBodyRow, 
+			TableHead, TableHeadCell } from 'flowbite-svelte';
 
-	import { data } from '$lib/store/store';
+	import { formFields } from '$lib/fields';	
+
+	import { data, toggleStudyField } from '$lib/store/store';
 
 </script>
 
-<div class="flex gap-4 flex-col">
-	<P>
-		As the admission regulations require 56 ECTS credit points in computer science and 16 ECTS credit points in mathematics, your credits (as listed in your transcript and entered in this form) will be converted automatically to ECTS. For this conversion, you have to enter the standard period of study in months (not the time that you needed to finish your individual study) of your bachelor and the standard number of credits points that have to be earned for your bachelor.
-	</P>
-	<div class="flex gap-8 items-center">
-		<div class="w-120"><P class="font-bold">Standard period of your study program in months (not the time it took you to finish your studies)</P></div>
-		<PositiveNumberInput bind:value={$data["extentDetails"]["duration"]} class="w-20 text-2xs text-center" />
-	</div>
-	<div class="flex gap-8 items-center">
-		<div class="w-120"><P class="font-bold">Total number of credit points required in your study program (no grades, no grade point averages etc.)</P></div>
-		<PositiveNumberInput bind:value={$data["extentDetails"]["points"]} class="w-20 text-2xs text-center" />
-	</div>
+<div class="flex gap-4 flex-col"> <P> The admission regulations
+	require a Bachelor of Science in Mathematics or Physics or in
+	another comparable field (e.g., Technical Mathematics or
+	Scientific Computing, or a program with mathematical lectures
+	that provide the Mathematical Skills specified below), or a
+	degree recognized as equivalent. Please indicate the name of
+	your Bachelor of Science given in your transcript and the
+	field (more than one possible).  </P>
+
+	<div class="my-4">
+	<Heading tag="h4" class="mb-4">Field of study</Heading>
+	<Table class="overflow-x-auto" striped={true}>	
+			<TableHead class="normal-case bg-primary-700 text-white">
+				<TableHeadCell class="min-w-60 text-2xs p-2">Name of Bachelor of Science in Transcript</TableHeadCell>				
+				{#each formFields as field}
+					<TableHeadCell class="text-2xs p-2 m-auto">{field.name}</TableHeadCell>
+				{/each}
+				<TableHeadCell class="text-2xs p-2">Comparable Field</TableHeadCell>				
+			</TableHead>
+			<TableBody>
+				<TableBodyRow>
+					<!-- Bachelor of Science in Transcript -->
+					<TableBodyCell class="p-2">
+						<Input 
+							type="text" 
+							bind:value={$data.fieldDetails.bachelorName} 
+							class="text-2xs" 
+						/>
+					</TableBodyCell>
+			
+					<!-- Known Field Checkboxes -->
+					{#each formFields as field}
+						<TableBodyCell class="p-2">
+							<Checkbox 
+								checked={$data.fieldDetails.fieldsSelected.includes(field.name)}
+								on:change={(e) => toggleStudyField(field.name, e.target.checked)}
+							/>
+						</TableBodyCell>
+					{/each}
+			
+					<!-- Comparable Field Text Input -->
+					<TableBodyCell class="p-2 text-2xs">
+						<Input 
+							type="text" 
+							bind:value={$data.fieldDetails.comparableField}
+						 	class="text-2xs" 
+						/>
+					</TableBodyCell>
+				</TableBodyRow>
+			</TableBody>
+			
+	</Table>
+	</div>	
+
 </div>
