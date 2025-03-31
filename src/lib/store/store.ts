@@ -225,7 +225,8 @@ export function isValidFormData(data: Data): boolean {
       InterviewTime: [],
       Education: [],
       MathSkills: [],
-      Questions: []
+      Questions: [],
+      ProgrammingSkills: []
     };
   
     // InterviewTime
@@ -262,7 +263,30 @@ export function isValidFormData(data: Data): boolean {
         }
       });
     }
-  
+
+    // Programming skills validation
+    if (data.programming?.lecturesEnabled) {
+      data.programming.lectures?.forEach((lec, idx) => {
+        if (!lec.name || !lec.moduleDescription) {
+          errors.ProgrammingSkills.push(`Lecture #${idx + 1} in Programming missing name or description.`);
+        }
+      })
+    }
+    if (data.programming?.openSourceProjectsEnabled) {
+      data.programming.openSourceProjects?.forEach((proj, idx) => {
+        if (!proj.projectName || !proj.publicRepoLink || !proj.personalIdentifier) {
+          errors.ProgrammingSkills.push(`Open Source Project #${idx + 1} missing name, link or identifier.`);
+        }
+      })
+    }
+    if (data.programming?.extraCoursesEnabled) {
+      data.programming.extraCourses?.forEach((course, idx) => {
+        if (!course.courseName) {
+          errors.ProgrammingSkills.push(`Course #${idx + 1} in Programming missing course name.`);
+        }
+      })
+    }
+
     // Questions
     for (const question of Object.keys(data.questions)) {
       if (!data.questions[question]) {
@@ -275,8 +299,9 @@ export function isValidFormData(data: Data): boolean {
     const hasEducationError = errors.Education.length > 0;
     const hasMathError = errors.MathSkills.length > 0;
     const hasQuestionsError = errors.Questions.length > 0;
+    const hasProgrammingError = errors.ProgrammingSkills.length > 0;
   
-    if (!hasInterviewTimeError && !hasEducationError && !hasMathError && !hasQuestionsError) {
+    if (!hasInterviewTimeError && !hasEducationError && !hasMathError && !hasQuestionsError && !hasProgrammingError) {
       return true;
     }
   
@@ -304,6 +329,12 @@ export function isValidFormData(data: Data): boolean {
       for (const e of errors.MathSkills) {
         message += `  - ${e}\n`;
       }
+      message += '\n';
+    }
+
+    if (hasProgrammingError) {
+      message += 'Programming Skills:\n';
+      for (const e of errors.ProgrammingSkills) message += `  - ${e}\n`;
       message += '\n';
     }
   
