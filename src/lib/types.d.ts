@@ -61,7 +61,7 @@ type MotivationAnswers = Record<Question, string>;
 // Top-Level Data Structure
 interface Data {
 	// mandatory input
-	timeSlot: string;         
+	timeSlots: Array<string>;         
 	fieldDetails: FormDataField;
 	mathematics: MathematicsData;
 	// not mandatory input

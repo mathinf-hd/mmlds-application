@@ -5,18 +5,21 @@ import { formQuestions } from "$lib/questions";
 export const data = writable<Data>(loadData())
 data.subscribe((value) => localStorage.data = JSON.stringify(value))
 
-function loadData(){ 
+function loadData()
+{ 
     /* load data from localStorage */  
     try {
         const data: Data = JSON.parse(localStorage.data);
-        // if (!isValidDataFormat(data)) {
-        //     throw new Error('Discarding old data because DataFormat is invalid or changed')
-        // }       
+        if (!data.timeSlots) {
+           throw new Error('Old format, missing timeSlots');
+        }
         return data;
     } catch {
         return generateEmptyDataObject(formQuestions);
     }
 }
+
+
 
 export async function loadEvalData(filename: string){
     
@@ -52,7 +55,8 @@ function generateEmptyDataObject(questions: Questions) {
     /* create empty data object */
 	const data: Data = {
         // mandatory input
-        timeSlot: '',
+           timeSlot: [],
+
         fieldDetails: {
           bachelorName: '',
           fieldsSelected: [],
@@ -224,10 +228,11 @@ export function isValidFormData(data: Data): boolean {
     };
   
     // InterviewTime
-    if (!data.timeSlot) {
-      errors.InterviewTime.push('Select a time slot.');
-    }
-  
+     if (!data.timeSlots || data.timeSlots.length === 0)
+       {
+       errors.InterviewTime.push('Select at least one time slot.');
+      }
+
     // Education
     if (!data.fieldDetails.bachelorName) {
       errors.Education.push('Bachelor name is required.');
