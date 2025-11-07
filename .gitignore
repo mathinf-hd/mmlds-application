@@ -10,3 +10,5 @@ package
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
+# Ignores for IDEs and editors
+.idea
