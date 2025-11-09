@@ -329,11 +329,13 @@ function ensureAreaArray(d: Data, areaName: string) {
 
 export function selectArea(areaName: string) {
   data.update((d) => {
-    if (!d.mathematics.area.includes(areaName)) {
-      d.mathematics.area.push(areaName);
-    }
-    ensureAreaArray(d, areaName);
-    return d;
+      const index = d.mathematics.area.indexOf(areaName);
+      if (index === -1) {
+          d.mathematics.area = [...d.mathematics.area, areaName];
+      } else {
+          d.mathematics.area = d.mathematics.area.filter((area) => area !== areaName);
+      }
+      return d;
   });
 }
 
