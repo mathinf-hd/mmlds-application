@@ -1,0 +1,97 @@
+sequenceDiagram
+    participant A as 👤 Applicant (Browser)
+    participant C as 🖥️ Client (SolidJS + Apollo)
+    participant S as 🌐 Server (GraphQL Resolver)
+    participant E as ⚙️ EvaluationService
+    participant D as 💾 DB (Prisma + PG)
+    participant P1 as 👨‍🏫 Examiner 1
+    participant P2 as 👩‍🏫 Examiner 2
+
+    title Application Submission & Assignment
+
+    A -> C: Fills Form, Clicks Submit
+    C -> S: Mutation: saveApplication(formData)
+    activate S
+    S -> D: Saves Application, Lectures, Motivation
+    activate D
+    D --> S: Application ID received
+    deactivate D
+
+    S -> E: Call: assignExaminers(appId)
+    activate E
+    E -> D: Assigns P1 (Step 1) & P2 (Step 2)
+    activate D
+    D --> E: Assignments created
+    deactivate D
+    E -> D: Sets Evaluation Status: PENDING
+    E --> S: Assignment Successful
+    deactivate E
+    S --> C: Success (Returns App ID, Status: PENDING)
+    deactivate S
+    C -> C: Transition to Applicant Dashboard
+
+% --- Initial Status Check ---
+C -> S: Query: myApplicationStatus
+activate S
+S -> D: Fetch Evaluation Status
+activate D
+D --> S: Status (Reflects PENDING)
+deactivate D
+S --> C: PENDING Status
+deactivate S
+
+
+alt Two-Step Evaluation
+
+Note over P1, E: Step 1: Examiner 1 Scores
+
+P1 -> C: Clicks 'Start Review'
+C -> C: View: ScoreSubmission Form
+C -> S: Mutation: submitProfessorScore(scores)
+activate S
+S -> E: Call: submitScore(P1_ID, scores)
+activate E
+E -> D: Create ScoreSheet 1
+activate D
+E -> D: Update Evaluation Status: EXAMINER_1_COMPLETE
+D --> E: Update successful
+deactivate D
+E --> S: ScoreSheet 1 created
+deactivate E
+S --> C: Success
+
+Note over P2, E: Step 2: Examiner 2 Scores
+
+P2 -> C: Clicks 'Start Review'
+C -> S: Mutation: submitProfessorScore(scores)
+activate S
+S -> E: Call: submitScore(P2_ID, scores)
+activate E
+E -> D: Create ScoreSheet 2
+activate D
+
+E -> E: Triggers finalizeEvaluation()
+E -> D: Fetch ScoreSheet 1 & 2
+E -> E: Calculate Final Score (Avg)
+E -> D: Update Evaluation Status: INVITED / REJECTED
+D --> E: Final Status Updated
+deactivate D
+E --> S: Evaluation Finalized
+deactivate E
+S --> C: Success (ScoreSheet 2 created)
+deactivate S
+
+else Applicant Checks Final Status
+
+A -> C: Checks Dashboard (or Clicks Refresh)
+C -> S: Query: myApplicationStatus
+activate S
+S -> D: Fetch Evaluation Status
+activate D
+D --> S: Status: INVITED/REJECTED
+deactivate D
+S --> C: Final Status
+deactivate S
+C -> A: Displays Final Decision Message
+
+end

@@ -1,0 +1,137 @@
+erDiagram
+%% =========================================================
+%% 1. USER AND ROLE MANAGEMENT
+%% =========================================================
+    ROLE ||--o{ USER : has
+    USER ||--o{ APPLICANT : has_profile
+    USER ||--o{ PROFESSOR : has_profile
+
+    ROLE {
+        int id PK
+        string name UK
+    }
+
+    USER {
+        string id PK
+        string email UK
+        int roleId FK
+    }
+
+    APPLICANT {
+        string id PK
+        string userId FK
+        string phone
+    }
+
+    PROFESSOR {
+        string id PK
+        string userId FK
+        string firstName
+        string lastName
+    }
+
+%% =========================================================
+%% 2. APPLICANT DATA (Form Submission)
+%% =========================================================
+    APPLICANT ||--o{ APPLICATION : submits
+    APPLICATION ||--o{ GLOBAL_LECTURE : contains
+    APPLICATION ||--o{ SKILL_PROOF : contains
+    APPLICATION ||--o| MOTIVATION : has_details
+    APPLICATION ||--o{ MATH_AREA : selects
+
+    GLOBAL_LECTURE }o--o{ AREA_LECTURE : mapped_to
+    MATH_AREA }o--o{ AREA_LECTURE : links
+
+    SKILL_PROOF ||--o| OPEN_SOURCE_DETAIL : has_details
+
+    APPLICATION {
+        string id PK
+        string applicantId FK
+        string submissionDate
+        string bachelorName
+        string interviewTime
+        string fieldOfStudy
+    }
+
+    MOTIVATION {
+        string id PK
+        string applicationId FK
+        string q1
+        string q5
+    }
+
+    GLOBAL_LECTURE {
+        string id PK
+        string applicationId FK
+        string name
+        string moduleDescription
+    }
+
+    MATH_AREA {
+        string id PK
+        string applicationId FK
+        string name
+    }
+
+    AREA_LECTURE {
+        string id PK
+        string mathAreaId FK
+        string lectureId FK
+    }
+
+    SKILL_PROOF {
+        string id PK
+        string applicationId FK
+        string type
+    }
+
+    OPEN_SOURCE_DETAIL {
+        string id PK
+        string skillProofId FK
+        string projectName
+        string repositoryLink
+    }
+
+%% =========================================================
+%% 3. EVALUATION PROCESS
+%% =========================================================
+    APPLICATION ||--o{ EVALUATION : is_evaluated
+    EVALUATION ||--o{ EXAMINER_ASSIGNMENT : has_assignments
+    PROFESSOR ||--o{ EXAMINER_ASSIGNMENT : performs
+    EXAMINER_ASSIGNMENT ||--o| SCORE_SHEET : generates
+    SCORE_SHEET ||--o{ CRITERION_SCORE : contains
+    ADMISSION_CRITERIA ||--o{ CRITERION_SCORE : is_scored_against
+
+    EVALUATION {
+        string id PK
+        string applicationId FK
+        string status
+    }
+
+    EXAMINER_ASSIGNMENT {
+        string id PK
+        string evaluationId FK
+        string professorId FK
+        int step
+    }
+
+    SCORE_SHEET {
+        string id PK
+        string assignmentId FK
+        int totalScore
+        string submittedAt
+    }
+
+    ADMISSION_CRITERIA {
+        string id PK
+        string name UK
+        int maxPoints
+        string requiredMathArea
+    }
+
+    CRITERION_SCORE {
+        string id PK
+        string scoreSheetId FK
+        string criteriaId FK
+        int pointsGiven
+    }
