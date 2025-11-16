@@ -61,7 +61,7 @@ const ProgressBar: (props: { currentPage: Accessor<number>; progress: Accessor<n
     (props) => (
     <div class="progress-bar-container">
         <div class="progress-text">
-            Page {props.currentPage()} of {MAX_PAGES}
+            {props.currentPage()} / {MAX_PAGES}
         </div>
         <div class="progress-bar">
             <div class="progress-fill" style={{ width: `${props.progress()}%` }}></div>
