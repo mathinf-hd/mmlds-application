@@ -64,7 +64,7 @@
             type="text"
             class="text-2xs"
             value={gl.name}
-            on:input={(e) => updateGlobalLectureName(gl.id, inputVal(e))}
+            on:change={(e) => updateGlobalLectureName(gl.id, inputVal(e))}
           />
         </TableBodyCell>
         <TableBodyCell class="p-2">
@@ -72,7 +72,7 @@
             type="text"
             class="text-2xs"
             value={gl.moduleDescription}
-            on:input={(e) => updateGlobalLectureDescription(gl.id, inputVal(e))}
+            on:change={(e) => updateGlobalLectureDescription(gl.id, inputVal(e))}
           />
         </TableBodyCell>
         <TableBodyCell class="p-2">
