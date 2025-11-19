@@ -43,6 +43,7 @@
 
   // Native <select> change: cast to HTMLSelectElement
   const selectVal = (e: Event) => (e.target as HTMLSelectElement)?.value ?? '';
+
 </script>
 
 <Heading tag="h3" class="mb-3">Mathematics — Global Lectures</Heading>
@@ -104,56 +105,67 @@
 <P class="mt-2 text-2xs opacity-70">Tip: Click an area to add it (you need exactly 3).</P>
 
 {#each $data.mathematics.area as areaName}
+  {@const checkedStates = Object.fromEntries(
+    ($data.mathematics.areaLectures[areaName] ?? []).flatMap((r, i) =>
+      getSkillsForArea(areaName).map((skill) => [
+        `${i}-${skill}`,
+        r.skills.includes(skill),
+      ])
+    )
+  )}
   <div class="my-6 border rounded-xl p-4">
     <Heading tag="h4" class="mb-3">{areaName}</Heading>
+    {#key areaName}
+      <Table class="overflow-x-auto" striped={true}>
+        <TableHead class="normal-case bg-primary-700 text-white">
+          <TableHeadCell class="min-w-60 text-2xs p-2">Select Lecture</TableHeadCell>
+          <TableHeadCell class="text-2xs p-2">Skills</TableHeadCell>
+          <TableHeadCell class="text-2xs p-2"></TableHeadCell>
+        </TableHead>
+        <TableBody>
+          {#each $data.mathematics.areaLectures[areaName] ?? [] as row, idx}
+            <TableBodyRow>
+              <TableBodyCell class="p-2">
+                <select
+                  class="w-full text-xs border rounded px-2 py-1"
+                  on:change={(e) => setAreaLecture(areaName, idx, selectVal(e) || null)}
+                >
+                  <option value=''>— choose from global lectures —</option>
+                  {#each $data.mathematics.globalLectures as gl}
+                      <option value={gl.id} selected={row.lectureId === gl.id}>
+                        {glLabel(gl)}
+                      </option>
+                  {/each}
+                </select>
+              </TableBodyCell>
 
-    <Table class="overflow-x-auto" striped={true}>
-      <TableHead class="normal-case bg-primary-700 text-white">
-        <TableHeadCell class="min-w-60 text-2xs p-2">Select Lecture</TableHeadCell>
-        <TableHeadCell class="text-2xs p-2">Skills</TableHeadCell>
-        <TableHeadCell class="text-2xs p-2"></TableHeadCell>
-      </TableHead>
-      <TableBody>
-        {#each $data.mathematics.areaLectures[areaName] ?? [] as row, idx}
-          <TableBodyRow>
-            <TableBodyCell class="p-2">
-              <select
-                class="w-full text-xs border rounded px-2 py-1"
-                on:change={(e) => setAreaLecture(areaName, idx, selectVal(e) || null)}
-              >
-                <option value=''>— choose from global lectures —</option>
-                {#each $data.mathematics.globalLectures as gl}
-                  <option value={gl.id} selected={row.lectureId === gl.id}>
-                    {glLabel(gl)}
-                  </option>
-                {/each}
-              </select>
-            </TableBodyCell>
 
-            <TableBodyCell class="p-2">
-              <div class="flex flex-wrap gap-2">
-                {#each getSkillsForArea(areaName) as skill}
-                  <label class="flex items-center gap-1 text-2xs">
-                    <Checkbox
-                      checked={row.skills.includes(skill)}
-                      on:change={(e) => toggleAreaSkill(areaName, idx, skill, checkboxChecked(e))}
-                    />
-                    <span>{skill}</span>
-                  </label>
-                {/each}
-              </div>
-            </TableBodyCell>
+              <TableBodyCell class="p-2">
+                <div class="flex flex-col gap-2">
+                  {#each getSkillsForArea(areaName) as skill (skill)}
+                    <label class="flex items-center gap-1 text-2xs" for={`skill-${idx}-${skill}`}>
+                      <Checkbox
+                        id={`skill-${idx}-${skill}`}
+                        checked={checkedStates[`${idx}-${skill}`]}
+                        on:change={(e) => toggleAreaSkill(areaName, idx, skill, checkboxChecked(e))}
+                      />
+                      <span>{skill}</span>
+                    </label>
+                  {/each}
+                </div>
+              </TableBodyCell>
 
-            <TableBodyCell class="p-2">
-              <Button color="red" size="xs" class="text-2xs" on:click={() => removeAreaLecture(areaName, idx)}>
-                <TrashBinOutline />
-              </Button>
-            </TableBodyCell>
-          </TableBodyRow>
-        {/each}
-      </TableBody>
-    </Table>
 
+              <TableBodyCell class="p-2">
+                <Button color="red" size="xs" class="text-2xs" on:click={() => removeAreaLecture(areaName, idx)}>
+                    <TrashBinOutline />
+                </Button>
+              </TableBodyCell>
+            </TableBodyRow>
+          {/each}
+        </TableBody>
+      </Table>
+    {/key}
     <Button class="text-2xs m-2" on:click={() => addAreaLecture(areaName)}>
       Add Lecture to this Area
     </Button>
