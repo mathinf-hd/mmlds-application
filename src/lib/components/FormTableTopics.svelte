@@ -23,7 +23,7 @@
 
   function getSkillsForArea(areaName: string): string[] {
     const topic = (formTopics as any[]).find((t) => t.name === areaName);
-    return Array.isArray(topic?.skills) ? topic.skills : [];
+    return Array.isArray(topic?.subtopics) ? topic.subtopics : [];
   }
 
   function glLabel(gl: { name: string; moduleDescription: string }) {
@@ -143,10 +143,11 @@
               <TableBodyCell class="p-2">
                 <div class="flex flex-col gap-2">
                   {#each getSkillsForArea(areaName) as skill (skill)}
-                    <label class="flex items-center gap-1 text-2xs" for={`skill-${idx}-${skill}`}>
+                      {@const safeSkill = skill.replace(/\W+/g, '-').toLowerCase()}
+                    <label class="flex items-center gap-1 text-2xs" for={`skill-${idx}-${safeSkill}`}>
                       <Checkbox
-                        id={`skill-${idx}-${skill}`}
-                        checked={checkedStates[`${idx}-${skill}`]}
+                        id={`skill-${idx}-${safeSkill}`}
+                        checked={!!checkedStates[`${idx}-${skill}`]}
                         on:change={(e) => toggleAreaSkill(areaName, idx, skill, checkboxChecked(e))}
                       />
                       <span>{skill}</span>
