@@ -1,25 +1,29 @@
 <script lang="ts">
-import { Dropdown, Radio,
-       	 	   Button, P} from 'flowbite-svelte';
-import { ChevronDownOutline }  from 'flowbite-svelte-icons';
+import { Dropdown, Checkbox, Button, P } from 'flowbite-svelte'; // replaced Radio with Checkbox
+import { ChevronDownOutline } from 'flowbite-svelte-icons';
 import { formTimeSlots } from '$lib/times';
-import { data } from '$lib/store/store';
+import { data, toggleTimeSlot } from '$lib/store/store';
 </script>
 
-<P> In case you are invited to an online interview, which general time slot would be more convenient for you? </P>
+<P> In case you are invited to an online interview, which general time slot would be more convenient for you? You may select one or both. </P>
 
 <div class="my-4">
- <!-- Button that shows the currently selected slot (or a placeholder if empty) -->
   <Button>
-    { $data.timeSlot ? $data.timeSlot : "Please select Time slot"} 
+    { $data.timeSlots?.length ? $data.timeSlots.join(', ') : "Please select Time slot(s)"} 
     <ChevronDownOutline class="text-2xs m-2" />
   </Button>
-  
- <!-- Dropdown of radio buttons for each possible slot -->
+
   <Dropdown class="text-2xs p-2">
     {#each formTimeSlots as time}
-      <li>	
-        <Radio name="timeS" bind:group={$data.timeSlot} value={time.name}>{time.name}</Radio>
+      <li>
+        <Checkbox
+          name="timeS"
+          value={time.name}
+          checked={$data.timeSlots.includes(time.name)}
+          on:change={() => toggleTimeSlot(time.name, !$data.timeSlots.includes(time.name))}
+        >
+          {time.name}
+        </Checkbox>
       </li>
     {/each}
   </Dropdown>

@@ -48,11 +48,11 @@ export async function loadEvalData(filename: string){
 
 
 function generateEmptyDataObject(questions: Questions) {
-    
     /* create empty data object */
-	const data: Data = {
+    const data: Data = {
         // mandatory input
-        timeSlot: '',
+        // timeSlot: '',
+        timeSlots: [],
         fieldDetails: {
           bachelorName: '',
           fieldsSelected: [],
@@ -74,12 +74,10 @@ function generateEmptyDataObject(questions: Questions) {
         // mandatory input
         questions: {} as MotivationAnswers
     };
-
     for (const question of questions) {
-		data['questions'][question] = '';
-	}
-
-	return data;
+        data['questions'][question] = '';
+    }
+    return data;
 }
 
 export function toggleStudyField(field: string, isChecked: boolean){
@@ -105,12 +103,18 @@ export function ensureLectureExist(areaName: string){
     });
 }
 
-export function selectArea(areaName: string){
+export function selectArea(areaName: string, previousArea?: string) {
     data.update(d => {
-        // Add the area if not already chosen
+        // Remove the previous area if it exists and is different from new selection
+        if (previousArea && previousArea !== areaName && d.mathematics.area.includes(previousArea)) {
+            d.mathematics.area = d.mathematics.area.filter(a => a !== previousArea);
+        }
+        
+        // Add the new area if not already chosen
         if (!d.mathematics.area.includes(areaName)) {
             d.mathematics.area.push(areaName);
         }
+        
         return d;
     });
 }
@@ -148,38 +152,25 @@ export function toggleSkill(areaName: string, lectureIdx: number, skill: string,
     });
 }
   
-export function toggleProgrammingCategory(category: 'lectures' | 'openSourceProjects' | 'extraCourses', checked: boolean) {
+export function toggleProgrammingCategory(
+    category: 'lectures' | 'openSourceProjects' | 'extraCourses',
+    checked: boolean
+) {
     data.update(d => {
-        if (!d.programming) {
-            d.programming = { lecture: [], openSourceProjects: [], extraCourses: [] };
-        }
-        d.programming[`${category}Enabled`] = checked;
+        const prog = ensureProgramming(d);
+        prog[`${category}Enabled`] = checked;
         return d;
-    });
-}
-
-export function addProgrammingLecture() {
-    data.update(d => {
-      if (!d.programming) d.programming = {};
-      if(!d.programming.lectures) d.programming.lectures = [];
-      d.programming.lectures.push({ name: '', moduleDescription: '' });
-      return d;
-    });
-}
-
-export function removeProgrammingLecture(idx: number) {
-    data.update(d => {
-      d.programming?.lectures.splice(idx, 1);
-      return d;
     });
 }
 
 export function addOpenSourceProject() {
     data.update(d => {
-        // Ensure programming object exists
-        if (!d.programming) d.programming = {};
-        if(!d.programming.openSourceProjects) d.programming.openSourceProjects = [];    
-        d.programming.openSourceProjects.push({ projectName: '', publicRepoLink: '', personalIdentifier: '' });
+        const prog = ensureProgramming(d);
+        prog.openSourceProjects.push({
+            projectName: '',
+            publicRepoLink: '',
+            personalIdentifier: ''
+        });
         return d;
     });
 }
@@ -193,9 +184,11 @@ export function removeOpenSourceProject(idx: number) {
 
 export function addProgrammingCourse() {
     data.update(d => {
-        if (!d.programming) d.programming = {};
-        if(!d.programming.extraCourses) d.programming.extraCourses = [];
-        d.programming.extraCourses.push({ courseName: '', moduleDescription: '' });
+        const prog = ensureProgramming(d);
+        prog.extraCourses.push({
+            courseName: '',
+            moduleDescription: ''
+        });
         return d;
     });
 }
@@ -207,6 +200,41 @@ export function removeProgrammingCourse(idx: number) {
     });
 }
 
+export function addProgrammingLecture() {
+    data.update(d => {
+        const prog = ensureProgramming(d);
+        prog.lectures.push({ name: '', moduleDescription: '' });
+        return d;
+    });
+}
+
+export function removeProgrammingLecture(idx: number) {
+    data.update(d => {
+        const prog = ensureProgramming(d);
+        prog.lectures.splice(idx, 1);
+        return d;
+    });
+}
+
+
+function ensureProgramming(d: Data) {
+    if (!d.programming) {
+        d.programming = {
+            lectures: [],
+            openSourceProjects: [],
+            extraCourses: [],
+            lecturesEnabled: false,
+            openSourceProjectsEnabled: false,
+            extraCoursesEnabled: false
+        };
+    }
+    // ensure arrays exist
+    d.programming.lectures ??= [];
+    d.programming.openSourceProjects ??= [];
+    d.programming.extraCourses ??= [];
+    return d.programming;
+}
+
 
 /**
  * quick and dirty formValidation
@@ -214,7 +242,6 @@ export function removeProgrammingCourse(idx: number) {
  */
 
 export function isValidFormData(data: Data): boolean {
-    // Updated property names: InterviewTime, Education, MathSkills, Questions
     const errors: Record<string, string[]> = {
       InterviewTime: [],
       Education: [],
@@ -222,12 +249,12 @@ export function isValidFormData(data: Data): boolean {
       Questions: [],
       ProgrammingSkills: []
     };
-  
-    // InterviewTime
-    if (!data.timeSlot) {
-      errors.InterviewTime.push('Select a time slot.');
+
+    // Interview time validation (at least one slot)
+    if (!data.timeSlots || data.timeSlots.length === 0) {
+        errors.InterviewTime.push('Please select at least one interview time slot.');
     }
-  
+
     // Education
     if (!data.fieldDetails.bachelorName) {
       errors.Education.push('Bachelor name is required.');
@@ -268,27 +295,50 @@ export function isValidFormData(data: Data): boolean {
     }
 
 
-    // Programming skills validation
+    // Programming skills validation - STRICTER
     if (data.programming?.lecturesEnabled) {
-      data.programming.lectures?.forEach((lec, idx) => {
-        if (!lec.name || !lec.moduleDescription) {
-          errors.ProgrammingSkills.push(`Lecture #${idx + 1} in Programming missing name or description.`);
-        }
-      })
+      // If enabled, must have at least one entry with name + description
+      const filledLectures = data.programming.lectures?.filter(lec => lec.name?.trim() || lec.moduleDescription?.trim());
+      
+      if (!filledLectures || filledLectures.length === 0) {
+        errors.ProgrammingSkills.push('Lectures enabled but no lecture data provided. Either uncheck the box or fill in lecture details.');
+      } else {
+        // Validate each filled lecture
+        data.programming.lectures?.forEach((lec, idx) => {
+          if ((lec.name?.trim() || lec.moduleDescription?.trim()) && (!lec.name?.trim() || !lec.moduleDescription?.trim())) {
+            errors.ProgrammingSkills.push(`Lecture #${idx + 1}: Both name and description are required.`);
+          }
+        });
+      }
     }
+
     if (data.programming?.openSourceProjectsEnabled) {
-      data.programming.openSourceProjects?.forEach((proj, idx) => {
-        if (!proj.projectName || !proj.publicRepoLink || !proj.personalIdentifier) {
-          errors.ProgrammingSkills.push(`Open Source Project #${idx + 1} missing name, link or identifier.`);
-        }
-      })
+      const filledProjects = data.programming.openSourceProjects?.filter(proj => proj.projectName?.trim() || proj.publicRepoLink?.trim() || proj.personalIdentifier?.trim());
+      
+      if (!filledProjects || filledProjects.length === 0) {
+        errors.ProgrammingSkills.push('Open Source Projects enabled but no project data provided. Either uncheck the box or fill in project details.');
+      } else {
+        data.programming.openSourceProjects?.forEach((proj, idx) => {
+          if ((proj.projectName?.trim() || proj.publicRepoLink?.trim() || proj.personalIdentifier?.trim()) && 
+              (!proj.projectName?.trim() || !proj.publicRepoLink?.trim() || !proj.personalIdentifier?.trim())) {
+            errors.ProgrammingSkills.push(`Open Source Project #${idx + 1}: Project name, repository link, and identifier are all required.`);
+          }
+        });
+      }
     }
+
     if (data.programming?.extraCoursesEnabled) {
-      data.programming.extraCourses?.forEach((course, idx) => {
-        if (!course.courseName) {
-          errors.ProgrammingSkills.push(`Course #${idx + 1} in Programming missing course name.`);
-        }
-      })
+      const filledCourses = data.programming.extraCourses?.filter(course => course.courseName?.trim() || course.moduleDescription?.trim());
+      
+      if (!filledCourses || filledCourses.length === 0) {
+        errors.ProgrammingSkills.push('Courses enabled but no course data provided. Either uncheck the box or fill in course details.');
+      } else {
+        data.programming.extraCourses?.forEach((course, idx) => {
+          if ((course.courseName?.trim() || course.moduleDescription?.trim()) && !course.courseName?.trim()) {
+            errors.ProgrammingSkills.push(`Course #${idx + 1}: Course name is required.`);
+          }
+        });
+      }
     }
 
     // Questions
@@ -309,30 +359,24 @@ export function isValidFormData(data: Data): boolean {
       return true;
     }
   
-    // Build a grouped alert message
+    // Build error message
     let message = 'File cannot be created because some data is missing.\n\n';
   
     if (hasInterviewTimeError) {
       message += 'Interview Time:\n';
-      for (const e of errors.InterviewTime) {
-        message += `  - ${e}\n`;
-      }
+      for (const e of errors.InterviewTime) message += `  - ${e}\n`;
       message += '\n';
     }
   
     if (hasEducationError) {
       message += 'Education:\n';
-      for (const e of errors.Education) {
-        message += `  - ${e}\n`;
-      }
+      for (const e of errors.Education) message += `  - ${e}\n`;
       message += '\n';
     }
   
     if (hasMathError) {
       message += 'Skills in Mathematics:\n';
-      for (const e of errors.MathSkills) {
-        message += `  - ${e}\n`;
-      }
+      for (const e of errors.MathSkills) message += `  - ${e}\n`;
       message += '\n';
     }
 
@@ -344,13 +388,23 @@ export function isValidFormData(data: Data): boolean {
   
     if (hasQuestionsError) {
       message += 'Questions:\n';
-      for (const e of errors.Questions) {
-        message += `  - ${e}\n`;
-      }
+      for (const e of errors.Questions) message += `  - ${e}\n`;
       message += '\n';
     }
   
     alert(message);
     return false;
-  }
-  
+}
+
+export function toggleTimeSlot(slotName: string, checked: boolean){
+  data.update(d => {
+    const idx = d.timeSlots.indexOf(slotName);
+    if (checked) {
+      if (idx === -1) d.timeSlots.push(slotName);
+    } else {
+      if (idx !== -1) d.timeSlots.splice(idx, 1);
+    }
+    return d;
+  });
+}
+

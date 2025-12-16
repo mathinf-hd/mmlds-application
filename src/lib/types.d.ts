@@ -46,12 +46,12 @@ interface ProgrammingCourse {
 }
 
 interface ProgrammingData {
-	lectures?: Array<ProgrammingLecture>;
-	openSourceProjects?: Array<OpenSourceProject>;
-	extraCourses?: Array<ProgrammingCourse>;
-	lecturesEnabled?: boolean;
-	openSourceProjectsEnabled?: boolean;
-	extraCoursesEnabled?: boolean;
+	lectures: Array<ProgrammingLecture>;
+	openSourceProjects: Array<OpenSourceProject>;
+	extraCourses: Array<ProgrammingCourse>;
+	lecturesEnabled: boolean;
+	openSourceProjectsEnabled: boolean;
+	extraCoursesEnabled: boolean;
 }
 
 type Question = string;
@@ -61,11 +61,11 @@ type MotivationAnswers = Record<Question, string>;
 // Top-Level Data Structure
 interface Data {
 	// mandatory input
-	timeSlot: string;         
+	timeSlots: Array<string>;         
 	fieldDetails: FormDataField;
 	mathematics: MathematicsData;
 	// not mandatory input
-	programming?: ProgrammingData;
+	programming: ProgrammingData;  
 	// mandatory input
 	questions: MotivationAnswers;
   }

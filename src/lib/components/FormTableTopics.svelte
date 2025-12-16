@@ -30,69 +30,87 @@ let transitionParams = {
     duration: 200,
     easing: sineIn
 };
+
 </script>
 
 <P>
 	The admission regulations recognize skills in <b>Mathematics</b> which you acquired in the following areas through corresponding foundational lectures (each 8 ECTS): Analysis, Linear Algebra, and three of the five areas: Functional Analysis, Differential Geometry, Optimization, Statistics and Probability Theory, Numerical Analysis. Please indicate the three areas A, B and C  where you have the required Mathematics skills already earned.   
 </P>
 
-<div class="my-4">
+<!-- Area A Dropdown -->
+ <div class="my-4">
 	<Button>
-		{areaA} <ChevronDownOutline class="text-2xs m" />
+	{areaA} <ChevronDownOutline class="text-2xs m" />
 	</Button>
 	<Dropdown class="text-2xs p-2">
-		{#each formTopics as topic}
-			{#if topic.name !== areaB && topic.name !== areaC}
-				<li>
-					<Radio 
-						name="areaA" 
-						bind:group={areaA} 
-						value={topic.name}
-						on:change={() => selectArea(topic.name)}
-					>
-						{topic.name}
-					</Radio>
-				</li>
-			{/if}
-		{/each}
+	{#each formTopics as topic}
+		{#if topic.name !== areaA && topic.name !== areaB && topic.name !== areaC}
+		<li>
+			<Radio
+			name="areaA"
+			value={topic.name}
+			checked={areaA === topic.name}
+			on:change={() => {
+				const prev = areaA;
+				areaA = topic.name;
+				selectArea(topic.name, prev === 'Please select Area A' ? undefined : prev);
+			}}
+			>
+			{topic.name}
+			</Radio>
+		</li>
+		{/if}
+	{/each}
 	</Dropdown>
+
+	<!-- Area B Dropdown -->
 	<Button>
-		{areaB} <ChevronDownOutline class="text-2xs m" />
+	{areaB} <ChevronDownOutline class="text-2xs m" />
 	</Button>
 	<Dropdown class="text-2xs p-2">
-		{#each formTopics as topic}
-			{#if topic.name !== areaA && topic.name !== areaC}
-				<li>
-					<Radio 
-						name="areaB" 
-						bind:group={areaB} 
-						value={topic.name}
-						on:change={() => selectArea(topic.name)}
-					>
-						{topic.name}
-					</Radio>
-				</li>
-			{/if}
-		{/each}
+	{#each formTopics as topic}
+		{#if topic.name !== areaA && topic.name !== areaB && topic.name !== areaC}
+		<li>
+			<Radio
+			name="areaB"
+			value={topic.name}
+			checked={areaB === topic.name}
+			on:change={() => {
+				const prev = areaB;
+				areaB = topic.name;
+				selectArea(topic.name, prev === 'Please select Area B' ? undefined : prev);
+			}}
+			>
+			{topic.name}
+			</Radio>
+		</li>
+		{/if}
+	{/each}
 	</Dropdown>
+
+	<!-- Area C Dropdown -->
 	<Button>
-		{areaC} <ChevronDownOutline class="text-2xs m" />
+	{areaC} <ChevronDownOutline class="text-2xs m" />
 	</Button>
 	<Dropdown class="text-2xs p-2">
-		{#each formTopics as topic}
-			{#if topic.name !== areaA && topic.name !== areaB}
-				<li>
-					<Radio 
-						name="areaC" 
-						bind:group={areaC} 
-						value={topic.name}
-						on:change={() => selectArea(topic.name)}
-					>
-						{topic.name}
-				</Radio>
-				</li>
-			{/if}
-		{/each}
+	{#each formTopics as topic}
+		{#if topic.name !== areaA && topic.name !== areaB && topic.name !== areaC}
+		<li>
+			<Radio
+			name="areaC"
+			value={topic.name}
+			checked={areaC === topic.name}
+			on:change={() => {
+				const prev = areaC;
+				areaC = topic.name;
+				selectArea(topic.name, prev === 'Please select Area C' ? undefined : prev);
+			}}
+			>
+			{topic.name}
+			</Radio>
+		</li>
+		{/if}
+	{/each}
 	</Dropdown>
 </div>
 

@@ -49,42 +49,57 @@
   <div class="my-5">
 	<Heading tag="h4" class="mb-4">Foundational Lecture</Heading>
   
-	<Table class="overflow-x-auto" striped={true}>
-	  <TableHead class="normal-case bg-primary-700 text-white">
-		<TableHeadCell class="min-w-60 text-2xs p-2">
-		  Lecture Name in Transcript
-		</TableHeadCell>
-		<TableHeadCell class="text-2xs p-2">Module Description</TableHeadCell>
-		<TableHeadCell class="text-2xs p-2"></TableHeadCell>
-	  </TableHead>
-	  <TableBody>
-		{#each $data.programming?.lectures ?? [] as lecture, idx}
-		  <TableBodyRow>
-			<TableBodyCell class="p-2">
-			  <Input type="text" bind:value={lecture.name} class="text-2xs" />
-			</TableBodyCell>
-			<TableBodyCell class="p-2 text-2xs">
-			  <Input type="text" bind:value={lecture.moduleDescription} class="text-2xs" />
-			</TableBodyCell>
-			<TableBodyCell class="p-2">
-			  <Button
-				color="red"
-				size="xs"
-				class="text-2xs"
-				on:click={() => removeProgrammingLecture(idx)}
-			  >
-				<TrashBinOutline />
-			  </Button>
-			</TableBodyCell>
-		  </TableBodyRow>
-		{/each}
-	  </TableBody>
-	</Table>
+    <Table class="overflow-x-auto" striped={true}>
+      <TableHead class="normal-case bg-primary-700 text-white">
+        <TableHeadCell class="min-w-60 text-2xs p-2">
+          Lecture Name in Transcript
+        </TableHeadCell>
+        <TableHeadCell class="text-2xs p-2">Module Description</TableHeadCell>
+        <TableHeadCell class="text-2xs p-2"></TableHeadCell>
+      </TableHead>
+      <TableBody>
+        {#each $data.programming?.lectures ?? [] as lecture, idx}
+          <TableBodyRow>
+            <TableBodyCell class="p-2">
+              <Input 
+                type="text" 
+                bind:value={lecture.name} 
+                class="text-2xs" 
+                disabled={!$data.programming.lecturesEnabled}
+              />
+            </TableBodyCell>
+            <TableBodyCell class="p-2 text-2xs">
+              <Input 
+                type="text" 
+                bind:value={lecture.moduleDescription} 
+                class="text-2xs"
+                disabled={!$data.programming.lecturesEnabled}
+              />
+            </TableBodyCell>
+            <TableBodyCell class="p-2">
+              <Button
+                color="red"
+                size="xs"
+                class="text-2xs"
+                disabled={!$data.programming.lecturesEnabled}
+                on:click={() => removeProgrammingLecture(idx)}
+              >
+                <TrashBinOutline />
+              </Button>
+            </TableBodyCell>
+          </TableBodyRow>
+        {/each}
+      </TableBody>
+    </Table>
   
-	<Button class="text-2xs m-2" on:click={() => addProgrammingLecture()}>
-	  Add Another Lecture
-	</Button>
-  </div>
+    <Button 
+      class="text-2xs m-2" 
+      disabled={!$data.programming.lecturesEnabled}
+      on:click={() => addProgrammingLecture()}
+    >
+      Add Another Lecture
+    </Button>
+</div>
   
   <!-- 2) OPEN SOURCE PROJECTS -->
   <P class="mb-2">
@@ -105,46 +120,66 @@
   <div class="my-5">
 	<Heading tag="h4" class="mb-4">Open Source Project</Heading>
   
-	<Table class="overflow-x-auto" striped={true}>
-	  <TableHead class="normal-case bg-primary-700 text-white">
-		<TableHeadCell class="min-w-60 text-2xs p-2">
-		  Name of open source project
-		</TableHeadCell>
-		<TableHeadCell class="text-2xs p-2">Link to public repository</TableHeadCell>
-		<TableHeadCell class="text-2xs p-2">Personal identifier</TableHeadCell>
-		<TableHeadCell class="text-2xs p-2"></TableHeadCell>
-	  </TableHead>
-	  <TableBody>
-		{#each $data.programming?.openSourceProjects ?? [] as proj, idx}
-		  <TableBodyRow>
-			<TableBodyCell class="p-2">
-			  <Input type="text" bind:value={proj.projectName} class="text-2xs" />
-			</TableBodyCell>
-			<TableBodyCell class="p-2 text-2xs">
-			  <Input type="text" bind:value={proj.publicRepoLink} class="text-2xs" />
-			</TableBodyCell>
-			<TableBodyCell class="p-2 text-2xs">
-			  <Input type="text" bind:value={proj.personalIdentifier} class="text-2xs" />
-			</TableBodyCell>
-			<TableBodyCell class="p-2">
-			  <Button
-				color="red"
-				size="xs"
-				class="text-2xs"
-				on:click={() => removeOpenSourceProject(idx)}
-			  >
-				<TrashBinOutline />
-			  </Button>
-			</TableBodyCell>
-		  </TableBodyRow>
-		{/each}
-	  </TableBody>
-	</Table>
+    <Table class="overflow-x-auto" striped={true}>
+      <TableHead class="normal-case bg-primary-700 text-white">
+        <TableHeadCell class="min-w-60 text-2xs p-2">
+          Name of open source project
+        </TableHeadCell>
+        <TableHeadCell class="text-2xs p-2">Link to public repository</TableHeadCell>
+        <TableHeadCell class="text-2xs p-2">Personal identifier</TableHeadCell>
+        <TableHeadCell class="text-2xs p-2"></TableHeadCell>
+      </TableHead>
+      <TableBody>
+        {#each $data.programming?.openSourceProjects ?? [] as proj, idx}
+          <TableBodyRow>
+            <TableBodyCell class="p-2">
+              <Input 
+                type="text" 
+                bind:value={proj.projectName} 
+                class="text-2xs"
+                disabled={!$data.programming.openSourceProjectsEnabled}
+              />
+            </TableBodyCell>
+            <TableBodyCell class="p-2 text-2xs">
+              <Input 
+                type="text" 
+                bind:value={proj.publicRepoLink} 
+                class="text-2xs"
+                disabled={!$data.programming.openSourceProjectsEnabled}
+              />
+            </TableBodyCell>
+            <TableBodyCell class="p-2 text-2xs">
+              <Input 
+                type="text" 
+                bind:value={proj.personalIdentifier} 
+                class="text-2xs"
+                disabled={!$data.programming.openSourceProjectsEnabled}
+              />
+            </TableBodyCell>
+            <TableBodyCell class="p-2">
+              <Button
+                color="red"
+                size="xs"
+                class="text-2xs"
+                disabled={!$data.programming.openSourceProjectsEnabled}
+                on:click={() => removeOpenSourceProject(idx)}
+              >
+                <TrashBinOutline />
+              </Button>
+            </TableBodyCell>
+          </TableBodyRow>
+        {/each}
+      </TableBody>
+    </Table>
   
-	<Button class="text-2xs m-2" on:click={() => addOpenSourceProject()}>
-	  Add Another Project
-	</Button>
-  </div>
+    <Button 
+      class="text-2xs m-2" 
+      disabled={!$data.programming.openSourceProjectsEnabled}
+      on:click={() => addOpenSourceProject()}
+    >
+      Add Another Project
+    </Button>
+</div>
   
   <!-- 3) PROGRAMMING COURSES -->
   <P class="mb-2">
@@ -167,40 +202,55 @@
   <div class="my-5">
 	<Heading tag="h4" class="mb-4">Programming Course</Heading>
   
-	<Table class="overflow-x-auto" striped={true}>
-	  <TableHead class="normal-case bg-primary-700 text-white">
-		<TableHeadCell class="min-w-60 text-2xs p-2">
-		  Course Name as in Transcript / File name of certificate
-		</TableHeadCell>
-		<TableHeadCell class="text-2xs p-2">Module Description as applicable</TableHeadCell>
-		<TableHeadCell class="text-2xs p-2"></TableHeadCell>
-	  </TableHead>
-	  <TableBody>
-		{#each $data.programming?.extraCourses ?? [] as course, idx}
-		  <TableBodyRow>
-			<TableBodyCell class="p-2">
-			  <Input type="text" bind:value={course.courseName} class="text-2xs" />
-			</TableBodyCell>
-			<TableBodyCell class="p-2 text-2xs">
-			  <Input type="text" bind:value={course.moduleDescription} class="text-2xs" />
-			</TableBodyCell>
-			<TableBodyCell class="p-2">
-			  <Button
-				color="red"
-				size="xs"
-				class="text-2xs"
-				on:click={() => removeProgrammingCourse(idx)}
-			  >
-				<TrashBinOutline />
-			  </Button>
-			</TableBodyCell>
-		  </TableBodyRow>
-		{/each}
-	  </TableBody>
-	</Table>
+    <Table class="overflow-x-auto" striped={true}>
+      <TableHead class="normal-case bg-primary-700 text-white">
+        <TableHeadCell class="min-w-60 text-2xs p-2">
+          Course Name as in Transcript / File name of certificate
+        </TableHeadCell>
+        <TableHeadCell class="text-2xs p-2">Module Description as applicable</TableHeadCell>
+        <TableHeadCell class="text-2xs p-2"></TableHeadCell>
+      </TableHead>
+      <TableBody>
+        {#each $data.programming?.extraCourses ?? [] as course, idx}
+          <TableBodyRow>
+            <TableBodyCell class="p-2">
+              <Input 
+                type="text" 
+                bind:value={course.courseName} 
+                class="text-2xs"
+                disabled={!$data.programming.extraCoursesEnabled}
+              />
+            </TableBodyCell>
+            <TableBodyCell class="p-2 text-2xs">
+              <Input 
+                type="text" 
+                bind:value={course.moduleDescription} 
+                class="text-2xs"
+                disabled={!$data.programming.extraCoursesEnabled}
+              />
+            </TableBodyCell>
+            <TableBodyCell class="p-2">
+              <Button
+                color="red"
+                size="xs"
+                class="text-2xs"
+                disabled={!$data.programming.extraCoursesEnabled}
+                on:click={() => removeProgrammingCourse(idx)}
+              >
+                <TrashBinOutline />
+              </Button>
+            </TableBodyCell>
+          </TableBodyRow>
+        {/each}
+      </TableBody>
+    </Table>
   
-	<Button class="text-2xs m-2" on:click={() => addProgrammingCourse()}>
-	  Add Another Lecture
-	</Button>
-  </div>
-  
+    <Button 
+      class="text-2xs m-2" 
+      disabled={!$data.programming.extraCoursesEnabled}
+      on:click={() => addProgrammingCourse()}
+    >
+      Add Another Course
+    </Button>
+</div>
+
