@@ -1,16 +1,24 @@
 <script lang="ts">
-import { Dropdown, DropdownItem, Radio,
-       	 	   Button, CloseButton, Checkbox, Heading, Input, P, Table, 
-		   TableBody, TableBodyCell, TableBodyRow, 
-		   TableHead, TableHeadCell, Drawer } from 'flowbite-svelte';
-import { TrashBinOutline, ChevronDownOutline }  from 'flowbite-svelte-icons';
-
-import GenericValidatedInput from './GenericValidatedInput.svelte';
+import { 
+    Dropdown, DropdownItem, Radio,
+    Button, CloseButton, Checkbox, Heading, Input, P, Table, 
+    TableBody, TableBodyCell, TableBodyRow, 
+    TableHead, TableHeadCell, Drawer 
+} from 'flowbite-svelte';
+import { TrashBinOutline, ChevronDownOutline } from 'flowbite-svelte-icons';
 import { formTopics } from '$lib/topics';
-
-import { addLecture, data, removeLecture, selectArea, toggleSkill } from '$lib/store/store';
-
+import { 
+    addPoolLecture, 
+    assignLectureToArea, 
+    data, 
+    removeLecture, 
+    removePoolLecture, 
+    selectArea, 
+    toggleSkill, 
+    updatePoolLecture 
+} from '$lib/store/store';
 import { sineIn } from 'svelte/easing';
+import { onMount } from 'svelte';
 
 let areaA = 'Please select Area A';
 let areaB = 'Please select Area B';
@@ -19,10 +27,9 @@ let areaC = 'Please select Area C';
 let selectedDrawer = 0;
 let hiddenDrawer = true;
 
-// Function to open the drawer
 function openDrawer(index: number) {
-	selectedDrawer = index;
-	hiddenDrawer = false;
+    selectedDrawer = index;
+    hiddenDrawer = false;
 }
 
 let transitionParams = {
@@ -31,163 +38,311 @@ let transitionParams = {
     easing: sineIn
 };
 
+function onPoolLectureNameInput(id: string, e: Event) {
+    const el = e.target as HTMLInputElement | null;
+    if (!el) return;
+    updatePoolLecture(id, { lectureName: el.value });
+}
+
+function onPoolLectureDescInput(id: string, e: Event) {
+    const el = e.target as HTMLInputElement | null;
+    if (!el) return;
+    updatePoolLecture(id, { moduleDescription: el.value });
+}
+
+// REACTIVE: Compute available lectures per area whenever store changes
+$: pool = $data.mathematics.lecturePool ?? [];
+$: hasFilledPoolLectures = pool.some(p => p.lectureName?.trim() || p.moduleDescription?.trim());
+
+// REACTIVE: Build a map of available lectures for each topic
+$: availableByArea = Object.fromEntries(
+    formTopics.map(topic => {
+        const usedIds = new Set(($data.mathematics.lectures[topic.name] ?? []).map(l => l.id));
+        const available = pool.filter(p => p.id && !usedIds.has(p.id));
+        return [topic.name, available];
+    })
+);
+
+// Prune empty rows on mount (cleanup old data)
+onMount(() => {
+    data.update(d => {
+        for (const area of Object.keys(d.mathematics.lectures)) {
+            d.mathematics.lectures[area] = (d.mathematics.lectures[area] ?? []).filter(lec => {
+                const name = lec.lectureName?.trim();
+                const desc = lec.moduleDescription?.trim();
+                return !!(name || desc || (lec.skills?.length ?? 0) > 0);
+            });
+        }
+        return d;
+    });
+});
 </script>
 
+<!-- Main explanation -->
 <P>
-	The admission regulations recognize skills in <b>Mathematics</b> which you acquired in the following areas through corresponding foundational lectures (each 8 ECTS): Analysis, Linear Algebra, and three of the five areas: Functional Analysis, Differential Geometry, Optimization, Statistics and Probability Theory, Numerical Analysis. Please indicate the three areas A, B and C  where you have the required Mathematics skills already earned.   
+    The admission regulations recognize skills in <b>Mathematics</b> which you acquired in the following areas through corresponding foundational lectures (each 8 ECTS): Analysis, Linear Algebra, and three of the five areas: Functional Analysis, Differential Geometry, Optimization, Statistics and Probability Theory, Numerical Analysis.
 </P>
 
-<!-- Area A Dropdown -->
- <div class="my-4">
-	<Button>
-	{areaA} <ChevronDownOutline class="text-2xs m" />
-	</Button>
-	<Dropdown class="text-2xs p-2">
-	{#each formTopics as topic}
-		{#if topic.name !== areaA && topic.name !== areaB && topic.name !== areaC}
-		<li>
-			<Radio
-			name="areaA"
-			value={topic.name}
-			checked={areaA === topic.name}
-			on:change={() => {
-				const prev = areaA;
-				areaA = topic.name;
-				selectArea(topic.name, prev === 'Please select Area A' ? undefined : prev);
-			}}
-			>
-			{topic.name}
-			</Radio>
-		</li>
-		{/if}
-	{/each}
-	</Dropdown>
+<!-- ==================== STEP 1: LECTURE POOL ==================== -->
+<div class="my-6">
+    <Heading tag="h4" class="mb-3">Step 1: Enter your lectures (once)</Heading>
+    
+    <P class="mb-4 text-sm">
+        To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript. 
+        Copy and paste the entire official description of the lecture 
+        (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field 
+        (after translation to English using some automatic translation service, in case it is not given in English).
+    </P>
 
-	<!-- Area B Dropdown -->
-	<Button>
-	{areaB} <ChevronDownOutline class="text-2xs m" />
-	</Button>
-	<Dropdown class="text-2xs p-2">
-	{#each formTopics as topic}
-		{#if topic.name !== areaA && topic.name !== areaB && topic.name !== areaC}
-		<li>
-			<Radio
-			name="areaB"
-			value={topic.name}
-			checked={areaB === topic.name}
-			on:change={() => {
-				const prev = areaB;
-				areaB = topic.name;
-				selectArea(topic.name, prev === 'Please select Area B' ? undefined : prev);
-			}}
-			>
-			{topic.name}
-			</Radio>
-		</li>
-		{/if}
-	{/each}
-	</Dropdown>
-
-	<!-- Area C Dropdown -->
-	<Button>
-	{areaC} <ChevronDownOutline class="text-2xs m" />
-	</Button>
-	<Dropdown class="text-2xs p-2">
-	{#each formTopics as topic}
-		{#if topic.name !== areaA && topic.name !== areaB && topic.name !== areaC}
-		<li>
-			<Radio
-			name="areaC"
-			value={topic.name}
-			checked={areaC === topic.name}
-			on:change={() => {
-				const prev = areaC;
-				areaC = topic.name;
-				selectArea(topic.name, prev === 'Please select Area C' ? undefined : prev);
-			}}
-			>
-			{topic.name}
-			</Radio>
-		</li>
-		{/if}
-	{/each}
-	</Dropdown>
+    <Table class="overflow-x-auto" striped={true}>
+        <TableHead class="normal-case bg-primary-700 text-white">
+            <TableHeadCell class="min-w-60 text-2xs p-2">Lecture Name in Transcript</TableHeadCell>
+            <TableHeadCell class="text-2xs p-2">Module Description</TableHeadCell>
+            <TableHeadCell class="text-2xs p-2"></TableHeadCell>
+        </TableHead>
+        <TableBody>
+            {#each pool as poolLec (poolLec.id)}
+                <TableBodyRow>
+                    <TableBodyCell class="p-2">
+                        <Input
+                            type="text"
+                            bind:value={poolLec.lectureName}
+                            on:input={(e) => onPoolLectureNameInput(poolLec.id, e)}
+                            class="text-2xs"
+                            placeholder="e.g. Analysis I"
+                        />
+                    </TableBodyCell>
+                    <TableBodyCell class="p-2 text-2xs">
+                        <Input
+                            type="text"
+                            bind:value={poolLec.moduleDescription}
+                            on:input={(e) => onPoolLectureDescInput(poolLec.id, e)}
+                            class="text-2xs"
+                            placeholder="Paste module description here..."
+                        />
+                    </TableBodyCell>
+                    <TableBodyCell class="p-2">
+                        <Button color="red" size="xs" class="text-2xs" on:click={() => removePoolLecture(poolLec.id)}>
+                            <TrashBinOutline />
+                        </Button>
+                    </TableBodyCell>
+                </TableBodyRow>
+            {/each}
+        </TableBody>
+    </Table>
+    <Button class="text-2xs m-2" on:click={() => addPoolLecture()}>Add lecture to pool</Button>
 </div>
 
-<P>
-	To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript. 
-	To declare your earned skills, check the respective checkboxes. Finally, copy and paste the entire official description of the lecture 
-	(as, e.g., provided in the module handbook of your field of study) to the "Module Description" field 
-	(after translation to English using some automatic translation service, in case it is not given in English).
-</P>
+<!-- ==================== STEP 2: SELECT 3 AREAS ==================== -->
+<div class="my-6">
+    <Heading tag="h4" class="mb-3">Step 2: Select three areas (A, B, C)</Heading>
+    
+    <P class="mb-4 text-sm">
+        Please indicate the three areas A, B and C where you have the required Mathematics skills already earned.
+    </P>
 
+    <div class="flex flex-wrap gap-2">
+        <!-- Area A -->
+        <Button>
+            {areaA} <ChevronDownOutline class="text-2xs ml-2" />
+        </Button>
+        <Dropdown class="text-2xs p-2">
+            {#each formTopics as topic}
+                {#if topic.name !== areaA && topic.name !== areaB && topic.name !== areaC}
+                    <li>
+                        <Radio
+                            name="areaA"
+                            value={topic.name}
+                            checked={areaA === topic.name}
+                            on:change={() => {
+                                const prev = areaA;
+                                areaA = topic.name;
+                                selectArea(topic.name, prev === 'Please select Area A' ? undefined : prev);
+                            }}
+                        >
+                            {topic.name}
+                        </Radio>
+                    </li>
+                {/if}
+            {/each}
+        </Dropdown>
 
+        <!-- Area B -->
+        <Button>
+            {areaB} <ChevronDownOutline class="text-2xs ml-2" />
+        </Button>
+        <Dropdown class="text-2xs p-2">
+            {#each formTopics as topic}
+                {#if topic.name !== areaA && topic.name !== areaB && topic.name !== areaC}
+                    <li>
+                        <Radio
+                            name="areaB"
+                            value={topic.name}
+                            checked={areaB === topic.name}
+                            on:change={() => {
+                                const prev = areaB;
+                                areaB = topic.name;
+                                selectArea(topic.name, prev === 'Please select Area B' ? undefined : prev);
+                            }}
+                        >
+                            {topic.name}
+                        </Radio>
+                    </li>
+                {/if}
+            {/each}
+        </Dropdown>
 
+        <!-- Area C -->
+        <Button>
+            {areaC} <ChevronDownOutline class="text-2xs ml-2" />
+        </Button>
+        <Dropdown class="text-2xs p-2">
+            {#each formTopics as topic}
+                {#if topic.name !== areaA && topic.name !== areaB && topic.name !== areaC}
+                    <li>
+                        <Radio
+                            name="areaC"
+                            value={topic.name}
+                            checked={areaC === topic.name}
+                            on:change={() => {
+                                const prev = areaC;
+                                areaC = topic.name;
+                                selectArea(topic.name, prev === 'Please select Area C' ? undefined : prev);
+                            }}
+                        >
+                            {topic.name}
+                        </Radio>
+                    </li>
+                {/if}
+            {/each}
+        </Dropdown>
+    </div>
+</div>
+
+<!-- ==================== STEP 3: ASSIGN LECTURES TO AREAS ==================== -->
+<div class="my-6">
+    <Heading tag="h4" class="mb-3">Step 3: Assign lectures to areas & select skills</Heading>
+    
+    <P class="mb-4 text-sm">
+        Now assign your pool lectures to each area and check the boxes for skills demonstrated.
+    </P>
+</div>
 
 {#each formTopics as topic, topicIdx}
-	<div class="my-4">
-		<Heading tag="h4" class="mb-4">
-			{topic.name}
-			<Button  on:click={() => openDrawer(topicIdx)}> Overview of perequired skills</Button>
-		</Heading>	
-		<Table class="overflow-x-auto" striped={true}>	
-				<TableHead class="normal-case bg-primary-700 text-white">
-					<TableHeadCell class="min-w-60 text-2xs p-2">
-						Lecture Name in Transcript
-					</TableHeadCell>
-					{#each topic.subtopics as subTopic}
-						<TableHeadCell class="text-2xs p-2 m-auto">{subTopic}</TableHeadCell>
-					{/each}
-					<TableHeadCell class="text-2xs p-2">Module Description</TableHeadCell>
-					<TableHeadCell class="text-2xs p-2"></TableHeadCell>
-				</TableHead>
-				<TableBody>
-					{#each ($data.mathematics.lectures[topic.name] ?? []) as lecture, lectureIdx}
-					<TableBodyRow>
-						<TableBodyCell class="p-2"><Input 
-							type="text" 
-							bind:value={lecture.lectureName}  
-							class="text-2xs"/>
-						</TableBodyCell>
-						{#each topic.subtopics as subTopic}
-							<TableBodyCell class="p-2">
-								<Checkbox 
-								checked={lecture.skills.includes(subTopic)} 
-								on:change={(e) => toggleSkill(topic.name, lectureIdx, subTopic, e.target.checked)}
-								class="m-auto"
-							/>
-							</TableBodyCell>
-						{/each}
-						<TableBodyCell class="p-2 text-2xs">
-							<Input type="text" bind:value={lecture.moduleDescription} class="text-2xs"/>
-						</TableBodyCell>
-						<TableBodyCell class="p-2">
-							<Button color="red" size="xs" class="text-2xs" on:click={() => removeLecture(topic.name, lectureIdx)}><TrashBinOutline /></Button>
-						</TableBodyCell>
-					</TableBodyRow>
-					{/each}
-				</TableBody>
-		</Table>
-		<Button class="text-2xs m-2" on:click={() => addLecture(topic.name)}>Add Another Lecture</Button>
-	</div>
+    {@const availableForThisArea = availableByArea[topic.name] ?? []}
+    {@const assignedLectures = $data.mathematics.lectures[topic.name] ?? []}
+    
+    <div class="my-6 p-4 border rounded-lg">
+        <div class="flex items-center justify-between mb-3">
+            <Heading tag="h5" class="mb-0">
+                {topic.name}
+            </Heading>
+            <Button on:click={() => openDrawer(topicIdx)} class="text-2xs" size="xs">
+                Overview of required skills
+            </Button>
+        </div>
+
+        <!-- Dropdown to add lecture from pool -->
+        <div class="mb-3">
+            {#if availableForThisArea.length > 0}
+                <!-- Has available lectures: show working dropdown -->
+                <Button size="sm" class="text-2xs">
+                    Add lecture from pool <ChevronDownOutline class="ml-1" />
+                </Button>
+                <Dropdown class="p-2">
+                    {#each availableForThisArea as poolLec (poolLec.id)}
+                        <DropdownItem on:click={() => assignLectureToArea(topic.name, poolLec.id)}>
+                            {poolLec.lectureName || '(Untitled lecture)'}
+                        </DropdownItem>
+                    {/each}
+                </Dropdown>
+            {:else}
+                <!-- No available lectures: show message instead of dropdown -->
+                <div class="p-3 bg-amber-50 border border-amber-200 rounded text-sm text-amber-700">
+                    {#if !hasFilledPoolLectures}
+                        ⚠️ <strong>No lectures in your pool yet.</strong> Add lectures in Step 1 above first.
+                    {:else if assignedLectures.length > 0}
+                        ✓ <strong>All your pool lectures are already assigned to this area.</strong> You can add more lectures in Step 1 if needed.
+                    {:else}
+                        ⚠️ <strong>All pool lectures are assigned to other areas.</strong> Add more in Step 1 or remove from other areas.
+                    {/if}
+                </div>
+            {/if}
+        </div>
+
+        <!-- Table of assigned lectures with skill checkboxes -->
+        {#if assignedLectures.length > 0}
+            <div class="overflow-x-auto">
+                <Table striped={true}>
+                    <TableHead class="normal-case bg-primary-700 text-white">
+                        <TableHeadCell class="min-w-40 text-2xs p-2 text-left">Lecture</TableHeadCell>
+                        {#each topic.subtopics as subTopic}
+                            <TableHeadCell class="text-2xs p-2 text-center min-w-[80px]">
+                                <div class="flex justify-center">{subTopic}</div>
+                            </TableHeadCell>
+                        {/each}
+                        <TableHeadCell class="text-2xs p-2 w-12"></TableHeadCell>
+                    </TableHead>
+                    <TableBody>
+                        {#each assignedLectures as lecture, lectureIdx (lecture.id)}
+                            <TableBodyRow>
+                                <TableBodyCell class="p-2 text-2xs text-left align-middle">
+                                    <div class="font-semibold">{lecture.lectureName || '(Untitled)'}</div>
+                                    {#if lecture.moduleDescription}
+                                        <div class="text-[11px] text-gray-500 mt-1 line-clamp-2 max-w-[200px]">
+                                            {lecture.moduleDescription}
+                                        </div>
+                                    {/if}
+                                </TableBodyCell>
+                                {#each topic.subtopics as subTopic}
+                                    <TableBodyCell class="p-2 text-center align-middle">
+                                        <div class="flex justify-center">
+                                            <Checkbox
+                                                checked={lecture.skills.includes(subTopic)}
+                                                on:change={() => {
+                                                    const isChecked = !lecture.skills.includes(subTopic);
+                                                    toggleSkill(topic.name, lectureIdx, subTopic, isChecked);
+                                                }}
+                                            />
+                                        </div>
+                                    </TableBodyCell>
+                                {/each}
+                                <TableBodyCell class="p-2 text-center align-middle w-12">
+                                    <Button color="red" size="xs" class="text-2xs" on:click={() => removeLecture(topic.name, lectureIdx)}>
+                                        <TrashBinOutline />
+                                    </Button>
+                                </TableBodyCell>
+                            </TableBodyRow>
+                        {/each}
+                    </TableBody>
+                </Table>
+            </div>
+        {:else}
+            <P class="text-xs italic text-gray-400 p-4 bg-gray-50 rounded">
+                No lectures assigned yet. Use the dropdown above to add from your pool.
+            </P>
+        {/if}
+    </div>
 {/each}
 
+<!-- Drawer for skill overview -->
 <Drawer
-	placement="left"
-	transitionType="fly"
-	transitionParams={transitionParams}
-	bind:hidden={hiddenDrawer}
-	id=sidebarDrawer
-	class="w-72 text-sm font-light">
-	<div class="bg-primary-700 flex items-start p-2 items-center justify-between"> 
-		<p class="text-base font-semibold">
-			Prerequired skills in {formTopics[selectedDrawer].name}
-		</p>
-		<CloseButton on:click={() => (hiddenDrawer = true)} class="hover:bg-primary-800 text-white" />
-	</div>
-	<ul class="p-2 bg-gray-50">
-		{#each formTopics[selectedDrawer].module as module}
-			<li class="text-sm list-disc ml-4 mb-2" style="list-style-type: circle"> {module} </li>
-		{/each}
-	</ul>
+    placement="left"
+    transitionType="fly"
+    transitionParams={transitionParams}
+    bind:hidden={hiddenDrawer}
+    id="sidebarDrawer"
+    class="w-72 text-sm font-light"
+>
+    <div class="bg-primary-700 flex items-start p-2 items-center justify-between">
+        <p class="text-base font-semibold text-white">
+            Required skills in {formTopics[selectedDrawer].name}
+        </p>
+        <CloseButton on:click={() => (hiddenDrawer = true)} class="hover:bg-primary-800 text-white" />
+    </div>
+    <ul class="p-2 bg-gray-50">
+        {#each formTopics[selectedDrawer].module as module}
+            <li class="text-sm list-disc ml-4 mb-2" style="list-style-type: circle">{module}</li>
+        {/each}
+    </ul>
 </Drawer>

@@ -19,14 +19,23 @@ interface Topic {
 }
 
 type Lectures = Array<MathLecture>;
-interface MathLecture {
-	lectureName: string;
-	skills: Array<string>;
-	moduleDescription: string;
+interface PoolLecture {
+    id: string;
+    lectureName: string;
+    moduleDescription: string;
 }
+
+interface MathLecture {
+    id: string;
+    lectureName: string;
+    skills: Array<string>;
+    moduleDescription: string;
+}
+
 interface MathematicsData {
-	area: Array<string>,
-	lectures: Record<Area, Lectures>
+    area: Array<string>;
+    lectures: Record<string, Lectures>;
+    lecturePool: Array<PoolLecture>;
 }
 
 interface ProgrammingLecture {

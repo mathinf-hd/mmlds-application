@@ -2,156 +2,208 @@ import { writable } from "svelte/store";
 import { formTopics } from "$lib/topics";
 import { formQuestions } from "$lib/questions";
 
-export const data = writable<Data>(loadData())
-data.subscribe((value) => localStorage.data = JSON.stringify(value))
+const makeId = () => crypto.randomUUID?.() ?? `id-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
-function loadData(){ 
-    /* load data from localStorage */  
+export const data = writable<Data>(loadData());
+data.subscribe((value) => localStorage.data = JSON.stringify(value));
+
+function loadData(): Data { 
     try {
-        const data: Data = JSON.parse(localStorage.data);
-        // if (!isValidDataFormat(data)) {
-        //     throw new Error('Discarding old data because DataFormat is invalid or changed')
-        // }       
-        return data;
+        const raw = JSON.parse(localStorage.data);
+        // Basic validation: if structure looks valid, use it; otherwise start fresh
+        if (raw?.mathematics?.lecturePool && raw?.timeSlots && raw?.programming) {
+            return raw as Data;
+        }
+        return generateEmptyDataObject(formQuestions);
     } catch {
         return generateEmptyDataObject(formQuestions);
     }
 }
 
-export async function loadEvalData(filename: string){
-    
-    let url = import.meta.env.VITE_BUILD_URL ? import.meta.env.VITE_BUILD_URL : /* "http://localhost:8080/" */ "https://dacs-informatik.iwr.uni-heidelberg.de"
-
-    const file = `${url}/data/${filename}`
-
-    if (file !== null) {
-        try {
-            const response = await fetch(file);
-            if (!response.ok) {
-                throw new Error(`Unable to load file`);
-            }
-            let data = await response.json();
-
-            /* if (!isValidDataFormat(data)) {
-                throw new Error('Discarding old data because DataFormat is invalid or changed')
-            } */ 
-           
-            // data = expandSkills(data);
-            return data;
-
-        } catch (error) {
-            console.error('Error loading file:', error);
-            return generateEmptyDataObject(formQuestions);
-        }
-    }
-}
-
-
-function generateEmptyDataObject(questions: Questions) {
-    /* create empty data object */
-    const data: Data = {
-        // mandatory input
-        // timeSlot: '',
+function generateEmptyDataObject(questions: Questions): Data {
+    const d: Data = {
         timeSlots: [],
         fieldDetails: {
-          bachelorName: '',
-          fieldsSelected: [],
-          comparableField: ''
-        } as FormDataField,
+            bachelorName: '',
+            fieldsSelected: [],
+            comparableField: ''
+        },
         mathematics: {
-          area: [],
-          lectures: Object.fromEntries(formTopics.map(topic => [topic.name, [{ lectureName: '', skills: [], moduleDescription: ''}]])) as Record<string, Lectures>
-        } as MathematicsData,
-        // not mandatory input
+            area: [],
+            lectures: Object.fromEntries(
+                formTopics.map(topic => [topic.name, []])
+            ) as Record<string, Lectures>,
+            lecturePool: [{ id: makeId(), lectureName: '', moduleDescription: '' }]
+        },
         programming: {
-          lectures: [{ name: '', moduleDescription: '' }],
-          openSourceProjects: [{ projectName: '', publicRepoLink: '', personalIdentifier: '' }],
-          extraCourses: [{ courseName: '', moduleDescription: '' }],    
-          lecturesEnabled: false,
-          openSourceProjectsEnabled: false,
-          extraCoursesEnabled: false
-        } as ProgrammingData,
-        // mandatory input
+            lectures: [{ name: '', moduleDescription: '' }],
+            openSourceProjects: [{ projectName: '', publicRepoLink: '', personalIdentifier: '' }],
+            extraCourses: [{ courseName: '', moduleDescription: '' }],
+            lecturesEnabled: false,
+            openSourceProjectsEnabled: false,
+            extraCoursesEnabled: false
+        },
         questions: {} as MotivationAnswers
     };
     for (const question of questions) {
-        data['questions'][question] = '';
+        d.questions[question] = '';
     }
-    return data;
+    return d;
 }
 
-export function toggleStudyField(field: string, isChecked: boolean){
-    data.update((d) => {
+export async function loadEvalData(filename: string) {
+    const baseUrl = import.meta.env.VITE_BUILD_URL || "https://dacs-informatik.iwr.uni-heidelberg.de";
+    const file = `${baseUrl}/data/${filename}`;
+
+    try {
+        const response = await fetch(file);
+        if (!response.ok) {
+            throw new Error('Unable to load file');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error loading file:', error);
+        return generateEmptyDataObject(formQuestions);
+    }
+}
+
+// ==================== FIELD DETAILS ====================
+
+export function toggleStudyField(field: string, isChecked: boolean) {
+    data.update(d => {
         if (isChecked) {
-            // Add field if not present
-            if (!d.fieldDetails.fieldsSelected.some((f) => f === field)) {
+            if (!d.fieldDetails.fieldsSelected.includes(field)) {
                 d.fieldDetails.fieldsSelected.push(field);
             }
         } else {
-            d.fieldDetails.fieldsSelected = d.fieldDetails.fieldsSelected.filter((f) => f !== field);
+            d.fieldDetails.fieldsSelected = d.fieldDetails.fieldsSelected.filter(f => f !== field);
         }
         return d;
     });
 }
 
-export function ensureLectureExist(areaName: string){
+// ==================== TIME SLOTS ====================
+
+export function toggleTimeSlot(slotName: string, checked: boolean) {
     data.update(d => {
-        if(!d.mathematics.lectures[areaName]){
-            d.mathematics.lectures[areaName] = []
+        const idx = d.timeSlots.indexOf(slotName);
+        if (checked && idx === -1) {
+            d.timeSlots.push(slotName);
+        } else if (!checked && idx !== -1) {
+            d.timeSlots.splice(idx, 1);
         }
         return d;
     });
 }
+
+// ==================== MATH AREAS ====================
 
 export function selectArea(areaName: string, previousArea?: string) {
     data.update(d => {
-        // Remove the previous area if it exists and is different from new selection
-        if (previousArea && previousArea !== areaName && d.mathematics.area.includes(previousArea)) {
+        // Remove previous area if it exists
+        if (previousArea && previousArea !== areaName) {
             d.mathematics.area = d.mathematics.area.filter(a => a !== previousArea);
         }
-        
-        // Add the new area if not already chosen
+        // Add new area if not already present
         if (!d.mathematics.area.includes(areaName)) {
             d.mathematics.area.push(areaName);
         }
-        
         return d;
     });
 }
 
-export function addLecture(areaName: string){
-    ensureLectureExist(areaName);
+// ==================== LECTURE POOL ====================
+
+export function addPoolLecture() {
     data.update(d => {
-        d.mathematics.lectures[areaName].push({
-            lectureName: '',
-            skills: [],
-            moduleDescription: ''
+        d.mathematics.lecturePool.push({ id: makeId(), lectureName: '', moduleDescription: '' });
+        return d;
+    });
+}
+
+export function updatePoolLecture(id: string, patch: Partial<{ lectureName: string; moduleDescription: string }>) {
+    data.update(d => {
+        const lec = d.mathematics.lecturePool.find(l => l.id === id);
+        if (lec) {
+            Object.assign(lec, patch);
+        }
+        return d;
+    });
+}
+
+export function removePoolLecture(id: string) {
+    data.update(d => {
+        d.mathematics.lecturePool = d.mathematics.lecturePool.filter(l => l.id !== id);
+        // Also remove from all areas
+        for (const area of Object.keys(d.mathematics.lectures)) {
+            d.mathematics.lectures[area] = d.mathematics.lectures[area].filter(l => l.id !== id);
+        }
+        return d;
+    });
+}
+
+// ==================== AREA LECTURES ====================
+
+export function assignLectureToArea(areaName: string, lectureId: string) {
+    data.update(d => {
+        const pool = d.mathematics.lecturePool.find(l => l.id === lectureId);
+        if (!pool) return d;
+
+        // Ensure area array exists
+        d.mathematics.lectures[areaName] ??= [];
+        const list = d.mathematics.lectures[areaName];
+
+        // Don't add if already assigned
+        if (list.some(l => l.id === lectureId)) return d;
+
+        list.push({
+            id: lectureId,
+            lectureName: pool.lectureName,
+            moduleDescription: pool.moduleDescription,
+            skills: []
         });
         return d;
     });
 }
+
 export function removeLecture(areaName: string, lectureIdx: number) {
     data.update(d => {
-      d.mathematics.lectures[areaName].splice(lectureIdx, 1);
-      return d;
+        d.mathematics.lectures[areaName]?.splice(lectureIdx, 1);
+        return d;
     });
-  }
-
+}
 
 export function toggleSkill(areaName: string, lectureIdx: number, skill: string, checked: boolean) {
     data.update(d => {
-      const lecture = d.mathematics.lectures[areaName]?.[lectureIdx];
-      if (lecture) {
-        if (checked) {
-            if (!lecture.skills.includes(skill)) lecture.skills.push(skill);
-        } else {
+        const lecture = d.mathematics.lectures[areaName]?.[lectureIdx];
+        if (!lecture) return d;
+
+        if (checked && !lecture.skills.includes(skill)) {
+            lecture.skills.push(skill);
+        } else if (!checked) {
             lecture.skills = lecture.skills.filter(s => s !== skill);
         }
-      }
-      return d;
+        return d;
     });
 }
-  
+
+// ==================== PROGRAMMING ====================
+
+function ensureProgramming(d: Data): ProgrammingData {
+    d.programming ??= {
+        lectures: [],
+        openSourceProjects: [],
+        extraCourses: [],
+        lecturesEnabled: false,
+        openSourceProjectsEnabled: false,
+        extraCoursesEnabled: false
+    };
+    d.programming.lectures ??= [];
+    d.programming.openSourceProjects ??= [];
+    d.programming.extraCourses ??= [];
+    return d.programming;
+}
+
 export function toggleProgrammingCategory(
     category: 'lectures' | 'openSourceProjects' | 'extraCourses',
     checked: boolean
@@ -163,10 +215,23 @@ export function toggleProgrammingCategory(
     });
 }
 
+export function addProgrammingLecture() {
+    data.update(d => {
+        ensureProgramming(d).lectures.push({ name: '', moduleDescription: '' });
+        return d;
+    });
+}
+
+export function removeProgrammingLecture(idx: number) {
+    data.update(d => {
+        ensureProgramming(d).lectures.splice(idx, 1);
+        return d;
+    });
+}
+
 export function addOpenSourceProject() {
     data.update(d => {
-        const prog = ensureProgramming(d);
-        prog.openSourceProjects.push({
+        ensureProgramming(d).openSourceProjects.push({
             projectName: '',
             publicRepoLink: '',
             personalIdentifier: ''
@@ -177,234 +242,136 @@ export function addOpenSourceProject() {
 
 export function removeOpenSourceProject(idx: number) {
     data.update(d => {
-        d.programming?.openSourceProjects.splice(idx, 1);
+        ensureProgramming(d).openSourceProjects.splice(idx, 1);
         return d;
     });
 }
 
 export function addProgrammingCourse() {
     data.update(d => {
-        const prog = ensureProgramming(d);
-        prog.extraCourses.push({
-            courseName: '',
-            moduleDescription: ''
-        });
+        ensureProgramming(d).extraCourses.push({ courseName: '', moduleDescription: '' });
         return d;
     });
 }
 
 export function removeProgrammingCourse(idx: number) {
     data.update(d => {
-        d.programming?.extraCourses.splice(idx, 1);
+        ensureProgramming(d).extraCourses.splice(idx, 1);
         return d;
     });
 }
 
-export function addProgrammingLecture() {
-    data.update(d => {
-        const prog = ensureProgramming(d);
-        prog.lectures.push({ name: '', moduleDescription: '' });
-        return d;
-    });
-}
+// ==================== VALIDATION ====================
 
-export function removeProgrammingLecture(idx: number) {
-    data.update(d => {
-        const prog = ensureProgramming(d);
-        prog.lectures.splice(idx, 1);
-        return d;
-    });
-}
-
-
-function ensureProgramming(d: Data) {
-    if (!d.programming) {
-        d.programming = {
-            lectures: [],
-            openSourceProjects: [],
-            extraCourses: [],
-            lecturesEnabled: false,
-            openSourceProjectsEnabled: false,
-            extraCoursesEnabled: false
-        };
-    }
-    // ensure arrays exist
-    d.programming.lectures ??= [];
-    d.programming.openSourceProjects ??= [];
-    d.programming.extraCourses ??= [];
-    return d.programming;
-}
-
-
-/**
- * quick and dirty formValidation
- * perhaps implement zod or yup valdation
- */
-
-export function isValidFormData(data: Data): boolean {
+export function isValidFormData(formData: Data): boolean {
     const errors: Record<string, string[]> = {
-      InterviewTime: [],
-      Education: [],
-      MathSkills: [],
-      Questions: [],
-      ProgrammingSkills: []
+        InterviewTime: [],
+        Education: [],
+        MathSkills: [],
+        ProgrammingSkills: [],
+        Questions: []
     };
 
-    // Interview time validation (at least one slot)
-    if (!data.timeSlots || data.timeSlots.length === 0) {
+    // Interview time
+    if (!formData.timeSlots?.length) {
         errors.InterviewTime.push('Please select at least one interview time slot.');
     }
 
     // Education
-    if (!data.fieldDetails.bachelorName) {
-      errors.Education.push('Bachelor name is required.');
+    if (!formData.fieldDetails.bachelorName) {
+        errors.Education.push('Bachelor name is required.');
     }
-    if (!data.fieldDetails.fieldsSelected.length) {
-      errors.Education.push('At least one field must be selected.');
-    }
-  
-    // MathSkills
-    //  - exactly 3 must be chosen
-    //  - each chosen area must have at least one lecture with name + description
-    if (data.mathematics.area.length < 3) {
-      errors.MathSkills.push('You must select all 3 areas.');
+    if (!formData.fieldDetails.fieldsSelected.length) {
+        errors.Education.push('At least one field must be selected.');
     }
 
-    for (const areaName of data.mathematics.area) {
-      const lectures = data.mathematics.lectures[areaName] ?? [];
+    // Math skills
+    if (formData.mathematics.area.length < 3) {
+        errors.MathSkills.push('You must select all 3 areas.');
+    }
 
-      // If no lectures at all
-      if (!lectures.length) {
-        errors.MathSkills.push(`No lecture entered for "${areaName}".`);
-        continue;
-      }
-
-      // Validate every lecture row
-      lectures?.forEach((lec, idx) => {
-        if (!lec.lectureName?.trim()) {
-          errors.MathSkills.push(`Lecture #${idx + 1} in "${areaName}" missing name.`);
+    for (const areaName of formData.mathematics.area) {
+        const lectures = formData.mathematics.lectures[areaName] ?? [];
+        if (!lectures.length) {
+            errors.MathSkills.push(`No lecture entered for "${areaName}".`);
+            continue;
         }
-        if (!lec.moduleDescription?.trim()) {
-          errors.MathSkills.push(`Lecture #${idx + 1} in "${areaName}" missing description.`);
+        lectures.forEach((lec, idx) => {
+            if (!lec.lectureName?.trim()) {
+                errors.MathSkills.push(`Lecture #${idx + 1} in "${areaName}" missing name.`);
+            }
+            if (!lec.moduleDescription?.trim()) {
+                errors.MathSkills.push(`Lecture #${idx + 1} in "${areaName}" missing description.`);
+            }
+        });
+    }
+
+    // Programming skills
+    const prog = formData.programming;
+    if (prog?.lecturesEnabled) {
+        const filled = prog.lectures?.filter(l => l.name?.trim() || l.moduleDescription?.trim());
+        if (!filled?.length) {
+            errors.ProgrammingSkills.push('Lectures enabled but no data provided.');
+        } else {
+            prog.lectures?.forEach((lec, idx) => {
+                const hasName = lec.name?.trim();
+                const hasDesc = lec.moduleDescription?.trim();
+                if ((hasName || hasDesc) && (!hasName || !hasDesc)) {
+                    errors.ProgrammingSkills.push(`Lecture #${idx + 1}: Both name and description required.`);
+                }
+            });
         }
-        // If you also want to require at least one skill checkbox, do:
-        // if (!lec.skills.length) {
-        //   errors.MathSkills.push(`Lecture #${idx + 1} in "${areaName}" missing subtopic skill selection.`);
-        // }
-      });
     }
 
-
-    // Programming skills validation - STRICTER
-    if (data.programming?.lecturesEnabled) {
-      // If enabled, must have at least one entry with name + description
-      const filledLectures = data.programming.lectures?.filter(lec => lec.name?.trim() || lec.moduleDescription?.trim());
-      
-      if (!filledLectures || filledLectures.length === 0) {
-        errors.ProgrammingSkills.push('Lectures enabled but no lecture data provided. Either uncheck the box or fill in lecture details.');
-      } else {
-        // Validate each filled lecture
-        data.programming.lectures?.forEach((lec, idx) => {
-          if ((lec.name?.trim() || lec.moduleDescription?.trim()) && (!lec.name?.trim() || !lec.moduleDescription?.trim())) {
-            errors.ProgrammingSkills.push(`Lecture #${idx + 1}: Both name and description are required.`);
-          }
-        });
-      }
+    if (prog?.openSourceProjectsEnabled) {
+        const filled = prog.openSourceProjects?.filter(p => 
+            p.projectName?.trim() || p.publicRepoLink?.trim() || p.personalIdentifier?.trim()
+        );
+        if (!filled?.length) {
+            errors.ProgrammingSkills.push('Open Source Projects enabled but no data provided.');
+        } else {
+            prog.openSourceProjects?.forEach((proj, idx) => {
+                const hasAll = proj.projectName?.trim() && proj.publicRepoLink?.trim() && proj.personalIdentifier?.trim();
+                const hasAny = proj.projectName?.trim() || proj.publicRepoLink?.trim() || proj.personalIdentifier?.trim();
+                if (hasAny && !hasAll) {
+                    errors.ProgrammingSkills.push(`Project #${idx + 1}: All fields required.`);
+                }
+            });
+        }
     }
 
-    if (data.programming?.openSourceProjectsEnabled) {
-      const filledProjects = data.programming.openSourceProjects?.filter(proj => proj.projectName?.trim() || proj.publicRepoLink?.trim() || proj.personalIdentifier?.trim());
-      
-      if (!filledProjects || filledProjects.length === 0) {
-        errors.ProgrammingSkills.push('Open Source Projects enabled but no project data provided. Either uncheck the box or fill in project details.');
-      } else {
-        data.programming.openSourceProjects?.forEach((proj, idx) => {
-          if ((proj.projectName?.trim() || proj.publicRepoLink?.trim() || proj.personalIdentifier?.trim()) && 
-              (!proj.projectName?.trim() || !proj.publicRepoLink?.trim() || !proj.personalIdentifier?.trim())) {
-            errors.ProgrammingSkills.push(`Open Source Project #${idx + 1}: Project name, repository link, and identifier are all required.`);
-          }
-        });
-      }
-    }
-
-    if (data.programming?.extraCoursesEnabled) {
-      const filledCourses = data.programming.extraCourses?.filter(course => course.courseName?.trim() || course.moduleDescription?.trim());
-      
-      if (!filledCourses || filledCourses.length === 0) {
-        errors.ProgrammingSkills.push('Courses enabled but no course data provided. Either uncheck the box or fill in course details.');
-      } else {
-        data.programming.extraCourses?.forEach((course, idx) => {
-          if ((course.courseName?.trim() || course.moduleDescription?.trim()) && !course.courseName?.trim()) {
-            errors.ProgrammingSkills.push(`Course #${idx + 1}: Course name is required.`);
-          }
-        });
-      }
+    if (prog?.extraCoursesEnabled) {
+        const filled = prog.extraCourses?.filter(c => c.courseName?.trim() || c.moduleDescription?.trim());
+        if (!filled?.length) {
+            errors.ProgrammingSkills.push('Courses enabled but no data provided.');
+        } else {
+            prog.extraCourses?.forEach((course, idx) => {
+                if ((course.courseName?.trim() || course.moduleDescription?.trim()) && !course.courseName?.trim()) {
+                    errors.ProgrammingSkills.push(`Course #${idx + 1}: Course name required.`);
+                }
+            });
+        }
     }
 
     // Questions
-    for (const question of Object.keys(data.questions)) {
-      if (!data.questions[question]) {
-        errors.Questions.push(`Answer missing for: "${question}".`);
-      }
+    for (const question of Object.keys(formData.questions)) {
+        if (!formData.questions[question]) {
+            errors.Questions.push(`Answer missing for: "${question}".`);
+        }
     }
-  
-    // Summarize errors
-    const hasInterviewTimeError = errors.InterviewTime.length > 0;
-    const hasEducationError = errors.Education.length > 0;
-    const hasMathError = errors.MathSkills.length > 0;
-    const hasQuestionsError = errors.Questions.length > 0;
-    const hasProgrammingError = errors.ProgrammingSkills.length > 0;
-  
-    if (!hasInterviewTimeError && !hasEducationError && !hasMathError && !hasQuestionsError && !hasProgrammingError) {
-      return true;
-    }
-  
+
+    // Check if valid
+    const hasErrors = Object.values(errors).some(arr => arr.length > 0);
+    if (!hasErrors) return true;
+
     // Build error message
     let message = 'File cannot be created because some data is missing.\n\n';
-  
-    if (hasInterviewTimeError) {
-      message += 'Interview Time:\n';
-      for (const e of errors.InterviewTime) message += `  - ${e}\n`;
-      message += '\n';
+    for (const [section, errs] of Object.entries(errors)) {
+        if (errs.length) {
+            message += `${section}:\n${errs.map(e => `  - ${e}`).join('\n')}\n\n`;
+        }
     }
-  
-    if (hasEducationError) {
-      message += 'Education:\n';
-      for (const e of errors.Education) message += `  - ${e}\n`;
-      message += '\n';
-    }
-  
-    if (hasMathError) {
-      message += 'Skills in Mathematics:\n';
-      for (const e of errors.MathSkills) message += `  - ${e}\n`;
-      message += '\n';
-    }
-
-    if (hasProgrammingError) {
-      message += 'Programming Skills:\n';
-      for (const e of errors.ProgrammingSkills) message += `  - ${e}\n`;
-      message += '\n';
-    }
-  
-    if (hasQuestionsError) {
-      message += 'Questions:\n';
-      for (const e of errors.Questions) message += `  - ${e}\n`;
-      message += '\n';
-    }
-  
     alert(message);
     return false;
-}
-
-export function toggleTimeSlot(slotName: string, checked: boolean){
-  data.update(d => {
-    const idx = d.timeSlots.indexOf(slotName);
-    if (checked) {
-      if (idx === -1) d.timeSlots.push(slotName);
-    } else {
-      if (idx !== -1) d.timeSlots.splice(idx, 1);
-    }
-    return d;
-  });
 }
 
