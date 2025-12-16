@@ -3,25 +3,17 @@ import adapter from '@sveltejs/adapter-static';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  kit: {
-    adapter: adapter({
-      fallback: 'index.html',  // Enable SPA mode
-      strict: false
-    }),
-    paths: {
-      base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
-    }
-  },
+	kit: {
+		adapter: adapter({
+			fallback: 'index.html',  // Enable SPA mode
+            strict: false
+		}),
+		paths: {
+			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
+		}
+	},
 
-  vitePlugin: {
-    vite: {
-      build: {
-        target: ['es2018', 'safari12']
-      }
-    }
-  },
-
-  preprocess: [vitePreprocess({})]
+	preprocess: [vitePreprocess({})]
 };
 
 export default config;

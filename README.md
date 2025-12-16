@@ -20,9 +20,7 @@ Initial setup to edit the website locally:
 
 To start a dev server and open the website in browser:
 
-```bash
-   pnpm run dev -- --open
-```
+- `pnpm run dev -- --open`
 
 ## Notes
 

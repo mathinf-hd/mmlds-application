@@ -12,10 +12,7 @@
 </script>
 
 <div class="flex flex-col md:container md:mx-auto m-2 items-center">
-	<Heading tag="h1" class="my-2 p-4 text-center">Skills, Lectures, and Motivation</Heading>
-	<Heading tag="h2" class="mb-4 text-center">
-		Application for Master Mathematics of Machine Learning and Data Science
-	</Heading>
+	<Heading class="my-2 p-4 text-center">Skills, Lectures, and Motivation</Heading>
 
 	<Card size="xl" class="my-2">
 	<P> Please declare the details on your bachelor's field of study, your lectures and skills to be recognized, and provide your answers to the motivation questions, by filling in this form and then clicking "Save form data" at the bottom to save its contents to a file. Subsequently, upload this file to your application in heiCO. <b>Please notice</b> that the form is filled locally on your computer, i.e., your contents are not sent to any server.</P>

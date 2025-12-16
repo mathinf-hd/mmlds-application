@@ -62,7 +62,7 @@ function downloadFormAsJsonFile(filename: string, data: Data) {
 }
 
 async function downloadFormData() {
-    const filename = 'form-data-mmlds.txt';
+    const filename = 'form-data.txt';
 
     const data = await formatDataForDownload($data);
 
