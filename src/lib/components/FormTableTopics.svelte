@@ -3,9 +3,9 @@ import {
     Dropdown, DropdownItem, Radio,
     Button, CloseButton, Checkbox, Heading, Input, P, Table, 
     TableBody, TableBodyCell, TableBodyRow, 
-    TableHead, TableHeadCell, Drawer 
+    TableHead, TableHeadCell, Drawer, Textarea, Modal 
 } from 'flowbite-svelte';
-import { TrashBinOutline, ChevronDownOutline } from 'flowbite-svelte-icons';
+import { TrashBinOutline, ChevronDownOutline, EditOutline } from 'flowbite-svelte-icons';
 import { formTopics } from '$lib/topics';
 import { 
     addPoolLecture, 
@@ -20,9 +20,13 @@ import {
 import { sineIn } from 'svelte/easing';
 import { onMount } from 'svelte';
 
-let areaA = 'Please select Area A';
-let areaB = 'Please select Area B';
-let areaC = 'Please select Area C';
+// fix that when refreshed it shows 'Select Area A' but actually are selected and you can be downloaded
+// Different colouring of Chosen Area and unchosen Area.
+// Colour Chosen Areas red until correctly filled.
+// Initialize from store to restore "previous" context and prevent ghost data on change
+let areaA = $data.mathematics.area[0] ?? 'Please select Area A';
+let areaB = $data.mathematics.area[1] ?? 'Please select Area B';
+let areaC = $data.mathematics.area[2] ?? 'Please select Area C';
 
 let selectedDrawer = 0;
 let hiddenDrawer = true;
@@ -76,6 +80,26 @@ onMount(() => {
         return d;
     });
 });
+
+// Modal state
+let openModal = false;
+let currentEditingId: string | null = null;
+let currentEditingName = '';
+let currentEditingDescription = '';
+
+function openDescriptionModal(id: string, name: string, description: string) {
+    currentEditingId = id;
+    currentEditingName = name;
+    currentEditingDescription = description;
+    openModal = true;
+}
+
+function saveDescription() {
+    if (currentEditingId) {
+        updatePoolLecture(currentEditingId, { moduleDescription: currentEditingDescription });
+    }
+    openModal = false;
+}
 </script>
 
 <!-- Main explanation -->
@@ -85,7 +109,7 @@ onMount(() => {
 
 <!-- ==================== STEP 1: LECTURE POOL ==================== -->
 <div class="my-6">
-    <Heading tag="h4" class="mb-3">Step 1: Enter your lectures (once)</Heading>
+    <Heading tag="h4" class="mb-3">Step 1: Enter your Mathematics lectures (once)</Heading>
     
     <P class="mb-4 text-sm">
         To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript. 
@@ -97,13 +121,13 @@ onMount(() => {
     <Table class="overflow-x-auto" striped={true}>
         <TableHead class="normal-case bg-primary-700 text-white">
             <TableHeadCell class="min-w-60 text-2xs p-2">Lecture Name in Transcript</TableHeadCell>
-            <TableHeadCell class="text-2xs p-2">Module Description</TableHeadCell>
+            <TableHeadCell class="text-2xs p-2">Module Description</TableHeadCell> <!-- fold/unfold options -->
             <TableHeadCell class="text-2xs p-2"></TableHeadCell>
         </TableHead>
         <TableBody>
             {#each pool as poolLec (poolLec.id)}
                 <TableBodyRow>
-                    <TableBodyCell class="p-2">
+                    <TableBodyCell class="p-2 align-top">
                         <Input
                             type="text"
                             bind:value={poolLec.lectureName}
@@ -112,16 +136,27 @@ onMount(() => {
                             placeholder="e.g. Analysis I"
                         />
                     </TableBodyCell>
-                    <TableBodyCell class="p-2 text-2xs">
-                        <Input
-                            type="text"
-                            bind:value={poolLec.moduleDescription}
-                            on:input={(e) => onPoolLectureDescInput(poolLec.id, e)}
-                            class="text-2xs"
-                            placeholder="Paste module description here..."
-                        />
+                    <TableBodyCell class="p-2 text-2xs align-top">
+                        <!-- Editable input with expand button -->
+                        <div class="relative flex items-center">
+                            <Input
+                                type="text"
+                                bind:value={poolLec.moduleDescription}
+                                on:input={(e) => onPoolLectureDescInput(poolLec.id, e)}
+                                class="text-2xs pr-8"
+                                placeholder="Paste description or click expand..."
+                            />
+                            <button 
+                                class="absolute right-2 text-gray-500 hover:text-primary-700 cursor-pointer"
+                                on:click={() => openDescriptionModal(poolLec.id, poolLec.lectureName, poolLec.moduleDescription)}
+                                title="Open full editor"
+                                tabindex="-1"
+                            >
+                                <EditOutline size="xs" />
+                            </button>
+                        </div>
                     </TableBodyCell>
-                    <TableBodyCell class="p-2">
+                    <TableBodyCell class="p-2 align-top">
                         <Button color="red" size="xs" class="text-2xs" on:click={() => removePoolLecture(poolLec.id)}>
                             <TrashBinOutline />
                         </Button>
@@ -132,6 +167,28 @@ onMount(() => {
     </Table>
     <Button class="text-2xs m-2" on:click={() => addPoolLecture()}>Add lecture to pool</Button>
 </div>
+
+<!-- Description Editor Modal -->
+<Modal bind:open={openModal} size="lg" autoclose={false} class="w-full">
+    <div class="flex flex-col gap-4">
+        <Heading tag="h4">Module Description: {currentEditingName || 'Untitled Lecture'}</Heading>
+        <P class="text-sm text-gray-500">
+            Please paste the entire official description of the lecture here.
+        </P>
+        <Textarea 
+            bind:value={currentEditingDescription} 
+            rows={15} 
+            class="text-sm font-mono"
+            placeholder="Paste full description here..."
+        />
+    </div>
+    <svelte:fragment slot="footer">
+        <Button on:click={saveDescription}>Save & Close</Button>
+        <Button color="alternative" on:click={() => (openModal = false)}>
+            Cancel
+        </Button>
+    </svelte:fragment>
+</Modal>
 
 <!-- ==================== STEP 2: SELECT 3 AREAS ==================== -->
 <div class="my-6">
@@ -231,22 +288,28 @@ onMount(() => {
 {#each formTopics as topic, topicIdx}
     {@const availableForThisArea = availableByArea[topic.name] ?? []}
     {@const assignedLectures = $data.mathematics.lectures[topic.name] ?? []}
+    {@const isSelected = $data.mathematics.area.includes(topic.name)}
+    {@const isFilled = assignedLectures.length > 0}
     
-    <div class="my-6 p-4 border rounded-lg">
+    <!-- Reverted to standard styling: no conditional borders or backgrounds -->
+    <div class="my-6 p-4 border rounded-lg border-gray-200">
         <div class="flex items-center justify-between mb-3">
+            <!-- Reverted heading color to standard black -->
             <Heading tag="h5" class="mb-0">
                 {topic.name}
             </Heading>
+            <!-- Reverted button color (removed color="light" to use default/primary) -->
             <Button on:click={() => openDrawer(topicIdx)} class="text-2xs" size="xs">
                 Overview of required skills
             </Button>
         </div>
 
-        <!-- Dropdown to add lecture from pool -->
+        <!-- Dropdown to add lecture from pool (ALWAYS VISIBLE) -->
         <div class="mb-3">
             {#if availableForThisArea.length > 0}
                 <!-- Has available lectures: show working dropdown -->
-                <Button size="sm" class="text-2xs">
+                <!-- Reverted to standard primary button (no outline logic) -->
+                <Button size="sm" class="text-2xs" color="primary">
                     Add lecture from pool <ChevronDownOutline class="ml-1" />
                 </Button>
                 <Dropdown class="p-2">
@@ -260,11 +323,11 @@ onMount(() => {
                 <!-- No available lectures: show message instead of dropdown -->
                 <div class="p-3 bg-amber-50 border border-amber-200 rounded text-sm text-amber-700">
                     {#if !hasFilledPoolLectures}
-                        ⚠️ <strong>No lectures in your pool yet.</strong> Add lectures in Step 1 above first.
+                        <strong>No lectures in your pool yet.</strong> Add lectures in Step 1 above first.
                     {:else if assignedLectures.length > 0}
                         ✓ <strong>All your pool lectures are already assigned to this area.</strong> You can add more lectures in Step 1 if needed.
                     {:else}
-                        ⚠️ <strong>All pool lectures are assigned to other areas.</strong> Add more in Step 1 or remove from other areas.
+                        <strong>All pool lectures are assigned to other areas.</strong> Add more in Step 1 or remove from other areas.
                     {/if}
                 </div>
             {/if}
@@ -274,6 +337,7 @@ onMount(() => {
         {#if assignedLectures.length > 0}
             <div class="overflow-x-auto">
                 <Table striped={true}>
+                    <!-- Reverted table head to standard primary color -->
                     <TableHead class="normal-case bg-primary-700 text-white">
                         <TableHeadCell class="min-w-40 text-2xs p-2 text-left">Lecture</TableHeadCell>
                         {#each topic.subtopics as subTopic}
@@ -317,9 +381,13 @@ onMount(() => {
                     </TableBody>
                 </Table>
             </div>
+        {:else if isSelected}
+            <P class="text-xs italic text-red-600 p-4 bg-red-50 rounded border border-red-100">
+                Please add at least one lecture to this selected area.
+            </P>
         {:else}
-            <P class="text-xs italic text-gray-400 p-4 bg-gray-50 rounded">
-                No lectures assigned yet. Use the dropdown above to add from your pool.
+            <P class="text-xs italic text-gray-400 p-4 bg-gray-50 rounded border border-gray-100">
+                No lectures assigned.
             </P>
         {/if}
     </div>

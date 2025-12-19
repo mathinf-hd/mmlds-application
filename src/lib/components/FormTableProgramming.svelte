@@ -27,7 +27,13 @@
   
   <!-- 1) FOUNDATIONAL LECTURES -->
   <!-- Paragraph with the professor’s explanation + checkbox -->
-  <P class="mb-2">
+  
+  
+  <!-- Subheading + Table for Foundational Lectures -->
+  <div class="my-5">
+	<Heading tag="h4" class="mb-4">Foundational Lecture</Heading>
+    
+    <P class="mb-2">
 	Please check the box
 	<Checkbox
 	  inline
@@ -44,11 +50,8 @@
 	of study) to the "Module Description" field (after translation to English using some automatic
 	translation service, in case it is not given in English).
   </P>
-  
-  <!-- Subheading + Table for Foundational Lectures -->
-  <div class="my-5">
-	<Heading tag="h4" class="mb-4">Foundational Lecture</Heading>
-  
+  <br>
+    
     <Table class="overflow-x-auto" striped={true}>
       <TableHead class="normal-case bg-primary-700 text-white">
         <TableHeadCell class="min-w-60 text-2xs p-2">
@@ -102,7 +105,12 @@
 </div>
   
   <!-- 2) OPEN SOURCE PROJECTS -->
-  <P class="mb-2">
+
+  
+  <div class="my-5">
+	<Heading tag="h4" class="mb-4">Open Source Project</Heading>
+  
+      <P class="mb-2">
 	Please check the box
 	<Checkbox
 	  inline
@@ -116,10 +124,8 @@
 	respective open source project the name of the project, the link to a public repository and
 	your identifier.
   </P>
-  
-  <div class="my-5">
-	<Heading tag="h4" class="mb-4">Open Source Project</Heading>
-  
+  <br>
+
     <Table class="overflow-x-auto" striped={true}>
       <TableHead class="normal-case bg-primary-700 text-white">
         <TableHeadCell class="min-w-60 text-2xs p-2">

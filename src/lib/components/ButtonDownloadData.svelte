@@ -38,12 +38,22 @@ async function formatDataForDownload(original: Data): Promise<Data> {
     data.mathematics.lectures[area] = data.mathematics.lectures[area].filter(
       (lec) => lec.lectureName || lec.moduleDescription || lec.skills.length > 0
     );
+    // Remove internal IDs
+    data.mathematics.lectures[area].forEach((lec: any) => delete lec.id);
+  }
+
+  // Remove IDs from lecture pool
+  if (data.mathematics.lecturePool) {
+    data.mathematics.lecturePool.forEach((lec: any) => delete lec.id);
   }
 
   // Clean up programming
-  if (data.programming?.lectures?.length === 0) delete data.programming.lectures;
-  if (data.programming?.openSourceProjects?.length === 0) delete data.programming.openSourceProjects;
-  if (data.programming?.extraCourses?.length === 0) delete data.programming.extraCourses;
+  if (data.programming) {
+    const prog = data.programming as any;
+    if (prog.lectures?.length === 0) delete prog.lectures;
+    if (prog.openSourceProjects?.length === 0) delete prog.openSourceProjects;
+    if (prog.extraCourses?.length === 0) delete prog.extraCourses;
+  }
 
   // 4. Add your metadata
   (data as any).time = await getTimeStamp();     

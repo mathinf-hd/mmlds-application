@@ -7,6 +7,7 @@ const makeId = () => crypto.randomUUID?.() ?? `id-${Date.now()}-${Math.random().
 export const data = writable<Data>(loadData());
 data.subscribe((value) => localStorage.data = JSON.stringify(value));
 
+
 function loadData(): Data { 
     try {
         const raw = JSON.parse(localStorage.data);
@@ -286,14 +287,19 @@ export function isValidFormData(formData: Data): boolean {
     }
 
     // Math skills
-    if (formData.mathematics.area.length < 3) {
-        errors.MathSkills.push('You must select all 3 areas.');
+    const selectedAreas = formData.mathematics.area;
+    
+    // 1. Check minimum count (Changed from 3 to 2)
+    if (selectedAreas.length < 2) {
+        errors.MathSkills.push('Please select at least 2 subject areas (A, B).');
     }
 
-    for (const areaName of formData.mathematics.area) {
+    // 2. Check if selected areas have lectures
+    // We only enforce data entry for the areas explicitly selected in Step 2.
+    for (const areaName of selectedAreas) {
         const lectures = formData.mathematics.lectures[areaName] ?? [];
         if (!lectures.length) {
-            errors.MathSkills.push(`No lecture entered for "${areaName}".`);
+            errors.MathSkills.push(`No lecture entered for selected area "${areaName}".`);
             continue;
         }
         lectures.forEach((lec, idx) => {
@@ -360,18 +366,31 @@ export function isValidFormData(formData: Data): boolean {
         }
     }
 
-    // Check if valid
+    // Check if valid (Hard Errors)
     const hasErrors = Object.values(errors).some(arr => arr.length > 0);
-    if (!hasErrors) return true;
+    
+    if (hasErrors) {
+        // Build error message
+        let message = 'File cannot be created because some data is missing.\n\n';
+        for (const [section, errs] of Object.entries(errors)) {
+            if (errs.length) {
+                message += `${section}:\n${errs.map(e => `  - ${e}`).join('\n')}\n\n`;
+            }
+        }
+        alert(message);
+        return false;
+    }
 
-    // Build error message
-    let message = 'File cannot be created because some data is missing.\n\n';
-    for (const [section, errs] of Object.entries(errors)) {
-        if (errs.length) {
-            message += `${section}:\n${errs.map(e => `  - ${e}`).join('\n')}\n\n`;
+    // Soft Warning: Only 2 areas selected
+    if (selectedAreas.length === 2) {
+        const confirm2Areas = confirm(
+            "You selected only two subject areas under Mathematics Skills.\n\nAre you sure you do not want to select a third one?"
+        );
+        if (!confirm2Areas) {
+            return false;
         }
     }
-    alert(message);
-    return false;
+
+    return true;
 }
 
