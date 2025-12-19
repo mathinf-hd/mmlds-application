@@ -1,54 +1,50 @@
 <script lang="ts">
-	import {
-	  Button, Input, P,
-	  Table, TableBody, TableBodyCell, TableBodyRow,
-	  TableHead, TableHeadCell, Checkbox, Heading
-	} from 'flowbite-svelte';
+    import {
+      Button, Input, P,
+      Table, TableBody, TableBodyCell, TableBodyRow,
+      TableHead, TableHeadCell, Checkbox, Heading
+    } from 'flowbite-svelte';
   
-	import { TrashBinOutline }  from 'flowbite-svelte-icons';
+    import { TrashBinOutline }  from 'flowbite-svelte-icons';
   
-	import {
-	  data,
-	  toggleProgrammingCategory,
-	  addProgrammingLecture,
-	  removeProgrammingLecture,
-	  addOpenSourceProject,
-	  removeOpenSourceProject,
-	  addProgrammingCourse,
-	  removeProgrammingCourse
-	} from '$lib/store/store';
+    import {
+      data,
+      toggleProgrammingCategory,
+      addProgrammingLecture,
+      removeProgrammingLecture,
+      addOpenSourceProject,
+      removeOpenSourceProject,
+      addProgrammingCourse,
+      removeProgrammingCourse
+    } from '$lib/store/store';
   </script>
   
   <!-- Intro paragraph for the entire section -->
   <P class="mb-4">
-	The admission regulations recognize <b>Programming skills</b>. These can be proved in the
-	following <b>3 (not mutually exclusive)</b> ways: <br><br>
+    The admission regulations recognize <b>Programming skills</b>. These can be proved in the
+    following <b>3 (not mutually exclusive)</b> ways: <br><br>
   </P>
   
   <!-- 1) FOUNDATIONAL LECTURES -->
-  <!-- Paragraph with the professor’s explanation + checkbox -->
-  
-  
-  <!-- Subheading + Table for Foundational Lectures -->
   <div class="my-5">
-	<Heading tag="h4" class="mb-4">Foundational Lecture</Heading>
+    <Heading tag="h4" class="mb-4">Foundational Lecture</Heading>
     
     <P class="mb-2">
-	Please check the box
-	<Checkbox
-	  inline
-	  class="me-2"
-	  bind:checked={$data.programming.lecturesEnabled}
-	  on:change={() =>
-		toggleProgrammingCategory('lectures', $data.programming.lecturesEnabled)
-	  }
-	/>
-	if you acquired skills in areas such as Algorithms and data structures through
-	corresponding foundational lectures. To declare these skills, add for each respective
-	lecture its English name as listed in the (translated) transcript. Copy and paste the entire
-	official description of the lecture (as, e.g., provided in the module handbook of your field
-	of study) to the "Module Description" field (after translation to English using some automatic
-	translation service, in case it is not given in English).
+    Please check the box
+    <Checkbox
+      inline
+      class="mx-2 align-middle"
+      bind:checked={$data.programming.lecturesEnabled}
+      on:change={() =>
+        toggleProgrammingCategory('lectures', $data.programming.lecturesEnabled)
+      }
+    />
+    if you acquired skills in areas such as Algorithms and data structures through
+    corresponding foundational lectures. To declare these skills, add for each respective
+    lecture its English name as listed in the (translated) transcript. Copy and paste the entire
+    official description of the lecture (as, e.g., provided in the module handbook of your field
+    of study) to the "Module Description" field (after translation to English using some automatic
+    translation service, in case it is not given in English).
   </P>
   <br>
     
@@ -105,24 +101,22 @@
 </div>
   
   <!-- 2) OPEN SOURCE PROJECTS -->
-
-  
   <div class="my-5">
-	<Heading tag="h4" class="mb-4">Open Source Project</Heading>
+    <Heading tag="h4" class="mb-4">Open Source Project</Heading>
   
       <P class="mb-2">
-	Please check the box
-	<Checkbox
-	  inline
-	  class="me-2"
-	  bind:checked={$data.programming.openSourceProjectsEnabled}
-	  on:change={() =>
-		toggleProgrammingCategory('openSourceProjects', $data.programming.openSourceProjectsEnabled)
-	  }
-	/>
-	if you actively contributed to an open source project. To declare these skills, add for each
-	respective open source project the name of the project, the link to a public repository and
-	your identifier.
+    Please check the box
+    <Checkbox
+      inline
+      class="mx-2 align-middle"
+      bind:checked={$data.programming.openSourceProjectsEnabled}
+      on:change={() =>
+        toggleProgrammingCategory('openSourceProjects', $data.programming.openSourceProjectsEnabled)
+      }
+    />
+    if you actively contributed to an open source project. To declare these skills, add for each
+    respective open source project the name of the project, the link to a public repository and
+    your identifier.
   </P>
   <br>
 
@@ -188,25 +182,26 @@
 </div>
   
   <!-- 3) PROGRAMMING COURSES -->
-  <P class="mb-2">
-	Please check the box
-	<Checkbox
-	  inline
-	  class="me-2"
-	  bind:checked={$data.programming.extraCoursesEnabled}
-	  on:change={() =>
-		toggleProgrammingCategory('extraCourses', $data.programming.extraCoursesEnabled)
-	  }
-	/>
-	if you participated in a programming course, e.g. dedicated to a specific programming language.
-	To declare these skills, add for each respective programming course its English name as listed
-	in the (translated) transcript together with the entire official description of the course.
-	Alternatively for extracurricular courses provide the file name of the certificate as uploaded
-	to heiCO.
-  </P>
-  
   <div class="my-5">
-	<Heading tag="h4" class="mb-4">Programming Course</Heading>
+    <Heading tag="h4" class="mb-4">Programming Course</Heading>
+  
+    <P class="mb-2">
+    Please check the box
+    <Checkbox
+      inline
+      class="mx-2 align-middle"
+      bind:checked={$data.programming.extraCoursesEnabled}
+      on:change={() =>
+        toggleProgrammingCategory('extraCourses', $data.programming.extraCoursesEnabled)
+      }
+    />
+    if you participated in a programming course, e.g. dedicated to a specific programming language.
+    To declare these skills, add for each respective programming course its English name as listed
+    in the (translated) transcript together with the entire official description of the course.
+    Alternatively for extracurricular courses provide the file name of the certificate as uploaded
+    to heiCO.
+  </P>
+  <br>
   
     <Table class="overflow-x-auto" striped={true}>
       <TableHead class="normal-case bg-primary-700 text-white">
