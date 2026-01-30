@@ -32,9 +32,12 @@
 			<TableBodyRow>
 				<TableBodyCell>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 					<P>{questionIdx + 1 + ".) "+ question}:</P>
 					<Textarea rows="10" bind:value={$data.questions[question]} />
 =======
+=======
+>>>>>>> Stashed changes
 					<P>{idx + 1}.) {question}</P>
 
 					<Textarea
@@ -47,6 +50,9 @@
 					<div class="mt-1 text-xs text-gray-500 text-right">
 						{localAnswers[question]?.length ?? 0} / 400
 					</div>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 				</TableBodyCell>
 			</TableBodyRow>

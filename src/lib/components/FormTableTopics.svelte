@@ -1,5 +1,6 @@
 <script lang="ts">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   import {
     Button, Input, P,
     Table, TableBody, TableBodyCell, TableBodyRow,
@@ -20,15 +21,19 @@
     selectArea,
   } from '$lib/store/store';
 =======
+=======
+>>>>>>> Stashed changes
 import {
     Dropdown, DropdownItem, Radio,
     Button, CloseButton, Checkbox, Heading, Input, P, Table,
     TableBody, TableBodyCell, TableBodyRow,
     TableHead, TableHeadCell, Drawer, Textarea, Modal
 } from 'flowbite-svelte';
-import { TrashBinOutline, ChevronDownOutline, EditOutline } from 'flowbite-svelte-icons';
+
+import { TrashBinOutline, ChevronDownOutline, EditOutline, InfoCircleOutline } from 'flowbite-svelte-icons';
 import { formTopics } from '$lib/topics';
 import {
+<<<<<<< Updated upstream
     addPoolLecture,
     assignLectureToArea,
     data,
@@ -37,6 +42,16 @@ import {
     selectArea,
     toggleSkill,
     updatePoolLecture
+=======
+  addPoolLecture,
+  assignLectureToArea,
+  data,
+  removePoolLecture,
+  removeLecture,
+  selectArea,
+  toggleSkill,
+  updatePoolLecture
+>>>>>>> Stashed changes
 } from '$lib/store/store';
 import { sineIn } from 'svelte/easing';
 import { onMount } from 'svelte';
@@ -47,6 +62,7 @@ let areaB = $data.mathematics.area[1] ?? 'Please select Area B';
 let areaC = $data.mathematics.area[2] ?? 'Please select Area C';
 >>>>>>> Stashed changes
 
+<<<<<<< Updated upstream
   import { formTopics } from '$lib/topics';
 
   function getSkillsForArea(areaName: string): string[] {
@@ -86,7 +102,48 @@ const inputVal = (e: any) => {
   if (typeof detail === "string") return detail;
 
   return "";
+=======
+// Drawer state
+let selectedDrawer = 0;
+let hiddenDrawer = true;
+
+type DrawerMode = 'skills' | 'grade';
+let drawerMode: DrawerMode = 'skills';
+
+function openDrawer(index: number) {
+    drawerMode = 'skills';
+    selectedDrawer = index;
+    hiddenDrawer = false;
+}
+
+function openGradeDrawer() {
+    drawerMode = 'grade';
+    hiddenDrawer = false;
+}
+
+let transitionParams = {
+    x: -320,
+    duration: 200,
+    easing: sineIn
+>>>>>>> Stashed changes
 };
+
+// Flowbite-Svelte Input can emit either native events or CustomEvent.
+// This helper safely extracts the value.
+const inputVal = (e: any) => {
+  const v1 = e?.target?.value ?? e?.currentTarget?.value;
+  if (v1 !== undefined) return v1;
+
+  const detail = e?.detail;
+  if (detail && typeof detail === "object" && "value" in detail) return (detail as any).value;
+  if (typeof detail === "string") return detail;
+
+  return "";
+};
+
+function onPoolLectureGradeInput(id: string, e: Event) {
+  updatePoolLecture(id, { grade: String(inputVal(e)) });
+}
 
 function onPoolLectureNameInput(id: string, e: Event) {
     updatePoolLecture(id, { lectureName: String(inputVal(e)) });
@@ -259,6 +316,7 @@ function saveDescription() {
 =======
 <!-- ==================== STEP 1: LECTURE POOL ==================== -->
 <div class="my-6">
+<<<<<<< Updated upstream
     <Heading tag="h4" class="mb-3">Step 1: Enter your Mathematics lectures (once)</Heading>
 
     <P class="mb-4 text-sm">
@@ -319,10 +377,120 @@ function saveDescription() {
         </TableBody>
     </Table>
     <Button class="text-2xs m-2" on:click={() => addPoolLecture()}>Add lecture to pool</Button>
+=======
+  <Heading tag="h4" class="mb-3">Step 1: Enter your Mathematics lectures (once)</Heading>
+
+  <P class="mb-4 text-sm">
+    To declare these skills, add for each respective lecture its English name as listed in the (translated) transcript.
+    Copy and paste the entire official description of the lecture
+    (as, e.g., provided in the module handbook of your field of study) to the "Module Description" field
+    (after translation to English using some automatic translation service, in case it is not given in English).
+  </P>
+
+  <Table class="overflow-x-auto" striped={true}>
+    <TableHead class="normal-case bg-primary-700 text-white">
+      <TableHeadCell class="min-w-60 text-2xs p-2">Lecture Name in Transcript</TableHeadCell>
+
+      <!-- Grade header with info button (opens drawer) -->
+      <TableHeadCell class="min-w-40 text-2xs p-2 w-28">
+        <span class="inline-flex items-center gap-1">
+          Grade
+          <button
+            type="button"
+            class="inline-flex items-center rounded p-0.5 text-white/80 hover:text-white hover:bg-white/10"
+            aria-label="Grade info"
+            title="Grading system"
+            on:click={openGradeDrawer}
+          >
+            <InfoCircleOutline class="w-4 h-4" />
+          </button>
+        </span>
+      </TableHeadCell>
+
+      <TableHeadCell class="text-2xs p-2 w-full">Module Description</TableHeadCell>
+      <TableHeadCell class="text-2xs p-2 w-14"></TableHeadCell>
+    </TableHead>
+
+    <TableBody>
+      {#each pool as poolLec (poolLec.id)}
+        <TableBodyRow>
+          <!-- Name -->
+          <TableBodyCell class="p-2 align-top">
+            <Input
+              type="text"
+              class="text-2xs"
+              placeholder="e.g. Analysis I"
+              value={poolLec.lectureName ?? ""}
+              on:input={(e) => onPoolLectureNameInput(poolLec.id, e)}
+            />
+          </TableBodyCell>
+
+          <!-- Grade -->
+          <TableBodyCell class="p-2 align-top">
+            <Input
+              type="text"
+              class="text-2xs"
+              placeholder="e.g. A, C+"
+              value={poolLec.grade ?? ""}
+              on:input={(e) => onPoolLectureGradeInput(poolLec.id, e)}
+            />
+          </TableBodyCell>
+
+          <!-- Module Description (full-width pill + expand icon) -->
+          <TableBodyCell class="p-2 align-top w-full">
+            <div class="relative w-full">
+              <Textarea
+                rows={1}
+                class="w-full text-2xs resize-none pr-10"
+                placeholder="Paste description or click expand..."
+                value={poolLec.moduleDescription ?? ""}
+                on:input={(e) => onPoolLectureDescInput(poolLec.id, e)}
+              />
+
+              <!-- expand icon inside the field -->
+              <button
+                type="button"
+                class="absolute right-3 top-1/2 -translate-y-1/2 rounded p-1 text-gray-500 hover:text-primary-700 hover:bg-gray-100"
+                title="Open full editor"
+                tabindex="-1"
+                on:click={() =>
+                  openDescriptionModal(
+                    poolLec.id,
+                    poolLec.lectureName ?? "",
+                    poolLec.moduleDescription ?? ""
+                  )
+                }
+              >
+                <EditOutline class="w-4 h-4" />
+              </button>
+            </div>
+          </TableBodyCell>
+
+          <!-- Delete (tight column) -->
+          <TableBodyCell class="p-2 align-top w-14">
+            <Button
+              color="red"
+              size="xs"
+              class="text-2xs"
+              on:click={() => removePoolLecture(poolLec.id)}
+            >
+              <TrashBinOutline />
+            </Button>
+          </TableBodyCell>
+        </TableBodyRow>
+      {/each}
+    </TableBody>
+  </Table>
+
+  <Button class="text-2xs m-2" on:click={() => addPoolLecture()}>
+    Add lecture to pool
+  </Button>
+>>>>>>> Stashed changes
 </div>
 
 <!-- Description Editor Modal -->
 <Modal bind:open={openModal} size="lg" autoclose={false} class="w-full">
+<<<<<<< Updated upstream
     <div class="flex flex-col gap-4">
         <Heading tag="h4">Module Description: {currentEditingName || 'Untitled Lecture'}</Heading>
         <P class="text-sm text-gray-500">
@@ -341,6 +509,25 @@ function saveDescription() {
             Cancel
         </Button>
     </svelte:fragment>
+=======
+  <div class="flex flex-col gap-4">
+    <Heading tag="h4">Module Description: {currentEditingName || 'Untitled Lecture'}</Heading>
+    <P class="text-sm text-gray-500">
+      Please paste the entire official description of the lecture here.
+    </P>
+    <Textarea
+      bind:value={currentEditingDescription}
+      rows={15}
+      class="text-sm font-mono"
+      placeholder="Paste full description here..."
+    />
+  </div>
+
+  <svelte:fragment slot="footer">
+    <Button on:click={saveDescription}>Save & Close</Button>
+    <Button color="alternative" on:click={() => (openModal = false)}>Cancel</Button>
+  </svelte:fragment>
+>>>>>>> Stashed changes
 </Modal>
 
 <!-- ==================== STEP 2: SELECT 3 AREAS ==================== -->
@@ -544,23 +731,32 @@ function saveDescription() {
     </div>
 {/each}
 
-<!-- Drawer for skill overview -->
+<!-- Drawer for skill overview / grading system -->
 <Drawer
-    placement="left"
-    transitionType="fly"
-    transitionParams={transitionParams}
-    bind:hidden={hiddenDrawer}
-    id="sidebarDrawer"
-    class="w-72 text-sm font-light"
+  placement="left"
+  transitionType="fly"
+  transitionParams={transitionParams}
+  bind:hidden={hiddenDrawer}
+  id="sidebarDrawer"
+  class="w-72 text-sm font-light"
 >
-    <div class="bg-primary-700 flex items-start p-2 items-center justify-between">
-        <p class="text-base font-semibold text-white">
-            Required skills in {formTopics[selectedDrawer].name}
-        </p>
-        <CloseButton on:click={() => (hiddenDrawer = true)} class="hover:bg-primary-800 text-white" />
-    </div>
-    <ul class="p-2 bg-gray-50">
+  <div class="bg-primary-700 flex items-center justify-between p-2">
+    <p class="text-base font-semibold text-white">
+      {#if drawerMode === 'skills'}
+        Required skills in {formTopics[selectedDrawer].name}
+      {:else}
+        American grading system
+      {/if}
+    </p>
+    <CloseButton on:click={() => (hiddenDrawer = true)} class="hover:bg-primary-800 text-white" />
+  </div>
+
+  <!-- Scroll happens INSIDE the drawer content -->
+  <div class="bg-gray-50 p-3 overflow-y-auto max-h-[calc(100vh-56px)]">
+    {#if drawerMode === 'skills'}
+      <ul>
         {#each formTopics[selectedDrawer].module as module}
+<<<<<<< Updated upstream
             <li class="text-sm list-disc ml-4 mb-2" style="list-style-type: circle">{module}</li>
 >>>>>>> Stashed changes
         {/each}
@@ -572,3 +768,41 @@ function saveDescription() {
     </Button>
   </div>
 {/each}
+=======
+          <li class="text-sm list-disc ml-4 mb-2" style="list-style-type: circle">
+            {module}
+          </li>
+        {/each}
+      </ul>
+    {:else}
+      <div class="text-xs leading-relaxed">
+        <div class="font-semibold mt-1">A (Excellent)</div>
+        <div class="grid grid-cols-2 gap-x-3">
+          <div>A: 93–100</div><div>A−: 90–92</div>
+        </div>
+
+        <div class="font-semibold mt-3">B (Good)</div>
+        <div class="grid grid-cols-2 gap-x-3">
+          <div>B+: 87–89</div><div>B: 83–86</div>
+          <div>B−: 80–82</div><div></div>
+        </div>
+
+        <div class="font-semibold mt-3">C (Satisfactory)</div>
+        <div class="grid grid-cols-2 gap-x-3">
+          <div>C+: 77–79</div><div>C: 73–76</div>
+          <div>C−: 70–72</div><div></div>
+        </div>
+
+        <div class="font-semibold mt-3">D (Needs improvement / Barely passing)</div>
+        <div class="grid grid-cols-2 gap-x-3">
+          <div>D+: 67–69</div><div>D: 63–66</div>
+          <div>D−: 60–62</div><div></div>
+        </div>
+
+        <div class="font-semibold mt-3">F (Fail)</div>
+        <div>F: below 60</div>
+      </div>
+    {/if}
+  </div>
+</Drawer>
+>>>>>>> Stashed changes

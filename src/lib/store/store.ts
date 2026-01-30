@@ -3,6 +3,7 @@ import { formTopics } from "$lib/topics";
 import { formQuestions } from "$lib/questions";
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 /* =========================
    Types
    ========================= */
@@ -101,12 +102,27 @@ function emptyMath(): MathematicsData {
 const browser = typeof window !== "undefined";
 
 /** ✅ Always returns a string (never false) */
+=======
+const browser = typeof window !== "undefined";
+
+/* Always returns a string (never false) */
+>>>>>>> Stashed changes
 const makeId = (): string => {
   if (browser && typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
     return crypto.randomUUID();
   }
   return `id-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 };
+<<<<<<< Updated upstream
+=======
+
+export function removeLectureFromPool(id: string) {
+  data.update((d) => {
+    d.mathematics.lecturePool = d.mathematics.lecturePool.filter((l) => l.id !== id);
+    return d;
+  });
+}
+>>>>>>> Stashed changes
 
 export const data = writable<Data>(loadData());
 
@@ -136,6 +152,9 @@ function loadData(): Data {
   } catch {
     return generateEmptyDataObject(formQuestions);
   }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }
 
@@ -145,6 +164,7 @@ function generateEmptyDataObject(questions: Questions): Data {
     fieldDetails: {
       bachelorName: "",
       fieldsSelected: [],
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
       comparableField: "",
     },
@@ -297,12 +317,19 @@ function hydrateWithDefaults(parsed: any): Data {
 
   return out;
 =======
+=======
+>>>>>>> Stashed changes
       comparableField: ""
     },
     mathematics: {
       area: [],
       lectures: Object.fromEntries(formTopics.map((topic) => [topic.name, []])) as Record<string, Lectures>,
+<<<<<<< Updated upstream
       lecturePool: [{ id: makeId(), lectureName: "", moduleDescription: "" }]
+=======
+      lecturePool: [{ id: makeId(), lectureName: "", grade: "", moduleDescription: "" }]
+
+>>>>>>> Stashed changes
     },
     programming: {
       lectures: [{ name: "", moduleDescription: "" }],
@@ -331,6 +358,9 @@ export async function loadEvalData(filename: string) {
     console.error("Error loading file:", error);
     return generateEmptyDataObject(formQuestions);
   }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }
 
@@ -394,8 +424,23 @@ export function setComparableField(value: string) {
   }));
 }
 
+export function setBachelorName(name: string) {
+  data.update((d) => ({
+    ...d,
+    fieldDetails: { ...d.fieldDetails, bachelorName: name }
+  }));
+}
+
+export function setComparableField(value: string) {
+  data.update((d) => ({
+    ...d,
+    fieldDetails: { ...d.fieldDetails, comparableField: value }
+  }));
+}
+
 export function toggleStudyField(field: string, isChecked: boolean) {
   data.update((d) => {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     if (isChecked) {
       if (!d.fieldDetails.fieldsSelected.includes(field)) {
@@ -408,12 +453,33 @@ export function toggleStudyField(field: string, isChecked: boolean) {
     }
     return d;
   });
+=======
+    const selected = new Set(d.fieldDetails.fieldsSelected);
+    if (isChecked) selected.add(field);
+    else selected.delete(field);
+
+    return {
+      ...d,
+      fieldDetails: { ...d.fieldDetails, fieldsSelected: Array.from(selected) }
+    };
+  });
+}
+
+// ==================== QUESTIONS ====================
+
+export function setQuestionAnswer(question: string, answer: string) {
+  data.update((d) => ({
+    ...d,
+    questions: { ...d.questions, [question]: answer }
+  }));
+>>>>>>> Stashed changes
 }
 
 /* =========================
    Mathematics — NEW API
    ========================= */
 
+<<<<<<< Updated upstream
 function ensureAreaArray(d: Data, areaName: string) {
   if (!Array.isArray(d.mathematics.areaLectures[areaName])) {
     d.mathematics.areaLectures[areaName] = [];
@@ -558,6 +624,8 @@ export const addLecture = addAreaLecture;
 export const removeLecture = removeAreaLecture;
 export const toggleSkill = toggleAreaSkill;
 =======
+=======
+>>>>>>> Stashed changes
 export function toggleTimeSlot(slotName: string, checked: boolean) {
   data.update((d) => {
     const slots = new Set(d.timeSlots);
@@ -589,7 +657,16 @@ export function selectArea(areaName: string, previousArea?: string) {
 export function addPoolLecture() {
   data.update((d) => {
     const prevPool = d.mathematics?.lecturePool ?? [];
+<<<<<<< Updated upstream
     const newLecture: PoolLecture = { id: makeId(), lectureName: "", moduleDescription: "" };
+=======
+    const newLecture: PoolLecture = {
+      id: makeId(),
+      lectureName: "",
+      grade: "",
+      moduleDescription: ""
+    };
+>>>>>>> Stashed changes
 
     return {
       ...d,
@@ -601,10 +678,19 @@ export function addPoolLecture() {
   });
 }
 
+<<<<<<< Updated upstream
 export function updatePoolLecture(
   id: string,
   patch: Partial<{ lectureName: string; moduleDescription: string }>
 ) {
+=======
+
+export function updatePoolLecture(
+  id: string,
+  patch: Partial<{ lectureName: string; grade: string; moduleDescription: string }>
+)
+ {
+>>>>>>> Stashed changes
   data.update((d) => {
     const lecturePool = d.mathematics.lecturePool.map((l) => (l.id === id ? { ...l, ...patch } : l));
 
@@ -661,6 +747,10 @@ export function assignLectureToArea(areaName: string, lectureId: string) {
       {
         id: lectureId,
         lectureName: pool.lectureName,
+<<<<<<< Updated upstream
+=======
+        grade: pool.grade,
+>>>>>>> Stashed changes
         moduleDescription: pool.moduleDescription,
         skills: []
       }
@@ -727,6 +817,7 @@ function ensureProgramming(d: Data): ProgrammingData {
       extraCoursesEnabled: false
     }
   );
+<<<<<<< Updated upstream
 }
 
 export function setProgrammingEnabled(
@@ -751,6 +842,24 @@ export function toggleProgrammingCategory(
     return d;
   });
 =======
+=======
+}
+
+export function setProgrammingEnabled(
+  key: "lecturesEnabled" | "openSourceProjectsEnabled" | "extraCoursesEnabled",
+  enabled: boolean
+) {
+  data.update((d) => {
+    const prog = ensureProgramming(d);
+    return { ...d, programming: { ...prog, [key]: enabled } };
+  });
+}
+
+export function toggleProgrammingCategory(
+  category: "lectures" | "openSourceProjects" | "extraCourses",
+  checked: boolean
+) {
+>>>>>>> Stashed changes
   const key =
     category === "lectures"
       ? "lecturesEnabled"
@@ -759,25 +868,35 @@ export function toggleProgrammingCategory(
       : "extraCoursesEnabled";
 
   setProgrammingEnabled(key, checked);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }
 
 export function addProgrammingLecture() {
   data.update((d) => {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     d.programming.lectures.push({ name: "", moduleDescription: "" });
     return d;
 =======
+=======
+>>>>>>> Stashed changes
     const prog = ensureProgramming(d);
     return {
       ...d,
       programming: { ...prog, lectures: [...(prog.lectures ?? []), { name: "", moduleDescription: "" }] }
     };
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   });
 }
 export function removeProgrammingLecture(idx: number) {
   data.update((d) => {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
     const list = d.programming.lectures;
     if (idx >= 0 && idx < list.length) list.splice(idx, 1);
@@ -786,6 +905,23 @@ export function removeProgrammingLecture(idx: number) {
     const prog = ensureProgramming(d);
     return { ...d, programming: { ...prog, lectures: (prog.lectures ?? []).filter((_, i) => i !== idx) } };
   });
+=======
+    const prog = ensureProgramming(d);
+    return { ...d, programming: { ...prog, lectures: (prog.lectures ?? []).filter((_, i) => i !== idx) } };
+  });
+}
+
+export function setProgrammingLectureField(idx: number, key: "name" | "moduleDescription", value: string) {
+  data.update((d) => {
+    const prog = ensureProgramming(d);
+    const lectures = [...(prog.lectures ?? [])];
+    const row = { ...(lectures[idx] ?? { name: "", moduleDescription: "" }) };
+    row[key] = value;
+    lectures[idx] = row;
+
+    return { ...d, programming: { ...prog, lectures } };
+  });
+>>>>>>> Stashed changes
 }
 
 export function setProgrammingLectureField(idx: number, key: "name" | "moduleDescription", value: string) {
@@ -803,6 +939,7 @@ export function setProgrammingLectureField(idx: number, key: "name" | "moduleDes
 export function addOpenSourceProject() {
   data.update((d) => {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     d.programming.openSourceProjects.push({
       projectName: "",
       publicRepoLink: "",
@@ -810,6 +947,8 @@ export function addOpenSourceProject() {
     });
     return d;
 =======
+=======
+>>>>>>> Stashed changes
     const prog = ensureProgramming(d);
     return {
       ...d,
@@ -821,22 +960,47 @@ export function addOpenSourceProject() {
         ]
       }
     };
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   });
 }
 export function removeOpenSourceProject(idx: number) {
   data.update((d) => {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     const list = d.programming.openSourceProjects;
     if (idx >= 0 && idx < list.length) list.splice(idx, 1);
     return d;
 =======
+=======
+>>>>>>> Stashed changes
     const prog = ensureProgramming(d);
     return {
       ...d,
       programming: { ...prog, openSourceProjects: (prog.openSourceProjects ?? []).filter((_, i) => i !== idx) }
     };
   });
+<<<<<<< Updated upstream
+=======
+}
+
+export function setOpenSourceProjectField(
+  idx: number,
+  key: "projectName" | "publicRepoLink" | "personalIdentifier",
+  value: string
+) {
+  data.update((d) => {
+    const prog = ensureProgramming(d);
+    const openSourceProjects = [...(prog.openSourceProjects ?? [])];
+    const row = { ...(openSourceProjects[idx] ?? { projectName: "", publicRepoLink: "", personalIdentifier: "" }) };
+    row[key] = value;
+    openSourceProjects[idx] = row;
+
+    return { ...d, programming: { ...prog, openSourceProjects } };
+  });
+>>>>>>> Stashed changes
 }
 
 export function setOpenSourceProjectField(
@@ -858,14 +1022,18 @@ export function setOpenSourceProjectField(
 export function addProgrammingCourse() {
   data.update((d) => {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     d.programming.extraCourses.push({ courseName: "", moduleDescription: "" });
     return d;
 =======
+=======
+>>>>>>> Stashed changes
     const prog = ensureProgramming(d);
     return {
       ...d,
       programming: { ...prog, extraCourses: [...(prog.extraCourses ?? []), { courseName: "", moduleDescription: "" }] }
     };
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
   });
 }
@@ -1017,6 +1185,13 @@ export function isValidFormData(d: Data): boolean {
   alert(message);
   return false;
 =======
+=======
+  });
+}
+
+export function removeProgrammingCourse(idx: number) {
+  data.update((d) => {
+>>>>>>> Stashed changes
     const prog = ensureProgramming(d);
     return { ...d, programming: { ...prog, extraCourses: (prog.extraCourses ?? []).filter((_, i) => i !== idx) } };
   });
@@ -1131,5 +1306,8 @@ export function isValidFormData(formData: Data): boolean {
   }
 
   return true;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }

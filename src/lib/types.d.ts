@@ -19,6 +19,16 @@ interface Topic {
 }
 
 type Lectures = Array<MathLecture>;
+<<<<<<< Updated upstream
+=======
+interface PoolLecture {
+    id: string;
+    lectureName: string;
+	grade: string; 
+    moduleDescription: string;
+}
+
+>>>>>>> Stashed changes
 interface MathLecture {
 	lectureName: string;
 	skills: Array<string>;

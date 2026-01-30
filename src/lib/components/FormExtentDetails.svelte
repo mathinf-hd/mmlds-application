@@ -17,7 +17,11 @@
 	let bachelorName = '';
 	let comparableField = '';
 
+<<<<<<< Updated upstream
 	// ✅ Only sync local state when store values change (prevents overwriting while typing)
+=======
+	//  Only sync local state when store values change (prevents overwriting while typing)
+>>>>>>> Stashed changes
 	$: {
 		const bn = $data.fieldDetails?.bachelorName ?? '';
 		if (bn !== bachelorName) bachelorName = bn;

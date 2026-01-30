@@ -4,6 +4,7 @@ import { purgeCss } from 'vite-plugin-tailwind-purgecss';
 import { execSync } from 'child_process';
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 let commitHash = 'unknown';
 try {
   commitHash = execSync('git rev-parse HEAD').toString().trim();
@@ -11,6 +12,8 @@ try {
   console.warn('⚠️  Not a git repository. Using default commit hash.');
 }
 =======
+=======
+>>>>>>> Stashed changes
 function getCommitHash(): string {
 	try {
 		// Works when the project is a git repo; won't crash if .git is missing
@@ -19,6 +22,22 @@ function getCommitHash(): string {
 			.trim();
 	} catch {
 		return 'unknown';
+<<<<<<< Updated upstream
+=======
+	}
+}
+
+const commitHash = getCommitHash();
+
+export default defineConfig({
+	define: {
+		'import.meta.env.VITE_BUILD_DATETIME': JSON.stringify(new Date().toISOString()),
+		'import.meta.env.VITE_BUILD_COMMIT': JSON.stringify(commitHash)
+	},
+	plugins: [sveltekit(), purgeCss()],
+	test: {
+		include: ['src/**/*.{test,spec}.{js,ts}']
+>>>>>>> Stashed changes
 	}
 }
 
